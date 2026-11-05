@@ -1,0 +1,22 @@
+{
+  "name": "Seoul Academy CRM BI Dashboard",
+  "short_name": "SA CRM",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#001489",
+  "description": "Hệ thống Báo cáo Quản trị, P&L Marketing & Tuyển sinh Seoul Academy",
+  "icons": [
+    {
+      "src": "logo_sa_gold.png",
+      "sizes": "1024x351",
+      "type": "image/png"
+    },
+    {
+      "src": "logo_sa_gold.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
+

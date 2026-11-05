@@ -1,0 +1,14 @@
+﻿/*
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+/crm_data.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+/index.html
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+/sw.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+/last_updated.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+/crm_cloud_config.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
