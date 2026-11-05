@@ -149,13 +149,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.18_20261105_173244"></script>
-  <script src="crm_data.js?v=v3.18_20261105_173244"></script>
+  <script src="crm_mapping.js?v=v3.19_20261105_175046"></script>
+  <script src="crm_data.js?v=v3.19_20261105_175046"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.18_20261105_173244') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.18_20261105_173244').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.19_20261105_175046') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.19_20261105_175046').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -198,7 +198,7 @@
               <span class="font-heading font-bold text-base sm:text-lg tracking-wider text-sa-gold">HỆ THỐNG BÁO CÁO CRM
                 BI</span>
               <span
-                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.18</span>
+                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.19</span>
             </div>
             <p class="text-[11px] text-slate-300 font-medium hidden sm:block">Quản Trị Doanh Thu, Chi Phí Marketing & Tỉ
               Lệ Chốt Tuyển Sinh</p>
@@ -595,17 +595,20 @@
             </div>
           </div>
 
-          <!-- Reset Button -->
+          <!-- Reset & Save Preset Buttons -->
           <div class="flex flex-col justify-end">
-            <button onclick="resetAllFilters()"
-              class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-sa-navy border border-slate-300 rounded px-2 py-1 text-xs font-bold transition flex items-center justify-center gap-1 shadow-sm">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                </path>
-              </svg>
-              Đặt Lại Bộ Lọc
-            </button>
+            <div class="flex items-center gap-1">
+              <button type="button" id="btnSaveFilterPreset" onclick="saveCurrentFilterPreset()"
+                class="w-1/2 bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy border border-sa-navy/30 rounded px-1.5 py-1 text-[11px] font-bold transition flex items-center justify-center gap-1 shadow-sm"
+                title="Lưu tổ hợp bộ lọc hiện tại làm mặc định mỗi khi mở trang web">
+                📌 Lưu Lọc
+              </button>
+              <button type="button" onclick="resetAllFilters()"
+                class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-sa-navy border border-slate-300 rounded px-1.5 py-1 text-[11px] font-bold transition flex items-center justify-center gap-1 shadow-sm"
+                title="Đặt lại toàn bộ bộ lọc">
+                🔄 Đặt Lại
+              </button>
+            </div>
           </div>
         </div>
 
@@ -975,7 +978,8 @@
                 <h3 class="font-heading font-bold text-sa-navy text-sm">2. Chi Phí Quảng Cáo (VNĐ) &amp; Tỷ Lệ CP/DT
                   Thực Tế (%)</h3>
                 <p class="text-[11px] text-slate-500">📐 <strong>Logic:</strong>
-                  <code>% CP/DT = (Chi phí MKT ÷ Doanh thu thực đạt) × 100%</code> (Chỉ hiện số thực tế)</p>
+                  <code>% CP/DT = (Chi phí MKT ÷ Doanh thu thực đạt) × 100%</code> (Chỉ hiện số thực tế)
+                </p>
               </div>
               <span class="text-xs text-slate-500 font-semibold">VNĐ &amp; % Thực tế</span>
             </div>
@@ -1164,7 +1168,8 @@
                 <span class="text-[10px] text-emerald-800">đ/data</span>
               </div>
               <div class="text-[10px] text-emerald-700 font-semibold mt-0.5" id="ts2CplSavingNote">📐
-                <code>= Tổng Chi Phí ÷ Tổng Data</code></div>
+                <code>= Tổng Chi Phí ÷ Tổng Data</code>
+              </div>
             </div>
           </div>
 
@@ -1426,6 +1431,53 @@
             </div>
           </div>
         </div>
+
+        <!-- BẢNG THEO DÕI CHI PHÍ ADS, SỐ MESS, LEAD & DOANH THU TỪNG NGÀY (DAILY AD-SPEND VS REVENUE TRACKER) -->
+        <div class="card-sa p-5 border-t-4 border-sa-navy mt-6">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold font-heading font-bold text-[10px] uppercase">KIỂM SOÁT NGÂN SÁCH HÀNG NGÀY</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200">Đồng bộ trực tiếp từ Sheet CP Nguồn</span>
+              </div>
+              <h3 class="text-base font-heading font-bold text-sa-navy mt-1 uppercase">
+                📅 BẢNG THEO DÕI CHI PHÍ ADS — SỐ MESS — LEAD CRM — DOANH THU THEO TỪNG NGÀY
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">
+                📐 <strong>Logic kiểm toán ngày:</strong> Đối chiếu trực tiếp Chi phí Ads &amp; Số Mess từng ngày trong Sheet <code>CP Nguồn</code> với Số Lead và Doanh thu phát sinh cùng ngày để phát hiện sớm ngày đốt ngân sách hoặc CPL vọt cao bất thường.
+              </p>
+            </div>
+            <div class="flex items-center gap-2 no-print">
+              <button onclick="exportTableToExcel('tblDailyMktTracker', 'Theo_Doi_Chi_Phi_Ads_Doanh_Thu_Theo_Ngay')"
+                class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition">
+                📥 Xuất Excel Theo Ngày
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
+            <table id="tblDailyMktTracker" class="min-w-full text-xs text-left divide-y divide-slate-200">
+              <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
+                <tr>
+                  <th class="py-2.5 px-3">Ngày</th>
+                  <th class="py-2.5 px-2 text-right bg-amber-900/60 text-sa-gold">Tổng CP Ads (VNĐ)</th>
+                  <th class="py-2.5 px-2 text-right">CP Facebook</th>
+                  <th class="py-2.5 px-2 text-right">Số Mess FB</th>
+                  <th class="py-2.5 px-2 text-right">Giá / Mess</th>
+                  <th class="py-2.5 px-2 text-right">CP Google + TikTok</th>
+                  <th class="py-2.5 px-2 text-right bg-blue-900/60 text-blue-200">Lead CRM</th>
+                  <th class="py-2.5 px-2 text-right">Giá Data (CPL)</th>
+                  <th class="py-2.5 px-2 text-right">HV Mới</th>
+                  <th class="py-2.5 px-3 text-right bg-sa-navyDark text-sa-gold">Doanh Thu Ngày (VNĐ)</th>
+                  <th class="py-2.5 px-2 text-right">CP / DT (%)</th>
+                  <th class="py-2.5 px-3 text-center">Chẩn Đoán Ngân Sách</th>
+                </tr>
+              </thead>
+              <tbody id="tblDailyMktTrackerBody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
     </section><!-- ========================================================================= -->
@@ -1503,6 +1555,9 @@
                 <th onclick="sortTable('tblSalesLeaderboard', 8, true)" class="py-3 px-2 text-right">DT / Học Viên <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblSalesLeaderboard', 9, true)" class="py-3 px-2 text-right">Tỉ Lệ Chốt (%)
+                  <span class="sort-arrow">⇅</span>
+                </th>
+                <th onclick="sortTable('tblSalesLeaderboard', 10, false)" class="py-3 px-3 text-center">Phân Hạng &amp; Đề Xuất Chia Lead
                   <span class="sort-arrow">⇅</span>
                 </th>
               </tr>
@@ -1718,7 +1773,8 @@
           <div class="text-xs text-slate-600 font-bold uppercase">Số Lượng Phiếu Thu</div>
           <div id="lblCashInvoiceCount" class="text-xl font-heading font-bold text-sa-navy mt-1">0</div>
           <div class="text-[10px] text-slate-500 mt-0.5">Giá trị TB/phiếu: <strong id="lblCashAvgInvoice">0</strong>
-            <span class="text-[9px]">(VNĐ)</span></div>
+            <span class="text-[9px]">(VNĐ)</span>
+          </div>
           <div class="text-[9.5px] text-amber-900 bg-amber-100/60 rounded px-1.5 py-0.5 mt-1 font-medium">📐 Logic:
             TB/phiếu = Tổng Doanh Thu ÷ Tổng số phiếu thu</div>
         </div>
@@ -1889,11 +1945,13 @@
                 <th onclick="sortTable('tblChannelDeepDive', 1, true)" class="py-3 px-2 text-right">Tổng Lead <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblChannelDeepDive', 2, true)" class="py-3 px-2 text-right">Tỷ Trọng Lead (%)
-                  <span class="sort-arrow">⇅</span></th>
+                  <span class="sort-arrow">⇅</span>
+                </th>
                 <th onclick="sortTable('tblChannelDeepDive', 3, true)" class="py-3 px-2 text-right">Đã Tư Vấn <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblChannelDeepDive', 4, true)" class="py-3 px-2 text-right">Khách Đến Trường
-                  <span class="sort-arrow">⇅</span></th>
+                  <span class="sort-arrow">⇅</span>
+                </th>
                 <th onclick="sortTable('tblChannelDeepDive', 5, true)" class="py-3 px-2 text-right">Học Viên Chốt <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblChannelDeepDive', 6, true)" class="py-3 px-2 text-right">Tỉ Lệ Chốt (%) <span
@@ -1902,7 +1960,8 @@
                   class="py-3 px-3 text-right bg-sa-navyDark text-sa-gold">Doanh Thu (VNĐ) <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblChannelDeepDive', 8, true)" class="py-3 px-2 text-right">DT / 1 Lead (VNĐ)
-                  <span class="sort-arrow">⇅</span></th>
+                  <span class="sort-arrow">⇅</span>
+                </th>
               </tr>
             </thead>
             <tbody id="tblChannelDeepDiveBody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
@@ -2620,9 +2679,11 @@
                 <th onclick="sortTable('tblGeoDistribution', 0, false)" class="py-3 px-3">Khu Vực / Cơ Sở <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblGeoDistribution', 1, true)" class="py-3 px-2 text-right">Tổng Lead Tiếp Nhận
-                  <span class="sort-arrow">⇅</span></th>
+                  <span class="sort-arrow">⇅</span>
+                </th>
                 <th onclick="sortTable('tblGeoDistribution', 2, true)" class="py-3 px-2 text-right">Khách Đã Đến Trường
-                  <span class="sort-arrow">⇅</span></th>
+                  <span class="sort-arrow">⇅</span>
+                </th>
                 <th onclick="sortTable('tblGeoDistribution', 3, true)" class="py-3 px-2 text-right">Học Viên Chốt <span
                     class="sort-arrow">⇅</span></th>
                 <th onclick="sortTable('tblGeoDistribution', 4, true)" class="py-3 px-2 text-right">Tỉ Lệ Chốt (%) <span
@@ -3301,11 +3362,14 @@
             sẽ tự động:</div>
           <ul class="space-y-1 text-[11px] text-slate-700 list-disc list-inside">
             <li>Kéo toàn bộ <strong>Phiếu thu mới</strong> &amp; <strong>Lead chăm sóc mới</strong> (tự động loại trừ
-              <code>HAB</code> &amp; <code>OFFLINE ACTIVE</code>) từ API CRM.</li>
+              <code>HAB</code> &amp; <code>OFFLINE ACTIVE</code>) từ API CRM.
+            </li>
             <li>Tải bảng <strong>Chi phí Marketing &amp; Số lượt Tin nhắn (Mess)</strong> mới nhất từ Google Sheet
-              <code>CP Nguồn</code>.</li>
+              <code>CP Nguồn</code>.
+            </li>
             <li>Tính toán lại toàn bộ Sổ Quản Trị, xuất bản lên <code>quantri.hethongseoulacademy.edu.vn</code> và
-              <strong>tự động làm mới màn hình này</strong> sau ~60–90 giây.</li>
+              <strong>tự động làm mới màn hình này</strong> sau ~60–90 giây.
+            </li>
           </ul>
         </div>
 
@@ -4339,9 +4403,15 @@
 
       initFilterDropdowns();
       applyRoleRestrictions();
+      if (typeof loadSavedFilterPreset === 'function') {
+        loadSavedFilterPreset();
+      }
       renderDashboard();
       if (typeof initLiveServerWatchdog === 'function') {
         initLiveServerWatchdog();
+      }
+      if (typeof initKeyboardShortcuts === 'function') {
+        initKeyboardShortcuts();
       }
     });
 
@@ -6538,6 +6608,7 @@
     }
 
     function resetAllFilters() {
+      localStorage.removeItem('SA_SAVED_FILTER_PRESET');
       filterState = {
         preset: 'ALL',
         startDate: '',
@@ -6729,6 +6800,9 @@
         renderReceivablesTable(filteredInvs);
         renderChannelDeepDive(filteredCares, filteredInvs);
         renderChannelMessRoiMatrix();
+        if (typeof renderDailyMktTracker === 'function') {
+          renderDailyMktTracker(filteredInvs, filteredCares);
+        }
         renderCohortLagMatrix(filteredInvs, filteredCares);
         renderDemographics(filteredInvs, filteredCares);
         renderCoursesAndBranchesFiltered(filteredInvs);
@@ -7842,11 +7916,23 @@
       const tbody = document.getElementById('tblSalesLeaderboardBody');
       if (tbody) {
         tbody.innerHTML = '';
+        const avgRev = list.length > 0 ? (list.reduce((a, b) => a + b.rev, 0) / list.length) : 0;
+        const avgCvr = totalLeads > 0 ? ((totalClosed / totalLeads) * 100) : 5;
         list.forEach((s, idx) => {
           const rank = idx + 1;
           const badge = rank === 1 ? '🥇 Top 1' : (rank === 2 ? '🥈 Top 2' : (rank === 3 ? '🥉 Top 3' : `#${rank}`));
-          const cvr = s.leads > 0 ? ((s.closedSts.size / s.leads) * 100).toFixed(1) + '%' : '0%';
+          const cvrVal = s.leads > 0 ? ((s.closedSts.size / s.leads) * 100) : 0;
+          const cvr = cvrVal.toFixed(1) + '%';
           const revPerSt = s.closedSts.size > 0 ? formatVND(s.rev / s.closedSts.size) : '0';
+          const uncared = Math.max(0, s.leads - s.cared);
+          const uncaredPct = s.leads > 0 ? ((uncared / s.leads) * 100) : 0;
+
+          let tierHtml = '<span class="px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 font-bold text-[10px]">✅ Hạng B • Đạt chuẩn</span>';
+          if (s.rev >= avgRev * 1.25 && (cvrVal >= avgCvr || s.closedSts.size >= 3) && uncaredPct <= 15) {
+            tierHtml = '<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-[10px]">🌟 Hạng A • Ưu tiên chia Lead nóng</span>';
+          } else if ((s.leads >= 15 && cvrVal < avgCvr * 0.5) || uncared >= 15 || uncaredPct > 35) {
+            tierHtml = `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300 font-bold text-[10px]" title="Tồn ${uncared} lead chưa gọi">⚠️ Hạng C • Kèm cặp / Tồn ${uncared} lead</span>`;
+          }
 
           const tr = document.createElement('tr');
           tr.className = "hover:bg-yellow-50/50 transition cursor-pointer";
@@ -7862,6 +7948,7 @@
             <td class="py-2.5 px-3 text-right font-bold text-sa-navy bg-yellow-50/30">${formatVND(s.rev)}</td>
             <td class="py-2.5 px-2 text-right text-slate-600">${revPerSt}</td>
             <td class="py-2.5 px-2 text-right font-bold text-emerald-700">${cvr}</td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">${tierHtml}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -9134,7 +9221,139 @@
       });
     }
 
-    // EXCEL EXPORT
+    // ==================== DAILY AD-SPEND VS LEAD & REVENUE TRACKER ====================
+    function renderDailyMktTracker(invs, cares) {
+      const tbody = document.getElementById('tblDailyMktTrackerBody');
+      if (!tbody) return;
+      const dailyCostMap = (window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.DailyCost2026) ? window.CRM_DASHBOARD_DATA.DailyCost2026 : {};
+      const dayStats = {};
+
+      Object.entries(dailyCostMap).forEach(([dKey, cObj]) => {
+        if (filterState.startDate && dKey < filterState.startDate) return;
+        if (filterState.endDate && dKey > filterState.endDate) return;
+        dayStats[dKey] = {
+          d: dKey,
+          cost: cObj.c || 0,
+          fb: cObj.fb || 0,
+          gg: cObj.gg || 0,
+          tk: cObj.tk || 0,
+          mess: cObj.m || 0,
+          leads: 0,
+          st: 0,
+          rev: 0
+        };
+      });
+
+      (cares || []).forEach(c => {
+        if (!c.d || c.d.length < 10) return;
+        const dKey = c.d.substring(0, 10);
+        if (!dayStats[dKey]) dayStats[dKey] = { d: dKey, cost: 0, fb: 0, gg: 0, tk: 0, mess: 0, leads: 0, st: 0, rev: 0 };
+        dayStats[dKey].leads++;
+      });
+
+      (invs || []).forEach(i => {
+        if (!i.d || i.d.length < 10) return;
+        const dKey = i.d.substring(0, 10);
+        if (!dayStats[dKey]) dayStats[dKey] = { d: dKey, cost: 0, fb: 0, gg: 0, tk: 0, mess: 0, leads: 0, st: 0, rev: 0 };
+        dayStats[dKey].rev += (i.pay || 0);
+        if (i.ns === 1) dayStats[dKey].st += 1;
+      });
+
+      const rows = Object.values(dayStats).sort((a, b) => b.d.localeCompare(a.d)).slice(0, 62);
+      if (rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="12" class="py-6 text-center text-slate-400">Không có dữ liệu ngày trong khoảng thời gian đang lọc</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => {
+        const cpm = r.mess > 0 ? Math.round(r.fb / r.mess) : 0;
+        const cpl = r.leads > 0 ? Math.round(r.cost / r.leads) : 0;
+        const cpDt = r.rev > 0 ? ((r.cost / r.rev) * 100).toFixed(1) + '%' : (r.cost > 0 ? '>100%' : '0%');
+        let diag = '<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">✅ Hiệu quả tốt</span>';
+        if (r.cost > 3000000 && r.leads === 0) {
+          diag = '<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-[10px]">🚨 Chi Ads 0 Lead</span>';
+        } else if (cpl > 600000) {
+          diag = '<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">⚠️ Giá Data cao</span>';
+        } else if (r.rev > 0 && (r.cost / r.rev) > 0.35) {
+          diag = '<span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">⚠️ CP/DT cao</span>';
+        }
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2 px-3 font-mono font-bold text-sa-navy whitespace-nowrap">${r.d}</td>
+            <td class="py-2 px-2 text-right font-bold text-amber-900 bg-amber-50/40">${formatVND(r.cost)}</td>
+            <td class="py-2 px-2 text-right text-blue-900">${formatVND(r.fb)}</td>
+            <td class="py-2 px-2 text-right font-bold text-sa-navy">${formatNumber(r.mess)}</td>
+            <td class="py-2 px-2 text-right text-slate-600">${formatVND(cpm)}</td>
+            <td class="py-2 px-2 text-right text-slate-700">${formatVND(r.gg + r.tk)}</td>
+            <td class="py-2 px-2 text-right font-bold text-blue-800 bg-blue-50/30">${formatNumber(r.leads)}</td>
+            <td class="py-2 px-2 text-right font-semibold ${cpl > 600000 ? 'text-rose-700' : 'text-slate-700'}">${formatVND(cpl)}</td>
+            <td class="py-2 px-2 text-right font-bold text-emerald-700">${formatNumber(r.st)}</td>
+            <td class="py-2 px-3 text-right font-bold text-sa-navy bg-yellow-50/30">${formatVND(r.rev)}</td>
+            <td class="py-2 px-2 text-right font-semibold">${cpDt}</td>
+            <td class="py-2 px-3 text-center whitespace-nowrap">${diag}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ==================== SAVED FILTER PRESETS & GLOBAL KEYBOARD SHORTCUTS ====================
+    function saveCurrentFilterPreset() {
+      try {
+        localStorage.setItem('SA_SAVED_FILTER_PRESET', JSON.stringify(filterState));
+        const btn = document.getElementById('btnSaveFilterPreset');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '✅ Đã Lưu!';
+          setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        }
+      } catch (e) { }
+    }
+
+    function loadSavedFilterPreset() {
+      try {
+        const raw = localStorage.getItem('SA_SAVED_FILTER_PRESET');
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (saved && typeof saved === 'object') {
+          filterState = {
+            preset: saved.preset || 'ALL',
+            startDate: saved.startDate || '',
+            endDate: saved.endDate || '',
+            branches: Array.isArray(saved.branches) ? saved.branches : [],
+            groups: Array.isArray(saved.groups) ? saved.groups : [],
+            products: Array.isArray(saved.products) ? saved.products : [],
+            sources: Array.isArray(saved.sources) ? saved.sources : [],
+            sales: Array.isArray(saved.sales) ? saved.sales : [],
+            keyword: saved.keyword || ''
+          };
+          const sdEl = document.getElementById('filterStartDate');
+          const edEl = document.getElementById('filterEndDate');
+          const kwEl = document.getElementById('filterKeyword');
+          if (sdEl) sdEl.value = filterState.startDate;
+          if (edEl) edEl.value = filterState.endDate;
+          if (kwEl) kwEl.value = filterState.keyword;
+          initFilterDropdowns();
+        }
+      } catch (e) { }
+    }
+
+    function initKeyboardShortcuts() {
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+          e.preventDefault();
+          openGlobalLookup360Modal();
+        } else if (e.key === 'Escape') {
+          ['modalGlobalLookup360', 'modalExecBriefing', 'modalCloudUpdate', 'modalDrillDown', 'modalTarget', 'modalUserManager', 'modalPermission'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el && !el.classList.contains('hidden')) {
+              el.classList.add('hidden');
+            }
+          });
+        }
+      });
+    }
+
+    // EXCEL EXPORT (1-CLICK 7-SHEET MASTER WORKBOOK)
     function exportCurrentTableExcel() {
       const table = document.getElementById("tblManagement");
       const wb = XLSX.utils.table_to_book(table, { sheet: "QuanTri_" + currentYear });
@@ -9143,13 +9362,49 @@
 
     function exportFullReportExcel() {
       const wb = XLSX.utils.book_new();
+      const data = window.CRM_DASHBOARD_DATA || {};
+
+      // Sheet 1: Sổ Quản Trị 3 Năm (P&L)
       const ws1 = XLSX.utils.json_to_sheet(DEFAULT_BENCHMARKS);
-      XLSX.utils.book_append_sheet(wb, ws1, "SoQuanTri_3Nam");
-      if (window.CRM_MAPPINGS) {
-        const ws2 = XLSX.utils.json_to_sheet(window.CRM_MAPPINGS);
-        XLSX.utils.book_append_sheet(wb, ws2, "DinhDanh_HeThong");
+      XLSX.utils.book_append_sheet(wb, ws1, "1_SoQuanTri_PnL");
+
+      // Sheet 2: Hiệu Suất Chi Nhánh
+      const tblBranch = document.getElementById('tblGeoDistribution');
+      if (tblBranch) {
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(tblBranch), "2_HieuSuat_ChiNhanh");
       }
-      XLSX.writeFile(wb, `BaoCao_ToanDien_SeoulAcademy_3Nam.xlsx`);
+
+      // Sheet 3: Hiệu Quả Nguồn Marketing
+      const tblCh = document.getElementById('tblChannelDeepDive');
+      if (tblCh) {
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(tblCh), "3_HieuQua_NguonMKT");
+      }
+
+      // Sheet 4: Xếp Hạng Tư Vấn Viên
+      const tblSale = document.getElementById('tblSalesLeaderboard');
+      if (tblSale) {
+        XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(tblSale), "4_XepHang_Sale");
+      }
+
+      // Sheet 5: Lead Nóng Đã Hẹn Chưa Thu Tiền
+      if (Array.isArray(data.HotLeads2026) && data.HotLeads2026.length > 0) {
+        const ws5 = XLSX.utils.json_to_sheet(data.HotLeads2026);
+        XLSX.utils.book_append_sheet(wb, ws5, "5_LeadNong_ChuaThuTien");
+      }
+
+      // Sheet 6: Công Nợ Học Phí Cần Thu Hồi
+      if (Array.isArray(data.Receivables2026) && data.Receivables2026.length > 0) {
+        const ws6 = XLSX.utils.json_to_sheet(data.Receivables2026);
+        XLSX.utils.book_append_sheet(wb, ws6, "6_CongNo_CanThuHoi");
+      }
+
+      // Sheet 7: Học Viên Tiềm Năng Upsell Master
+      if (Array.isArray(data.UpsellCandidates2026) && data.UpsellCandidates2026.length > 0) {
+        const ws7 = XLSX.utils.json_to_sheet(data.UpsellCandidates2026);
+        XLSX.utils.book_append_sheet(wb, ws7, "7_HocVien_Upsell_Master");
+      }
+
+      XLSX.writeFile(wb, `SoTayQuanTri_ToanDien_7Sheets_SeoulAcademy_${new Date().toISOString().substring(0, 10)}.xlsx`);
     }
   </script>
 </body>
