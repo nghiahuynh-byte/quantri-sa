@@ -149,13 +149,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.19_20261105_175046"></script>
-  <script src="crm_data.js?v=v3.19_20261105_175046"></script>
+  <script src="crm_mapping.js?v=20261105_v38"></script>
+  <script src="crm_data.js?v=3.10_v38"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.19_20261105_175046') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.19_20261105_175046').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.8-20261105') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=20261105_v38').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -198,7 +198,7 @@
               <span class="font-heading font-bold text-base sm:text-lg tracking-wider text-sa-gold">HỆ THỐNG BÁO CÁO CRM
                 BI</span>
               <span
-                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.19</span>
+                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.20</span>
             </div>
             <p class="text-[11px] text-slate-300 font-medium hidden sm:block">Quản Trị Doanh Thu, Chi Phí Marketing & Tỉ
               Lệ Chốt Tuyển Sinh</p>
@@ -1437,14 +1437,20 @@
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold font-heading font-bold text-[10px] uppercase">KIỂM SOÁT NGÂN SÁCH HÀNG NGÀY</span>
-                <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200">Đồng bộ trực tiếp từ Sheet CP Nguồn</span>
+                <span
+                  class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold font-heading font-bold text-[10px] uppercase">KIỂM
+                  SOÁT NGÂN SÁCH HÀNG NGÀY</span>
+                <span
+                  class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200">Đồng
+                  bộ trực tiếp từ Sheet CP Nguồn</span>
               </div>
               <h3 class="text-base font-heading font-bold text-sa-navy mt-1 uppercase">
                 📅 BẢNG THEO DÕI CHI PHÍ ADS — SỐ MESS — LEAD CRM — DOANH THU THEO TỪNG NGÀY
               </h3>
               <p class="text-xs text-slate-500 mt-0.5">
-                📐 <strong>Logic kiểm toán ngày:</strong> Đối chiếu trực tiếp Chi phí Ads &amp; Số Mess từng ngày trong Sheet <code>CP Nguồn</code> với Số Lead và Doanh thu phát sinh cùng ngày để phát hiện sớm ngày đốt ngân sách hoặc CPL vọt cao bất thường.
+                📐 <strong>Logic kiểm toán ngày:</strong> Đối chiếu trực tiếp Chi phí Ads &amp; Số Mess từng ngày trong
+                Sheet <code>CP Nguồn</code> với Số Lead và Doanh thu phát sinh cùng ngày để phát hiện sớm ngày đốt ngân
+                sách hoặc CPL vọt cao bất thường.
               </p>
             </div>
             <div class="flex items-center gap-2 no-print">
@@ -1542,22 +1548,27 @@
                 </th>
                 <th onclick="sortTable('tblSalesLeaderboard', 3, true)" class="py-3 px-2 text-right">Đã Tư Vấn <span
                     class="sort-arrow">⇅</span></th>
-                <th onclick="sortTable('tblSalesLeaderboard', 4, true)" class="py-3 px-2 text-right">Hẹn Đến <span
+                <th onclick="sortTable('tblSalesLeaderboard', 4, true)"
+                  class="py-3 px-2 text-right bg-indigo-950 text-indigo-200"
+                  title="Tỷ lệ cuộc gọi khách nghe máy thực tế = success_care_amount_data ÷ total_care_data">Tỷ Lệ Nghe
+                  Máy (%) <span class="sort-arrow">⇅</span></th>
+                <th onclick="sortTable('tblSalesLeaderboard', 5, true)" class="py-3 px-2 text-right">Hẹn Đến <span
                     class="sort-arrow">⇅</span></th>
-                <th onclick="sortTable('tblSalesLeaderboard', 5, true)" class="py-3 px-2 text-right">Khách Đến Trường
+                <th onclick="sortTable('tblSalesLeaderboard', 6, true)" class="py-3 px-2 text-right">Khách Đến Trường
                   <span class="sort-arrow">⇅</span>
                 </th>
-                <th onclick="sortTable('tblSalesLeaderboard', 6, true)" class="py-3 px-2 text-right">Học Viên Chốt <span
+                <th onclick="sortTable('tblSalesLeaderboard', 7, true)" class="py-3 px-2 text-right">Học Viên Chốt <span
                     class="sort-arrow">⇅</span></th>
-                <th onclick="sortTable('tblSalesLeaderboard', 7, true)"
+                <th onclick="sortTable('tblSalesLeaderboard', 8, true)"
                   class="py-3 px-3 text-right bg-sa-navyDark text-sa-gold">Tổng Doanh Thu <span
                     class="sort-arrow">⇅</span></th>
-                <th onclick="sortTable('tblSalesLeaderboard', 8, true)" class="py-3 px-2 text-right">DT / Học Viên <span
+                <th onclick="sortTable('tblSalesLeaderboard', 9, true)" class="py-3 px-2 text-right">DT / Học Viên <span
                     class="sort-arrow">⇅</span></th>
-                <th onclick="sortTable('tblSalesLeaderboard', 9, true)" class="py-3 px-2 text-right">Tỉ Lệ Chốt (%)
+                <th onclick="sortTable('tblSalesLeaderboard', 10, true)" class="py-3 px-2 text-right">Tỉ Lệ Chốt (%)
                   <span class="sort-arrow">⇅</span>
                 </th>
-                <th onclick="sortTable('tblSalesLeaderboard', 10, false)" class="py-3 px-3 text-center">Phân Hạng &amp; Đề Xuất Chia Lead
+                <th onclick="sortTable('tblSalesLeaderboard', 11, false)" class="py-3 px-3 text-center">Phân Hạng &amp;
+                  Đề Xuất Chia Lead
                   <span class="sort-arrow">⇅</span>
                 </th>
               </tr>
@@ -1797,6 +1808,74 @@
           <div class="h-80"><canvas id="chartInvoiceTypeMonthly"></canvas></div>
         </div>
       </div>
+
+      <!-- HẠNG MỤC MỚI V3.20: BÓC TÁCH DOANH THU THEO LOẠI SẢN PHẨM (TYPE_COURSE) & KIỂM TOÁN GIẢM GIÁ / THU NGÂN (DISCOUNT AUDIT) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="card-sa p-5 border-t-4 border-emerald-600">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="font-heading font-bold text-sa-navy text-sm uppercase">
+                🎓 Bóc Tách Doanh Thu Thuần: Khóa Học Chính vs. Bằng Cấp, Đồ Nghề &amp; Đổi Khóa
+              </h3>
+              <p class="text-[11px] text-slate-500">
+                📐 <strong>Logic:</strong> Phân tích trường <code>type_course</code> (<code>Khóa học</code>,
+                <code>Bằng cấp</code>, <code>Sản phẩm</code>, <code>Dịch vụ</code>) và <code>type_transfer</code>
+                (<code>Bình thường</code> vs. <code>Đổi khoá</code>).
+              </p>
+            </div>
+            <button
+              onclick="exportTableToExcel('tblCourseTypeBreakdown', 'Boc_Tach_Doanh_Thu_Khoa_Hoc_Bang_Cap_Doi_Khoa')"
+              class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300">Xuất
+              Excel</button>
+          </div>
+          <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+            <table id="tblCourseTypeBreakdown" class="min-w-full text-xs text-left divide-y divide-slate-200">
+              <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
+                <tr>
+                  <th class="py-2 px-3">Nhóm Doanh Thu / Giao Dịch</th>
+                  <th class="py-2 px-2 text-right">Số Phiếu</th>
+                  <th class="py-2 px-2 text-right">HV Mới</th>
+                  <th class="py-2 px-2 text-right bg-sa-navyDark text-sa-gold">Thực Thu (VNĐ)</th>
+                  <th class="py-2 px-2 text-right">Tỷ Trọng (%)</th>
+                </tr>
+              </thead>
+              <tbody id="tblCourseTypeBreakdownBody" class="divide-y divide-slate-100 bg-white"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-sa p-5 border-t-4 border-rose-600">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="font-heading font-bold text-sa-navy text-sm uppercase">
+                🛡️ Kiểm Toán Quỹ Giảm Giá / Học Bổng (Discount) &amp; Thu Ngân Theo Cơ Sở
+              </h3>
+              <p class="text-[11px] text-slate-500">
+                📐 <strong>Logic:</strong> Đối soát tổng tiền giảm giá (<code>discount</code>) so với thực thu
+                (<code>pay</code>) và người lập phiếu (<code>created_invoice_by</code>).
+                <code>% Giảm giá = Giảm giá ÷ (Thực thu + Giảm giá)</code>.
+              </p>
+            </div>
+            <button onclick="exportTableToExcel('tblDiscountAudit', 'Kiem_Toan_Giam_Gia_Hoc_Bong_Theo_Co_So')"
+              class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300">Xuất
+              Excel</button>
+          </div>
+          <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[280px]">
+            <table id="tblDiscountAudit" class="min-w-full text-xs text-left divide-y divide-slate-200">
+              <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
+                <tr>
+                  <th class="py-2 px-3">Cơ Sở / Thu Ngân Chính</th>
+                  <th class="py-2 px-2 text-right">Phiếu Có CK</th>
+                  <th class="py-2 px-2 text-right">Tổng Giảm Giá (VNĐ)</th>
+                  <th class="py-2 px-2 text-right">Thực Thu (VNĐ)</th>
+                  <th class="py-2 px-2 text-right bg-rose-900 text-rose-100">Tỷ Lệ CK (%)</th>
+                </tr>
+              </thead>
+              <tbody id="tblDiscountAuditBody" class="divide-y divide-slate-100 bg-white"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
       <!-- HẠNG MỤC TỐI ƯU #4: BÁO CÁO TỶ LỆ THU HỒI CÔNG NỢ ĐỢT 2+ THEO CƠ SỞ & TƯ VẤN VIÊN -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card-sa p-5 border-t-4 border-blue-600">
@@ -2019,6 +2098,55 @@
               </tr>
             </thead>
             <tbody id="tblChannelMessRoiBody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BẢNG HIỆU QUẢ CHUYỂN ĐỔI THEO TỪNG FANPAGE FACEBOOK (PAGE_DATA ATTRIBUTION V3.20) -->
+      <div class="card-sa p-5 border-t-4 border-sky-600">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span
+                class="px-2 py-0.5 rounded bg-sky-900 text-sa-gold font-heading font-bold text-[10px] uppercase">PHÂN
+                TÍCH ĐA FANPAGE (PAGE_DATA)</span>
+              <span class="px-2 py-0.5 rounded bg-sky-50 text-sky-800 font-bold text-[10px] border border-sky-200">Page
+                Tổng • Page Sếp • Page Vùng Miền</span>
+            </div>
+            <h3 class="text-base font-heading font-bold text-sa-navy mt-1 uppercase">
+              📘 HIỆU QUẢ CHUYỂN ĐỔI SĐT LEAD, TỶ LỆ NGHE MÁY &amp; DOANH THU THEO TỪNG FANPAGE
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              📐 <strong>Logic bóc tách:</strong> Tổng hợp từ trường <code>page_data</code> trên CRM Salecare kết hợp
+              đối chiếu <code>student_id</code> sang Phiếu thu để đo lường chất lượng Lead của từng Fanpage (Tỷ lệ nghe
+              máy thực tế <code>= Cuộc gọi nghe máy ÷ Tổng cuộc gọi</code>).
+            </p>
+          </div>
+          <div class="flex items-center gap-2 no-print">
+            <button onclick="exportTableToExcel('tblFanpageRoi', 'Hieu_Qua_Chuyen_Doi_Theo_Fanpage')"
+              class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
+              📥 Xuất Excel Fanpage
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+          <table id="tblFanpageRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
+            <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
+              <tr>
+                <th class="py-2.5 px-3">Tên Fanpage / Nhóm Nguồn</th>
+                <th class="py-2.5 px-2 text-right">Tổng Lead</th>
+                <th class="py-2.5 px-2 text-right">Tỷ Trọng (%)</th>
+                <th class="py-2.5 px-2 text-right bg-indigo-950 text-indigo-200">Tỷ Lệ Nghe Máy (%)</th>
+                <th class="py-2.5 px-2 text-right">Hẹn Đến Trường</th>
+                <th class="py-2.5 px-2 text-right">Khách Đến Trường</th>
+                <th class="py-2.5 px-2 text-right">Học Viên Chốt</th>
+                <th class="py-2.5 px-2 text-right bg-emerald-950 text-emerald-300">Tỉ Lệ Chốt (%)</th>
+                <th class="py-2.5 px-3 text-right bg-sa-navyDark text-sa-gold">Doanh Thu (VNĐ)</th>
+              </tr>
+            </thead>
+            <tbody id="tblFanpageRoiBody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
               <!-- Populated dynamically -->
             </tbody>
           </table>
@@ -2795,6 +2923,47 @@
             📐 <strong>Logic:</strong> So sánh tổng thực thu nhóm HV có <code>amount_course ≥ 2</code> với nhóm chỉ đăng
             ký 1 khóa duy nhất.
           </div>
+        </div>
+      </div>
+
+      <!-- HẠNG MỤC MỚI V3.20: PHÂN TÍCH TỐC ĐỘ CHỐT ĐƠN (SALES CYCLE VELOCITY: CREATED_AT_DATA -> CREATED_INVOICE_AT) -->
+      <div class="card-sa p-5 border-t-4 border-sa-gold">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+          <div>
+            <h3 class="font-heading font-bold text-sa-navy text-sm uppercase flex items-center gap-2">
+              ⚡ PHÂN TÍCH TỐC ĐỘ CHỐT ĐƠN TỪ NGÀY TẠO LEAD ĐẾN NGÀY NHẬP HỌC (SALES CYCLE VELOCITY)
+            </h3>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              📐 <strong>Logic đo lường:</strong>
+              <code>Số ngày chốt đơn = Ngày đóng tiền nhập học (created_invoice_at) − Ngày phát sinh Lead (created_at_data)</code>
+              của Học viên mới (<code>ns = 1</code>). Giúp xác định thời gian vàng để dồn lực đeo bám khách hàng.
+            </p>
+          </div>
+          <button onclick="exportTableToExcel('tblSalesVelocity', 'Phan_Tich_Toc_Do_Chot_Don_Sales_Velocity')"
+            class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300 no-print">
+            📥 Xuất Excel Tốc Độ Chốt
+          </button>
+        </div>
+        <div id="salesVelocityCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+          <!-- Populated dynamically -->
+        </div>
+        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+          <table id="tblSalesVelocity" class="min-w-full text-xs text-left divide-y divide-slate-200">
+            <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
+              <tr>
+                <th class="py-2 px-3">Cơ Sở Đào Tạo</th>
+                <th class="py-2 px-2 text-right">Tổng HV Mới</th>
+                <th class="py-2 px-2 text-right bg-emerald-950 text-emerald-300">⚡ Chốt Nóng 0–2 Ngày</th>
+                <th class="py-2 px-2 text-right bg-blue-950 text-blue-200">🔥 Tiêu Chuẩn 3–7 Ngày</th>
+                <th class="py-2 px-2 text-right bg-amber-950 text-amber-200">⏳ Bám Đuổi 8–30 Ngày</th>
+                <th class="py-2 px-2 text-right bg-purple-950 text-purple-200">🐢 Nuôi Dài Hạn &gt;30 Ngày</th>
+                <th class="py-2 px-2 text-right bg-sa-navyDark text-sa-gold">Số Ngày Chốt TB</th>
+              </tr>
+            </thead>
+            <tbody id="tblSalesVelocityBody" class="divide-y divide-slate-100 bg-white font-medium text-slate-700">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -7595,6 +7764,73 @@
           </div>
         `).join('');
       }
+
+      renderSalesVelocity(invs);
+    }
+
+    function renderSalesVelocity(invs) {
+      const cardsEl = document.getElementById('salesVelocityCards');
+      const tbodyEl = document.getElementById('tblSalesVelocityBody');
+      if (!cardsEl || !tbodyEl) return;
+
+      const newInvs = (invs || []).filter(i => i.ns === 1);
+      const totNew = newInvs.length || 1;
+      let b0_2 = 0, b3_7 = 0, b8_30 = 0, b30p = 0;
+      let rev0_2 = 0, rev3_7 = 0, rev8_30 = 0, rev30p = 0;
+      const byBranch = {};
+
+      newInvs.forEach(i => {
+        const b = i.b || 'Khác';
+        if (!byBranch[b]) {
+          byBranch[b] = { branch: b, total: 0, b0_2: 0, b3_7: 0, b8_30: 0, b30p: 0, sumDays: 0 };
+        }
+        let diffDays = 0;
+        if (i.ld && i.d && i.ld.length >= 10 && i.d.length >= 10) {
+          const dInv = new Date(i.d.substring(0, 10) + 'T00:00:00');
+          const dLead = new Date(i.ld.substring(0, 10) + 'T00:00:00');
+          diffDays = Math.max(0, Math.round((dInv - dLead) / 86400000));
+          if (isNaN(diffDays) || diffDays > 365) diffDays = 0;
+        }
+        const pay = i.pay || 0;
+        byBranch[b].total++;
+        byBranch[b].sumDays += diffDays;
+        if (diffDays <= 2) { b0_2++; rev0_2 += pay; byBranch[b].b0_2++; }
+        else if (diffDays <= 7) { b3_7++; rev3_7 += pay; byBranch[b].b3_7++; }
+        else if (diffDays <= 30) { b8_30++; rev8_30 += pay; byBranch[b].b8_30++; }
+        else { b30p++; rev30p += pay; byBranch[b].b30p++; }
+      });
+
+      const summaryBuckets = [
+        { title: '⚡ Chốt Nóng 48h (0–2 Ngày)', count: b0_2, pct: ((b0_2 / totNew) * 100).toFixed(1), rev: rev0_2, cls: 'border-emerald-500 bg-emerald-50/40 text-emerald-900' },
+        { title: '🔥 Tiêu Chuẩn (3–7 Ngày)', count: b3_7, pct: ((b3_7 / totNew) * 100).toFixed(1), rev: rev3_7, cls: 'border-blue-500 bg-blue-50/40 text-blue-900' },
+        { title: '⏳ Bám Đuổi (8–30 Ngày)', count: b8_30, pct: ((b8_30 / totNew) * 100).toFixed(1), rev: rev8_30, cls: 'border-amber-500 bg-amber-50/40 text-amber-900' },
+        { title: '🐢 Nuôi Dài Hạn (> 30 Ngày)', count: b30p, pct: ((b30p / totNew) * 100).toFixed(1), rev: rev30p, cls: 'border-purple-500 bg-purple-50/40 text-purple-900' }
+      ];
+
+      cardsEl.innerHTML = summaryBuckets.map(sb => `
+        <div class="p-3.5 rounded-xl border-l-4 border ${sb.cls}">
+          <div class="text-[11px] font-bold uppercase">${sb.title}</div>
+          <div class="text-lg font-heading font-bold mt-1">${formatNumber(sb.count)} HV <span class="text-xs font-semibold">(${sb.pct}%)</span></div>
+          <div class="text-[11px] opacity-85 mt-0.5">Thực thu: <strong>${formatVND(sb.rev)} đ</strong></div>
+        </div>
+      `).join('');
+
+      const rows = Object.values(byBranch).sort((a, b) => b.total - a.total);
+      tbodyEl.innerHTML = rows.map(r => {
+        const avgD = r.total > 0 ? (r.sumDays / r.total).toFixed(1) : '0.0';
+        const p0_2 = r.total > 0 ? ((r.b0_2 / r.total) * 100).toFixed(0) + '%' : '0%';
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2 px-3 font-bold text-sa-navy">${r.branch}</td>
+            <td class="py-2 px-2 text-right font-bold text-sa-navy">${formatNumber(r.total)}</td>
+            <td class="py-2 px-2 text-right font-semibold text-emerald-700 bg-emerald-50/30">${formatNumber(r.b0_2)} <span class="text-[10px] text-slate-400">(${p0_2})</span></td>
+            <td class="py-2 px-2 text-right font-semibold text-blue-800">${formatNumber(r.b3_7)}</td>
+            <td class="py-2 px-2 text-right font-semibold text-amber-800">${formatNumber(r.b8_30)}</td>
+            <td class="py-2 px-2 text-right font-semibold text-purple-800">${formatNumber(r.b30p)}</td>
+            <td class="py-2 px-2 text-right font-bold text-sa-navy bg-yellow-50/40">${avgD} ngày</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function renderExecutiveInsights(cares, invs) {
@@ -7882,9 +8118,11 @@
 
       cares.forEach(c => {
         const s = c.sale || 'Chưa gán';
-        if (!salesMap[s]) salesMap[s] = { name: s, leads: 0, cared: 0, appointed: 0, arrived: 0, closedSts: new Set(), rev: 0 };
+        if (!salesMap[s]) salesMap[s] = { name: s, leads: 0, cared: 0, totCalls: 0, succCalls: 0, appointed: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         salesMap[s].leads++;
         if (c.conn) salesMap[s].cared++;
+        salesMap[s].totCalls += (c.tc || 0);
+        salesMap[s].succCalls += (c.sc !== undefined ? c.sc : (c.conn ? 1 : 0));
         if (c.hen) salesMap[s].appointed++;
         if (c.arr) salesMap[s].arrived++;
         if (c.st > 0) salesMap[s].closedSts.add(c.st);
@@ -7892,7 +8130,7 @@
 
       invs.forEach(i => {
         const s = i.sale || 'Chưa gán';
-        if (!salesMap[s]) salesMap[s] = { name: s, leads: 0, cared: 0, appointed: 0, arrived: 0, closedSts: new Set(), rev: 0 };
+        if (!salesMap[s]) salesMap[s] = { name: s, leads: 0, cared: 0, totCalls: 0, succCalls: 0, appointed: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         salesMap[s].rev += (i.pay || 0);
         if (i.st > 0) salesMap[s].closedSts.add(i.st);
       });
@@ -7926,6 +8164,8 @@
           const revPerSt = s.closedSts.size > 0 ? formatVND(s.rev / s.closedSts.size) : '0';
           const uncared = Math.max(0, s.leads - s.cared);
           const uncaredPct = s.leads > 0 ? ((uncared / s.leads) * 100) : 0;
+          const pickupVal = s.totCalls > 0 ? ((s.succCalls / s.totCalls) * 100) : 0;
+          const pickupStr = pickupVal.toFixed(1) + '%';
 
           let tierHtml = '<span class="px-2 py-0.5 rounded bg-blue-50 text-blue-800 border border-blue-200 font-bold text-[10px]">✅ Hạng B • Đạt chuẩn</span>';
           if (s.rev >= avgRev * 1.25 && (cvrVal >= avgCvr || s.closedSts.size >= 3) && uncaredPct <= 15) {
@@ -7942,6 +8182,7 @@
             <td class="py-2.5 px-3 font-semibold text-sa-navy hover:underline" onclick="setFilter('sale', '${s.name}')">${s.name}</td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.leads)}</td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.cared)}</td>
+            <td class="py-2.5 px-2 text-right font-semibold ${pickupVal >= 35 ? 'text-emerald-700' : (pickupVal < 20 && s.totCalls >= 10 ? 'text-rose-700' : 'text-indigo-800')} bg-indigo-50/30">${pickupStr}<div class="text-[9.5px] text-slate-400 font-normal">${formatNumber(s.succCalls)}/${formatNumber(s.totCalls)} cuộc</div></td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.appointed)}</td>
             <td class="py-2.5 px-2 text-right font-semibold text-emerald-700">${formatNumber(s.arrived)}</td>
             <td class="py-2.5 px-2 text-right font-bold text-slate-800">${formatNumber(s.closedSts.size)}</td>
@@ -8052,6 +8293,124 @@
           }
         });
       }
+      renderCourseTypeAndDiscountAudit(invs);
+    }
+
+    function renderCourseTypeAndDiscountAudit(invs) {
+      const tbCourse = document.getElementById('tblCourseTypeBreakdownBody');
+      const tbDisc = document.getElementById('tblDiscountAuditBody');
+      const totRev = (invs || []).reduce((a, i) => a + (i.pay || 0), 0) || 1;
+
+      if (tbCourse) {
+        const tcMap = {
+          'Khóa học': { label: '🎓 Học Phí Khóa Học Chính (type_course = Khóa học)', count: 0, ns: 0, rev: 0 },
+          'Bằng cấp': { label: '📜 Lệ Phí Bằng Cấp / Chứng Chỉ (type_course = Bằng cấp)', count: 0, ns: 0, rev: 0 },
+          'Sản phẩm': { label: '🧰 Đồ Nghề / Dụng Cụ & Sản Phẩm (type_course = Sản phẩm)', count: 0, ns: 0, rev: 0 },
+          'Dịch vụ': { label: '💆 Dịch Vụ & Khác (type_course = Dịch vụ)', count: 0, ns: 0, rev: 0 }
+        };
+        let transferCount = 0, transferRev = 0;
+
+        (invs || []).forEach(i => {
+          const tc = i.tc || 'Khóa học';
+          const bucket = tcMap[tc] || tcMap['Dịch vụ'];
+          bucket.count++;
+          if (i.ns === 1) bucket.ns++;
+          bucket.rev += (i.pay || 0);
+
+          if (i.tt && i.tt !== 'Bình thường') {
+            transferCount++;
+            transferRev += (i.pay || 0);
+          }
+        });
+
+        let html = Object.values(tcMap).map(r => {
+          const pct = ((r.rev / totRev) * 100).toFixed(1) + '%';
+          return `
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-2 px-3 font-semibold text-sa-navy">${r.label}</td>
+              <td class="py-2 px-2 text-right">${formatNumber(r.count)}</td>
+              <td class="py-2 px-2 text-right font-bold text-emerald-700">${formatNumber(r.ns)}</td>
+              <td class="py-2 px-2 text-right font-bold text-sa-navy bg-yellow-50/30">${formatVND(r.rev)}</td>
+              <td class="py-2 px-2 text-right font-semibold text-slate-700">${pct}</td>
+            </tr>
+          `;
+        }).join('');
+
+        const trPct = ((transferRev / totRev) * 100).toFixed(1) + '%';
+        html += `
+          <tr class="bg-amber-50/60 border-t border-amber-200 text-amber-900">
+            <td class="py-2 px-3 font-bold">🔄 Trong đó: Giao Dịch Đổi Khóa (type_transfer = Đổi khoá)</td>
+            <td class="py-2 px-2 text-right font-bold">${formatNumber(transferCount)}</td>
+            <td class="py-2 px-2 text-right">—</td>
+            <td class="py-2 px-2 text-right font-bold">${formatVND(transferRev)}</td>
+            <td class="py-2 px-2 text-right font-bold">${trPct}</td>
+          </tr>
+          <tr class="bg-sa-gold/25 font-bold text-sa-navy border-t-2 border-sa-gold">
+            <td class="py-2 px-3">TỔNG THỰC THU KỲ ĐANG XEM</td>
+            <td class="py-2 px-2 text-right">${formatNumber((invs || []).length)}</td>
+            <td class="py-2 px-2 text-right text-emerald-800">${formatNumber((invs || []).reduce((a, i) => a + (i.ns || 0), 0))}</td>
+            <td class="py-2 px-2 text-right">${formatVND((invs || []).reduce((a, i) => a + (i.pay || 0), 0))}</td>
+            <td class="py-2 px-2 text-right">100.0%</td>
+          </tr>
+        `;
+        tbCourse.innerHTML = html;
+      }
+
+      if (tbDisc) {
+        const bDiscMap = {};
+        let totDiscCount = 0, totDiscVal = 0, totPayVal = 0;
+
+        (invs || []).forEach(i => {
+          const b = i.b || 'Khác';
+          if (!bDiscMap[b]) bDiscMap[b] = { branch: b, discCount: 0, discSum: 0, paySum: 0, cashiers: {} };
+          const dVal = i.disc || 0;
+          const pVal = i.pay || 0;
+          bDiscMap[b].paySum += pVal;
+          totPayVal += pVal;
+          if (dVal > 0) {
+            bDiscMap[b].discCount++;
+            bDiscMap[b].discSum += dVal;
+            totDiscCount++;
+            totDiscVal += dVal;
+          }
+          if (i.cb) {
+            bDiscMap[b].cashiers[i.cb] = (bDiscMap[b].cashiers[i.cb] || 0) + 1;
+          }
+        });
+
+        const rows = Object.values(bDiscMap).sort((a, b) => b.discSum - a.discSum);
+        let html = rows.map(r => {
+          const topCashierEntry = Object.entries(r.cashiers).sort((a, b) => b[1] - a[1])[0];
+          const cashierLbl = topCashierEntry ? `${topCashierEntry[0]} (${topCashierEntry[1]} phiếu)` : 'Hệ thống';
+          const gross = r.paySum + r.discSum;
+          const ckPct = gross > 0 ? ((r.discSum / gross) * 100).toFixed(1) + '%' : '0.0%';
+          return `
+            <tr class="hover:bg-rose-50/30 transition">
+              <td class="py-2 px-3">
+                <div class="font-bold text-sa-navy">${r.branch}</div>
+                <div class="text-[10px] text-slate-500">Thu ngân chính: ${cashierLbl}</div>
+              </td>
+              <td class="py-2 px-2 text-right font-semibold">${formatNumber(r.discCount)}</td>
+              <td class="py-2 px-2 text-right font-bold text-rose-700">${formatVND(r.discSum)}</td>
+              <td class="py-2 px-2 text-right font-semibold text-sa-navy">${formatVND(r.paySum)}</td>
+              <td class="py-2 px-2 text-right font-bold ${parseFloat(ckPct) > 25 ? 'text-rose-700 bg-rose-50' : 'text-slate-700'}">${ckPct}</td>
+            </tr>
+          `;
+        }).join('');
+
+        const totGross = totPayVal + totDiscVal;
+        const totCkPct = totGross > 0 ? ((totDiscVal / totGross) * 100).toFixed(1) + '%' : '0.0%';
+        html += `
+          <tr class="bg-sa-gold/25 font-bold text-sa-navy border-t-2 border-sa-gold">
+            <td class="py-2 px-3">TỔNG KIỂM TOÁN GIẢM GIÁ</td>
+            <td class="py-2 px-2 text-right">${formatNumber(totDiscCount)}</td>
+            <td class="py-2 px-2 text-right text-rose-800">${formatVND(totDiscVal)}</td>
+            <td class="py-2 px-2 text-right">${formatVND(totPayVal)}</td>
+            <td class="py-2 px-2 text-right text-rose-800">${totCkPct}</td>
+          </tr>
+        `;
+        tbDisc.innerHTML = html;
+      }
     }
 
     function renderChannelDeepDive(cares, invs) {
@@ -8136,6 +8495,66 @@
           }
         });
       }
+      renderFanpageRoiTable(cares, invs);
+    }
+
+    function renderFanpageRoiTable(cares, invs) {
+      const tbody = document.getElementById('tblFanpageRoiBody');
+      if (!tbody) return;
+
+      const pgMap = {};
+      const stPageMap = {};
+
+      (cares || []).forEach(c => {
+        const sLow = (c.s || '').toLowerCase();
+        const isFb = sLow.includes('fb') || sLow.includes('facebook') || sLow.includes('page') || sLow.includes('mess') || !!c.pg;
+        let pgName = c.pg ? ('📘 ' + c.pg) : (isFb ? '📘 FB Ads (Chưa gắn mã Page phụ)' : '🌐 Kênh Khác (GG / TikTok / Zalo / Nội bộ)');
+        if (!pgMap[pgName]) {
+          pgMap[pgName] = { name: pgName, leads: 0, totCalls: 0, succCalls: 0, hen: 0, arr: 0, closedSts: new Set(), rev: 0 };
+        }
+        const row = pgMap[pgName];
+        row.leads++;
+        row.totCalls += (c.tc || 0);
+        row.succCalls += (c.sc !== undefined ? c.sc : (c.conn ? 1 : 0));
+        if (c.hen) row.hen++;
+        if (c.arr) row.arr++;
+        if (c.st > 0) {
+          row.closedSts.add(c.st);
+          stPageMap[c.st] = pgName;
+        }
+      });
+
+      (invs || []).forEach(i => {
+        const pgName = stPageMap[i.st] || ((i.s && (i.s.toLowerCase().includes('fb') || i.s.toLowerCase().includes('page'))) ? '📘 FB Ads (Chưa gắn mã Page phụ)' : '🌐 Kênh Khác (GG / TikTok / Zalo / Nội bộ)');
+        if (!pgMap[pgName]) {
+          pgMap[pgName] = { name: pgName, leads: 0, totCalls: 0, succCalls: 0, hen: 0, arr: 0, closedSts: new Set(), rev: 0 };
+        }
+        pgMap[pgName].rev += (i.pay || 0);
+        if (i.st > 0 && i.ns === 1) pgMap[pgName].closedSts.add(i.st);
+      });
+
+      const list = Object.values(pgMap).sort((a, b) => b.leads - a.leads);
+      const totLeads = list.reduce((a, r) => a + r.leads, 0) || 1;
+
+      tbody.innerHTML = list.map(r => {
+        const sharePct = ((r.leads / totLeads) * 100).toFixed(1) + '%';
+        const pickupPct = r.totCalls > 0 ? ((r.succCalls / r.totCalls) * 100).toFixed(1) + '%' : '0.0%';
+        const closedCount = r.closedSts.size;
+        const cvrPct = r.leads > 0 ? ((closedCount / r.leads) * 100).toFixed(1) + '%' : '0.0%';
+        return `
+          <tr class="hover:bg-sky-50/40 transition">
+            <td class="py-2 px-3 font-bold text-sa-navy">${r.name}</td>
+            <td class="py-2 px-2 text-right font-semibold">${formatNumber(r.leads)}</td>
+            <td class="py-2 px-2 text-right text-slate-500">${sharePct}</td>
+            <td class="py-2 px-2 text-right font-semibold text-indigo-800 bg-indigo-50/30">${pickupPct} <span class="text-[9.5px] text-slate-400">(${formatNumber(r.succCalls)}/${formatNumber(r.totCalls)})</span></td>
+            <td class="py-2 px-2 text-right">${formatNumber(r.hen)}</td>
+            <td class="py-2 px-2 text-right font-semibold text-blue-800">${formatNumber(r.arr)}</td>
+            <td class="py-2 px-2 text-right font-bold text-slate-800">${formatNumber(closedCount)}</td>
+            <td class="py-2 px-2 text-right font-bold text-emerald-700 bg-emerald-50/30">${cvrPct}</td>
+            <td class="py-2 px-3 text-right font-bold text-sa-navy bg-yellow-50/30">${formatVND(r.rev)}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function renderDemographics(invs, cares) {
