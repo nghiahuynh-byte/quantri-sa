@@ -149,13 +149,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.22_20261106_094946"></script>
-  <script src="crm_data.js?v=v3.22_20261106_094946"></script>
+  <script src="crm_mapping.js?v=v3.23_20261106_121453"></script>
+  <script src="crm_data.js?v=v3.23_20261106_121453"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.22_20261106_094946') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.22_20261106_094946').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.23_20261106_121453') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.23_20261106_121453').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -198,7 +198,7 @@
               <span class="font-heading font-bold text-base sm:text-lg tracking-wider text-sa-gold">HỆ THỐNG BÁO CÁO CRM
                 BI</span>
               <span
-                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.21</span>
+                class="text-[10px] bg-sa-gold/20 px-2 py-0.5 rounded text-sa-gold border border-sa-gold/40 font-bold">v3.23</span>
             </div>
             <p class="text-[11px] text-slate-300 font-medium hidden sm:block">Quản Trị Doanh Thu, Chi Phí Marketing & Tỉ
               Lệ Chốt Tuyển Sinh</p>
@@ -274,17 +274,6 @@
             Quản Lý Target
           </button>
 
-          <!-- Print / PDF A4 Button -->
-          <button onclick="triggerPrintExecutiveReport()"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow transition flex items-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
-              </path>
-            </svg>
-            In / Xuất PDF (A4)
-          </button>
-
           <!-- Unified Permissions & Account Center Button -->
           <button id="btnHeaderPermission" onclick="openUserManagerModal()"
             class="bg-sa-gold/20 hover:bg-sa-gold/30 text-sa-gold text-xs font-bold px-3 py-1.5 rounded-lg border border-sa-gold/60 transition flex items-center gap-1.5 shadow-sm">
@@ -295,6 +284,29 @@
             </svg>
             Phân Quyền &amp; Tài Khoản
           </button>
+
+          <!-- Consolidated Tools & Export Dropdown (v3.23 Decluttered Header) -->
+          <div class="relative">
+            <button type="button" id="btnHeaderToolsMenu" onclick="document.getElementById('menuHeaderToolsDropdown').classList.toggle('hidden')"
+              class="bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-500 transition flex items-center gap-1.5 shadow-sm">
+              <span>🧰 Công Cụ &amp; Xuất File ▾</span>
+            </button>
+            <div id="menuHeaderToolsDropdown"
+              class="hidden absolute right-0 mt-1.5 w-60 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 text-xs font-semibold divide-y divide-slate-100">
+              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
+                class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-emerald-700 font-bold">
+                <span>🖨️ In / Xuất Báo Cáo PDF (A4)</span>
+              </button>
+              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); exportFullReportExcel();"
+                class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-sa-navy font-bold">
+                <span>📥 Xuất Sổ Tay Quản Trị (10 Sheet Excel)</span>
+              </button>
+              <a href="dinh_danh_du_lieu_chuan_hoa.csv" download onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden')"
+                class="block w-full px-3.5 py-2 text-left hover:bg-slate-50 text-slate-700">
+                📄 Tải File Định Danh Chuẩn Hóa (.csv)
+              </a>
+            </div>
+          </div>
 
           <!-- Logged-in User Profile & Role Badge -->
           <div id="userHeaderBadge"
@@ -307,14 +319,11 @@
                 title="Tài khoản">admin</span>
               <span id="lblUserRole" class="text-[9px] text-sa-gold font-medium">Ban Giám Đốc</span>
             </div>
-            <!-- Admin Manage Users Button -->
+            <!-- Admin Manage Users Button (Hidden duplicate icon, preserved ID for Zero-Regression) -->
             <button id="btnAdminManageUsers" onclick="openUserManagerModal()"
-              class="text-sa-gold hover:text-white p-1 hover:bg-white/10 rounded transition ml-1"
+              class="hidden text-sa-gold hover:text-white p-1 hover:bg-white/10 rounded transition ml-1"
               title="Quản Lý Tài Khoản & Mật Khẩu (Admin)">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                </path>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
@@ -619,8 +628,9 @@
           <span id="filteredRecordsCount" class="text-emerald-700 font-bold ml-auto"></span>
         </div>
 
+        <!-- Hidden verbose technical footer badges (v3.23 Decluttered Filter Bar) -->
         <div
-          class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-slate-200/70 text-[10.5px] text-slate-500">
+          class="hidden flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-slate-200/70 text-[10.5px] text-slate-500">
           <div class="flex flex-wrap items-center gap-2">
             <span class="bg-blue-50 text-sa-navy border border-blue-200 px-2 py-0.5 rounded font-semibold">❄️ Đã đóng
               băng lịch sử 2024 &amp; 2025 (Siêu nhẹ 26 KB)</span>
@@ -791,173 +801,24 @@
     <!-- ========================================================================= -->
     <!-- TAB 1: BÁO CÁO CHIẾN DỊCH & P&L MARKETING -->
     <!-- ========================================================================= -->
-    <section id="tab-pnl" class="tab-content space-y-6">
+    <section id="tab-pnl" class="tab-content space-y-5">
 
-      <!-- ==================== PHÂN KHU 1.1: DỰ BÁO NHỊP ĐỘ HOÀN THÀNH TARGET (MONTHLY PACING & RUN-RATE FORECAST) ==================== -->
-      <div
-        class="card-sa p-4 bg-gradient-to-r from-sa-navy via-sa-navyDark to-slate-900 text-white border-l-4 border-sa-gold shadow-md">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span
-                class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">PHÂN
-                KHU 1.1 • DỰ BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
-              <span id="pacingStatusBadge"
-                class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">🟢
-                Đang theo dõi nhịp độ thực thu</span>
-            </div>
-            <h3 class="text-sm sm:text-base font-heading font-bold text-white">
-              Đo Lường Tốc Độ Thực Thu &amp; Dự Báo Hoàn Thành Kế Hoạch (<span id="pacingPeriodLabel">Năm 2026</span>)
-            </h3>
-            <p class="text-[11px] text-slate-300">
-              📐 <strong>Logic dự báo:</strong> <code>Tốc độ thu/ngày = Tổng Doanh Thu ÷ Số ngày phát sinh</code> |
-              <code>Dự báo cuối kỳ = Doanh thu hiện tại + (Tốc độ thu/ngày × Số ngày còn lại)</code>.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs lg:min-w-[600px]">
-            <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
-              <div class="text-[10px] text-slate-300 uppercase">Tốc Độ Thu / Ngày</div>
-              <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span> <span
-                  class="text-[10px] font-normal">đ</span></div>
-              <div class="text-[10px] text-slate-300" id="pacingActiveDays">0 ngày phát sinh</div>
-            </div>
-            <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
-              <div class="text-[10px] text-slate-300 uppercase">Dự Báo Cuối Kỳ</div>
-              <div class="text-base font-heading font-bold text-emerald-300 mt-0.5"><span
-                  id="pacingForecastRev">0</span> <span class="text-[10px] font-normal">đ</span></div>
-              <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target</div>
-            </div>
-            <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
-              <div class="text-[10px] text-slate-300 uppercase">Khoảng Cách Tới Target</div>
-              <div class="text-base font-heading font-bold text-white mt-0.5"><span id="pacingGapRev">0</span> <span
-                  class="text-[10px] font-normal">đ</span></div>
-              <div class="text-[10px] text-slate-300" id="pacingGapDesc">Cần thu thêm để đạt 100%</div>
-            </div>
-            <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
-              <div class="text-[10px] text-slate-300 uppercase">Tháng Cao Điểm Nhất</div>
-              <div class="text-base font-heading font-bold text-sa-gold mt-0.5" id="pacingBestMonth">Tháng 8</div>
-              <div class="text-[10px] text-slate-300" id="pacingBestMonthRev">3.602.000 đ</div>
-            </div>
-          </div>
-        </div>
-        <!-- Progress Bar -->
-        <div class="mt-3 pt-2.5 border-t border-white/10">
-          <div class="flex justify-between text-[11px] mb-1">
-            <span class="text-slate-200 font-medium">Tiến độ thực đạt so với Target kỳ đang chọn: <strong
-                id="pacingProgressText" class="text-sa-gold">0%</strong></span>
-            <span class="text-slate-300">Mốc an toàn kỳ vọng: <strong class="text-emerald-300">&ge; 85%
-                Target</strong></span>
-          </div>
-          <div class="w-full bg-white/15 h-2.5 rounded-full overflow-hidden">
-            <div id="pacingProgressBar"
-              class="bg-gradient-to-r from-sa-gold via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500"
-              style="width: 70%"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG & NGÂN SÁCH WHAT-IF (EXECUTIVE SIMULATOR v3.22) -->
-      <div id="whatIfSimulatorCard" class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ PHỎNG WHAT-IF v3.22</span>
-              <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
-            </div>
-            <p class="text-[11px] text-slate-600 mt-0.5">
-              📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>, <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-1.5">
-            <button type="button" onclick="applyWhatIfPreset(20, -10, 15, 5)"
-              class="px-2.5 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold transition">
-              🚀 Kịch bản Bứt phá (+20% NS, -10% CPL, +15% CVR)
-            </button>
-            <button type="button" onclick="applyWhatIfPreset(0, -15, 20, 10)"
-              class="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300 text-[11px] font-bold transition">
-              💎 Tối ưu Hiệu suất (Giữ NS, -15% CPL, +20% CVR)
-            </button>
-            <button type="button" onclick="resetWhatIfSimulator()"
-              class="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-[11px] font-bold transition">
-              🔄 Đặt lại (0%)
-            </button>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
-            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-              <span>1. Ngân sách MKT:</span>
-              <span id="lblSimBudgetPct" class="text-sa-navy">0%</span>
-            </div>
-            <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện tại</span><span>+100%</span></div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
-            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-              <span>2. Giá Data (CPL):</span>
-              <span id="lblSimCplPct" class="text-emerald-700">0%</span>
-            </div>
-            <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-emerald-600 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ hơn)</span><span>0%</span><span>+50%</span></div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
-            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-              <span>3. Tỷ lệ chốt (CVR):</span>
-              <span id="lblSimCvrPct" class="text-blue-700">0%</span>
-            </div>
-            <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-blue-700 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+60%</span></div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
-            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
-              <span>4. Học phí TB/HV (ARPU):</span>
-              <span id="lblSimArpuPct" class="text-purple-700">0%</span>
-            </div>
-            <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
-            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+50%</span></div>
-          </div>
-        </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-3 pt-2.5 border-t border-slate-200/80">
-          <div class="p-2.5 rounded-lg bg-slate-100/80 border border-slate-200">
-            <div class="text-[10px] font-bold text-slate-500 uppercase">Chi phí MKT Dự phóng</div>
-            <div id="simOutCost" class="text-sm font-heading font-bold text-slate-800 mt-0.5">0</div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-blue-50/70 border border-blue-200">
-            <div class="text-[10px] font-bold text-blue-700 uppercase">Tổng Data Dự phóng</div>
-            <div id="simOutData" class="text-sm font-heading font-bold text-blue-900 mt-0.5">0</div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200">
-            <div class="text-[10px] font-bold text-emerald-700 uppercase">Học Viên Mới Dự phóng</div>
-            <div id="simOutStudents" class="text-sm font-heading font-bold text-emerald-900 mt-0.5">0</div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-sa-navy text-white border border-sa-gold shadow-sm">
-            <div class="text-[10px] font-bold text-sa-gold uppercase">Doanh Thu Dự phóng</div>
-            <div id="simOutRev" class="text-sm font-heading font-bold text-white mt-0.5">0</div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-300">
-            <div class="text-[10px] font-bold text-amber-800 uppercase">Chênh Lệch Doanh Thu</div>
-            <div id="simOutRevDelta" class="text-sm font-heading font-bold text-emerald-700 mt-0.5">+0</div>
-          </div>
-          <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200">
-            <div class="text-[10px] font-bold text-purple-800 uppercase">ROAS &amp; Tỷ Lệ CP/DT</div>
-            <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> • <span id="simOutCpDt">0.0%</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ==================== PHÂN KHU 1.2: BẢNG TỔNG HỢP QUẢN TRỊ P&L 12 THÁNG & 4 QUÝ (ĐƯA LÊN ĐẦU ĐỂ THEO DÕI TRỰC DIỆN) ==================== -->
+      <!-- ==================== PHÂN KHU 1.1: BẢNG TỔNG HỢP QUẢN TRỊ P&L 12 THÁNG & 4 QUÝ (ĐƯA LÊN ĐẦU TIÊN ĐỂ THEO DÕI TRỰC DIỆN) ==================== -->
       <div class="space-y-3">
-        <div class="flex items-center justify-between gap-2 border-b-2 border-sa-navy/15 pb-2">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-sa-navy/15 pb-2">
           <div class="flex items-center gap-2">
             <span
               class="px-2.5 py-1 rounded bg-sa-navy text-sa-gold font-heading font-bold text-xs uppercase shadow-sm">PHÂN
-              KHU 1.2</span>
+              KHU 1.1</span>
             <h2 class="text-base sm:text-lg font-heading font-bold text-sa-navy uppercase">
               SỔ QUẢN TRỊ TỔNG HỢP P&amp;L 12 THÁNG &amp; 4 QUÝ (<span id="tableYearTitle">2026</span>)
             </h2>
           </div>
-          <div class="flex items-center gap-2 no-print">
+          <div class="flex flex-wrap items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapCollapsiblePacingSim').classList.toggle('hidden')"
+              class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+              🎛️ Mở / Thu gọn: Dự Báo Cuối Kỳ &amp; Mô Phỏng Kịch Bản What-If
+            </button>
             <button onclick="switchTab('tab-multiyear')"
               class="bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
               ⚖️ So Sánh 3 Tháng / 3 Tuần Liền Kề &amp; Cùng Kỳ
@@ -969,21 +830,11 @@
           </div>
         </div>
 
-        <div class="card-sa p-5">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-3">
-            <div>
-              <p class="text-xs text-slate-600">
-                📐 <strong>Chuẩn hóa hiển thị:</strong> Đơn vị tiền tệ hiển thị <strong>đầy đủ đến hàng đơn vị
-                  (VNĐ)</strong>, làm tròn bỏ số thập phân lẻ. Hiển thị đầy đủ công thức tính ở từng dòng chỉ số từ
-                Tháng 1 đến Tháng 12, Quý I–IV và Cả năm.
-              </p>
-              <p class="text-[11px] text-sa-navy font-semibold mt-1">
-                👆 <strong>Đối soát 1-Click (Drill-Down):</strong> Bấm trực tiếp vào bất kỳ con số nào ở dòng <span
-                  class="underline decoration-sa-gold font-bold">Tổng data</span> hoặc <span
-                  class="underline decoration-sa-gold font-bold">Số học viên mới</span> để mở danh sách chi tiết từng
-                Lead / từng Học viên cấu thành con số đó (kèm Xuất Excel).
-              </p>
-            </div>
+        <div class="card-sa p-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2.5">
+            <p class="text-[11px] text-slate-600">
+              📐 <strong>Chuẩn hiển thị:</strong> Đơn vị tiền <strong>VNĐ đầy đủ đến hàng đơn vị</strong>. 👆 <strong>Đối soát 1-Click:</strong> Bấm trực tiếp vào con số ở dòng <span class="underline decoration-sa-gold font-bold text-sa-navy">Tổng data</span> hoặc <span class="underline decoration-sa-gold font-bold text-sa-navy">Số học viên mới</span> để mở danh sách chi tiết từng hồ sơ.
+            </p>
           </div>
 
           <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
@@ -1028,24 +879,195 @@
         </div>
       </div>
 
-      <!-- ==================== PHÂN KHU 1.3: HỆ THỐNG 4 BIỂU ĐỒ XU HƯỚNG THỜI GIAN & ĐỐI SOÁT TARGET / CHI PHÍ (ĐÃ HỢP NHẤT GỌN GÀNG) ==================== -->
-      <div class="space-y-6" id="sectionPnlCharts">
+      <!-- ==================== NGĂN KÉO THU GỌN MẶC ĐỊNH: DỰ BÁO PACING & BỘ MÔ PHỎNG KỊCH BẢN WHAT-IF ==================== -->
+      <div id="wrapCollapsiblePacingSim" class="hidden space-y-4">
         <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b-2 border-sa-navy/15 pb-2">
+          class="card-sa p-4 bg-gradient-to-r from-sa-navy via-sa-navyDark to-slate-900 text-white border-l-4 border-sa-gold shadow-md">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span
+                  class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">DỰ BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
+                <span id="pacingStatusBadge"
+                  class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">🟢
+                  Đang theo dõi nhịp độ thực thu</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-heading font-bold text-white">
+                Đo Lường Tốc Độ Thực Thu &amp; Dự Báo Hoàn Thành Kế Hoạch (<span id="pacingPeriodLabel">Năm 2026</span>)
+              </h3>
+              <p class="text-[11px] text-slate-300">
+                📐 <strong>Logic dự báo:</strong> <code>Tốc độ thu/ngày = Tổng Doanh Thu ÷ Số ngày phát sinh</code> |
+                <code>Dự báo cuối kỳ = Doanh thu hiện tại + (Tốc độ thu/ngày × Số ngày còn lại)</code>.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs lg:min-w-[600px]">
+              <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
+                <div class="text-[10px] text-slate-300 uppercase">Tốc Độ Thu / Ngày</div>
+                <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span> <span
+                    class="text-[10px] font-normal">đ</span></div>
+                <div class="text-[10px] text-slate-300" id="pacingActiveDays">0 ngày phát sinh</div>
+              </div>
+              <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
+                <div class="text-[10px] text-slate-300 uppercase">Dự Báo Cuối Kỳ</div>
+                <div class="text-base font-heading font-bold text-emerald-300 mt-0.5"><span
+                    id="pacingForecastRev">0</span> <span class="text-[10px] font-normal">đ</span></div>
+                <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target</div>
+              </div>
+              <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
+                <div class="text-[10px] text-slate-300 uppercase">Khoảng Cách Tới Target</div>
+                <div class="text-base font-heading font-bold text-white mt-0.5"><span id="pacingGapRev">0</span> <span
+                    class="text-[10px] font-normal">đ</span></div>
+                <div class="text-[10px] text-slate-300" id="pacingGapDesc">Cần thu thêm để đạt 100%</div>
+              </div>
+              <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
+                <div class="text-[10px] text-slate-300 uppercase">Tháng Cao Điểm Nhất</div>
+                <div class="text-base font-heading font-bold text-sa-gold mt-0.5" id="pacingBestMonth">Tháng 8</div>
+                <div class="text-[10px] text-slate-300" id="pacingBestMonthRev">3.602.000 đ</div>
+              </div>
+            </div>
+          </div>
+          <!-- Progress Bar -->
+          <div class="mt-3 pt-2.5 border-t border-white/10">
+            <div class="flex justify-between text-[11px] mb-1">
+              <span class="text-slate-200 font-medium">Tiến độ thực đạt so với Target kỳ đang chọn: <strong
+                  id="pacingProgressText" class="text-sa-gold">0%</strong></span>
+              <span class="text-slate-300">Mốc an toàn kỳ vọng: <strong class="text-emerald-300">&ge; 85%
+                  Target</strong></span>
+            </div>
+            <div class="w-full bg-white/15 h-2.5 rounded-full overflow-hidden">
+              <div id="pacingProgressBar"
+                class="bg-gradient-to-r from-sa-gold via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500"
+                style="width: 70%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG & NGÂN SÁCH WHAT-IF (EXECUTIVE SIMULATOR v3.22) -->
+        <div id="whatIfSimulatorCard" class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ PHỎNG WHAT-IF</span>
+                <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-0.5">
+                📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>, <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button type="button" onclick="applyWhatIfPreset(20, -10, 15, 5)"
+                class="px-2.5 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold transition">
+                🚀 Kịch bản Bứt phá (+20% NS, -10% CPL, +15% CVR)
+              </button>
+              <button type="button" onclick="applyWhatIfPreset(0, -15, 20, 10)"
+                class="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300 text-[11px] font-bold transition">
+                💎 Tối ưu Hiệu suất (Giữ NS, -15% CPL, +20% CVR)
+              </button>
+              <button type="button" onclick="resetWhatIfSimulator()"
+                class="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-[11px] font-bold transition">
+                🔄 Đặt lại (0%)
+              </button>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span>1. Ngân sách MKT:</span>
+                <span id="lblSimBudgetPct" class="text-sa-navy">0%</span>
+              </div>
+              <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện tại</span><span>+100%</span></div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span>2. Giá Data (CPL):</span>
+                <span id="lblSimCplPct" class="text-emerald-700">0%</span>
+              </div>
+              <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-emerald-600 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ hơn)</span><span>0%</span><span>+50%</span></div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span>3. Tỷ lệ chốt (CVR):</span>
+                <span id="lblSimCvrPct" class="text-blue-700">0%</span>
+              </div>
+              <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-blue-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+60%</span></div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span>4. Học phí TB/HV (ARPU):</span>
+                <span id="lblSimArpuPct" class="text-purple-700">0%</span>
+              </div>
+              <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+50%</span></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-3 pt-2.5 border-t border-slate-200/80">
+            <div class="p-2.5 rounded-lg bg-slate-100/80 border border-slate-200">
+              <div class="text-[10px] font-bold text-slate-500 uppercase">Chi phí MKT Dự phóng</div>
+              <div id="simOutCost" class="text-sm font-heading font-bold text-slate-800 mt-0.5">0</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-blue-50/70 border border-blue-200">
+              <div class="text-[10px] font-bold text-blue-700 uppercase">Tổng Data Dự phóng</div>
+              <div id="simOutData" class="text-sm font-heading font-bold text-blue-900 mt-0.5">0</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200">
+              <div class="text-[10px] font-bold text-emerald-700 uppercase">Học Viên Mới Dự phóng</div>
+              <div id="simOutStudents" class="text-sm font-heading font-bold text-emerald-900 mt-0.5">0</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-sa-navy text-white border border-sa-gold shadow-sm">
+              <div class="text-[10px] font-bold text-sa-gold uppercase">Doanh Thu Dự phóng</div>
+              <div id="simOutRev" class="text-sm font-heading font-bold text-white mt-0.5">0</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-300">
+              <div class="text-[10px] font-bold text-amber-800 uppercase">Chênh Lệch Doanh Thu</div>
+              <div id="simOutRevDelta" class="text-sm font-heading font-bold text-emerald-700 mt-0.5">+0</div>
+            </div>
+            <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200">
+              <div class="text-[10px] font-bold text-purple-800 uppercase">ROAS &amp; Tỷ Lệ CP/DT</div>
+              <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> • <span id="simOutCpDt">0.0%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PHÂN KHU 1.3: HỆ THỐNG BIỂU ĐỒ XU HƯỚNG THỜI GIAN (GOM GỌN 1 KHUNG CHUYỂN ĐỔI NHANH v3.23) ==================== -->
+      <div class="space-y-4" id="sectionPnlCharts">
+        <div
+          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 border-b-2 border-sa-navy/15 pb-2">
           <div class="flex items-center gap-2">
             <span
               class="px-2.5 py-1 rounded bg-sa-navy text-sa-gold font-heading font-bold text-xs uppercase shadow-sm">PHÂN
-              KHU 1.3</span>
+              KHU 1.2</span>
             <h2 class="text-base sm:text-lg font-heading font-bold text-sa-navy uppercase">
-              BIỂU ĐỒ XU HƯỚNG THỜI GIAN: CHUYỂN ĐỔI HỌC VIÊN, GIÁ DATA &amp; ĐỐI SOÁT P&amp;L
+              BIỂU ĐỒ XU HƯỚNG THỜI GIAN (CHỌN GÓC NHÌN ĐỂ XEM GỌN GÀNG)
             </h2>
           </div>
-          <span class="text-xs text-slate-500 font-medium">Tự động tính toán lại theo Bộ lọc đa lựa chọn &amp; Chu kỳ
-            năm</span>
+          <!-- 4-in-1 Time Chart Switcher Buttons -->
+          <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 no-print">
+            <button type="button" id="btnTimeChartTab_1" onclick="switchTimeChartSubTab(1)"
+              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition">
+              📊 1. Doanh Thu, Target &amp; % CP/DT
+            </button>
+            <button type="button" id="btnTimeChartTab_2" onclick="switchTimeChartSubTab(2)"
+              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
+              👥 2. Số Data, Học Viên &amp; Tỷ Lệ Chốt (Tháng/Tuần/Ngày)
+            </button>
+            <button type="button" id="btnTimeChartTab_3" onclick="switchTimeChartSubTab(3)"
+              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
+              🏷️ 3. Giá Data Nguồn Trả Phí vs. Tổng Nguồn
+            </button>
+            <button type="button" id="btnTimeChartTab_ALL" onclick="switchTimeChartSubTab('ALL')"
+              class="timechart-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-white transition">
+              👁️ Mở Tất Cả
+            </button>
+          </div>
         </div>
 
-        <!-- 2 Biểu Đồ Đối Soát Target & Tỷ lệ CP/DT đặt cạnh nhau -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- PANEL 1: 2 Biểu Đồ Đối Soát Target & Tỷ lệ CP/DT đặt cạnh nhau (Mặc định hiển thị) -->
+        <div id="panelTimeChart_1" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="card-sa p-5">
             <div class="flex items-center justify-between mb-3">
               <div>
@@ -1078,8 +1100,8 @@
           </div>
         </div>
 
-        <!-- BIỂU ĐỒ THỜI GIAN #3: TỈ LỆ CHỐT, SỐ HỌC VIÊN & SỐ DATA -->
-        <div class="card-sa p-5 border-t-4 border-sa-navy">
+        <!-- PANEL 2: BIỂU ĐỒ THỜI GIAN #3: TỈ LỆ CHỐT, SỐ HỌC VIÊN & SỐ DATA (Thu gọn mặc định, bấm nút #2 để mở) -->
+        <div id="panelTimeChart_2" class="hidden card-sa p-5 border-t-4 border-sa-navy">
           <div
             class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
             <div>
@@ -1161,8 +1183,8 @@
           </div>
         </div>
 
-        <!-- BIỂU ĐỒ THỜI GIAN #4: DATA, TỔNG CHI PHÍ & GIÁ DATA CÁC NGUỒN TRẢ PHÍ VS TỔNG NGUỒN -->
-        <div class="card-sa p-5 border-t-4 border-emerald-600">
+        <!-- PANEL 3: BIỂU ĐỒ THỜI GIAN #4: DATA, TỔNG CHI PHÍ & GIÁ DATA CÁC NGUỒN TRẢ PHÍ VS TỔNG NGUỒN (Thu gọn mặc định, bấm nút #3 để mở) -->
+        <div id="panelTimeChart_3" class="hidden card-sa p-5 border-t-4 border-emerald-600">
           <div
             class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
             <div>
@@ -1899,7 +1921,16 @@
       </div>
 
       <!-- HẠNG MỤC MỚI V3.20: BÓC TÁCH DOANH THU THEO LOẠI SẢN PHẨM (TYPE_COURSE) & KIỂM TOÁN GIẢM GIÁ / THU NGÂN (DISCOUNT AUDIT) -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
+        <div class="text-xs font-bold text-sa-navy">
+          🛡️ Bảng Kiểm Toán Chuyên Sâu: Bóc Tách Học Phí / Bằng Cấp / Đổi Khóa &amp; Quỹ Giảm Giá Học Bổng (Thu gọn mặc định cho đỡ rối)
+        </div>
+        <button type="button" onclick="document.getElementById('wrapCashAuditSubTables').classList.toggle('hidden')"
+          class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
+          👁️ Mở / Thu gọn Bảng Kiểm Toán
+        </button>
+      </div>
+      <div id="wrapCashAuditSubTables" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="card-sa p-5 border-t-4 border-emerald-600">
           <div class="flex items-center justify-between mb-3">
             <div>
@@ -2264,13 +2295,17 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapCampaignSegmentRoiBox').classList.toggle('hidden')"
+              class="bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-purple-300 transition">
+              👁️ Mở / Thu gọn Bảng Chiến Dịch
+            </button>
             <button onclick="exportTableToExcel('tblCampaignSegmentRoi', 'Hieu_Qua_Chien_Dich_Tep_Doi_Tuong_Campaign')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
               📥 Xuất Excel Chiến Dịch
             </button>
           </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapCampaignSegmentRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblCampaignSegmentRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -2828,12 +2863,18 @@
               tỷ lệ nghe máy và tỷ lệ chốt thực tế.
             </p>
           </div>
-          <button onclick="exportTableToExcel('tblLeadCreatorCompare', 'Doi_Sanh_Lead_Booking_Website_vs_Sale_Nhap')"
-            class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300 no-print">
-            📥 Xuất Excel
-          </button>
+          <div class="flex items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapLeadCreatorCompareBox').classList.toggle('hidden')"
+              class="text-[11px] font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 px-2.5 py-1 rounded border border-teal-300">
+              👁️ Mở / Thu gọn Bảng
+            </button>
+            <button onclick="exportTableToExcel('tblLeadCreatorCompare', 'Doi_Sanh_Lead_Booking_Website_vs_Sale_Nhap')"
+              class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300">
+              📥 Xuất Excel
+            </button>
+          </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+        <div id="wrapLeadCreatorCompareBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
           <table id="tblLeadCreatorCompare" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -3013,14 +3054,18 @@
               B) để Kế toán &amp; Ban Giám Đốc phân bổ đúng chi phí đào tạo giữa các chi nhánh.
             </p>
           </div>
-          <div class="flex items-center gap-3 no-print">
+          <div class="flex items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapCrossBranchAuditBox').classList.toggle('hidden')"
+              class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold px-3 py-2 rounded-lg border border-indigo-300 transition">
+              👁️ Mở / Thu gọn Bảng Liên Cơ Sở
+            </button>
             <button onclick="exportTableToExcel('tblCrossBranchAudit', 'Doi_Soat_Dao_Tao_Cheo_Co_So')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 transition">
               📥 Xuất Excel Liên Cơ Sở
             </button>
           </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
+        <div id="wrapCrossBranchAuditBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
           <table id="tblCrossBranchAudit" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3198,15 +3243,21 @@
               của Học viên mới (<code>ns = 1</code>). Giúp xác định thời gian vàng để dồn lực đeo bám khách hàng.
             </p>
           </div>
-          <button onclick="exportTableToExcel('tblSalesVelocity', 'Phan_Tich_Toc_Do_Chot_Don_Sales_Velocity')"
-            class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300 no-print">
-            📥 Xuất Excel Tốc Độ Chốt
-          </button>
+          <div class="flex items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapSalesVelocityBox').classList.toggle('hidden')"
+              class="text-[11px] font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded border border-amber-300">
+              👁️ Mở / Thu gọn Chi Tiết Tốc Độ Chốt
+            </button>
+            <button onclick="exportTableToExcel('tblSalesVelocity', 'Phan_Tich_Toc_Do_Chot_Don_Sales_Velocity')"
+              class="text-[11px] font-bold text-sa-navy bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded border border-slate-300">
+              📥 Xuất Excel Tốc Độ Chốt
+            </button>
+          </div>
         </div>
-        <div id="salesVelocityCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <div id="salesVelocityCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
           <!-- Populated dynamically -->
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+        <div id="wrapSalesVelocityBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg mt-2">
           <table id="tblSalesVelocity" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -9752,13 +9803,33 @@
     }
 
     function initLiveServerWatchdog() {
-      setTimeout(checkLiveServerVersion, 2500);
+      setTimeout(checkLiveServerVersion, 120);
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
           checkLiveServerVersion();
         }
       });
       setInterval(checkLiveServerVersion, 180000);
+    }
+
+    function switchTimeChartSubTab(mode) {
+      const p1 = document.getElementById('panelTimeChart_1');
+      const p2 = document.getElementById('panelTimeChart_2');
+      const p3 = document.getElementById('panelTimeChart_3');
+      if (p1) p1.classList.toggle('hidden', mode !== 1 && mode !== 'ALL');
+      if (p2) p2.classList.toggle('hidden', mode !== 2 && mode !== 'ALL');
+      if (p3) p3.classList.toggle('hidden', mode !== 3 && mode !== 'ALL');
+
+      [1, 2, 3, 'ALL'].forEach(k => {
+        const btn = document.getElementById('btnTimeChartTab_' + k);
+        if (btn) {
+          if (k === mode) {
+            btn.className = 'timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition';
+          } else {
+            btn.className = 'timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition';
+          }
+        }
+      });
     }
 
     // ==================== 360° GLOBAL CUSTOMER / LEAD / PHONE LOOKUP ====================
