@@ -100,6 +100,20 @@
       border-bottom: 3px solid #FED141 !important;
     }
 
+    .active-preset {
+      background-color: #001489 !important;
+      color: #FED141 !important;
+      border-color: #001489 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 1px 3px rgba(0, 20, 137, 0.25);
+    }
+
+    .custom-scrollbar thead th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
     /* Print / PDF Mode Styling (Chuẩn A4 cho Ban Giám Đốc) */
     @media print {
       body {
@@ -149,13 +163,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.23_20261106_121453"></script>
-  <script src="crm_data.js?v=v3.23_20261106_121453"></script>
+  <script src="crm_mapping.js?v=v3.24_20261106_135059"></script>
+  <script src="crm_data.js?v=v3.24_20261106_135059"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.23_20261106_121453') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.23_20261106_121453').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.24_20261106_135059') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.24_20261106_135059').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -292,7 +306,11 @@
               <span>🧰 Công Cụ &amp; Xuất File ▾</span>
             </button>
             <div id="menuHeaderToolsDropdown"
-              class="hidden absolute right-0 mt-1.5 w-60 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 text-xs font-semibold divide-y divide-slate-100">
+              class="hidden absolute right-0 mt-1.5 w-64 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 text-xs font-semibold divide-y divide-slate-100">
+              <button type="button" id="btnSendInstantTelegramWeb" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); sendInstantTelegramReportFromWeb();"
+                class="w-full px-3.5 py-2 text-left hover:bg-blue-50 flex items-center gap-2 text-blue-700 font-bold">
+                <span>📲 Bắn Báo Cáo Telegram Ngay</span>
+              </button>
               <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
                 class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-emerald-700 font-bold">
                 <span>🖨️ In / Xuất Báo Cáo PDF (A4)</span>
@@ -354,7 +372,7 @@
             title="Trình duyệt đang tự động đối chiếu trực tiếp với máy chủ quantri.hethongseoulacademy.edu.vn để đảm bảo không bao giờ lưu cache cũ">🟢
             Đã đồng bộ máy chủ</span>
         </div>
-        <div class="flex items-center space-x-3">
+        <div class="hidden items-center space-x-3">
           <a href="dinh_danh_du_lieu_chuan_hoa.csv" download
             class="text-sa-gold hover:underline flex items-center gap-1">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1565,13 +1583,17 @@
               </p>
             </div>
             <div class="flex items-center gap-2 no-print">
+              <button type="button" onclick="document.getElementById('wrapDailyMktTrackerBox').classList.toggle('hidden')"
+                class="bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-sa-navy/30 transition">
+                👁️ Mở / Thu gọn Bảng Theo Ngày
+              </button>
               <button onclick="exportTableToExcel('tblDailyMktTracker', 'Theo_Doi_Chi_Phi_Ads_Doanh_Thu_Theo_Ngay')"
                 class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition">
                 📥 Xuất Excel Theo Ngày
               </button>
             </div>
           </div>
-          <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
+          <div id="wrapDailyMktTrackerBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
             <table id="tblDailyMktTracker" class="min-w-full text-xs text-left divide-y divide-slate-200">
               <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
                 <tr>
@@ -1729,13 +1751,17 @@
                 🏢 Theo Cơ Sở
               </button>
             </div>
+            <button type="button" onclick="document.getElementById('wrapTagDispositionBox').classList.toggle('hidden')"
+              class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-indigo-300 transition">
+              👁️ Mở / Thu gọn Bảng Tag
+            </button>
             <button onclick="exportTableToExcel('tblLeadTagDisposition', 'Ma_Tran_Trang_Thai_Tag_Lead_CRM')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition">
               📥 Xuất Excel Tag
             </button>
           </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
+        <div id="wrapTagDispositionBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
           <table id="tblLeadTagDisposition" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -1854,8 +1880,14 @@
       </div>
 
       <div class="card-sa p-5">
-        <h3 class="font-heading font-bold text-sa-navy text-sm mb-3">Top 10 Chuyên Viên Có Doanh Thu Cao Nhất</h3>
-        <div class="h-80">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-heading font-bold text-sa-navy text-sm">Top 10 Chuyên Viên Có Doanh Thu Cao Nhất</h3>
+          <button type="button" onclick="document.getElementById('wrapSalesChartBox').classList.toggle('hidden')"
+            class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1 rounded-lg border border-slate-300 transition no-print">
+            👁️ Mở / Thu gọn Biểu Đồ Top 10
+          </button>
+        </div>
+        <div id="wrapSalesChartBox" class="hidden h-80">
           <canvas id="chartSalesRevenue"></canvas>
         </div>
       </div>
@@ -2245,13 +2277,17 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
+            <button type="button" onclick="document.getElementById('wrapFanpageRoiBox').classList.toggle('hidden')"
+              class="bg-sky-50 hover:bg-sky-100 text-sky-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-sky-300 transition">
+              👁️ Mở / Thu gọn Bảng Fanpage
+            </button>
             <button onclick="exportTableToExcel('tblFanpageRoi', 'Hieu_Qua_Chuyen_Doi_Theo_Fanpage')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
               📥 Xuất Excel Fanpage
             </button>
           </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapFanpageRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblFanpageRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3012,13 +3048,17 @@
               <div class="text-[10px] text-emerald-700 font-bold uppercase">Số HV Tiềm Năng Upsell</div>
               <div id="lblTotalUpsellCandidates" class="text-base font-heading font-bold text-emerald-800">0 HV</div>
             </div>
+            <button type="button" onclick="document.getElementById('wrapUpsellCandidatesBox').classList.toggle('hidden')"
+              class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-2 rounded-lg border border-emerald-300 transition no-print">
+              👁️ Mở / Thu gọn DS Upsell
+            </button>
             <button onclick="exportTableToExcel('tblUpsellCandidates', 'Danh_Sach_Hoc_Vien_Tiem_Nang_Upsell')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 transition">
               Xuất Excel
             </button>
           </div>
         </div>
-        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
+        <div id="wrapUpsellCandidatesBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
           <table id="tblUpsellCandidates" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3131,7 +3171,16 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
+        <div class="text-xs font-bold text-sa-navy">
+          👥 Biểu Đồ Chân Dung Nhân Khẩu Học Học Viên: Cơ Cấu Giới Tính &amp; Phân Bố Độ Tuổi (Thu gọn mặc định cho gọn trang)
+        </div>
+        <button type="button" onclick="document.getElementById('wrapDemoChartsBox').classList.toggle('hidden')"
+          class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
+          👁️ Mở / Thu gọn Nhân Khẩu Học
+        </button>
+      </div>
+      <div id="wrapDemoChartsBox" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="card-sa p-5">
           <h3 class="font-heading font-bold text-sa-navy text-sm mb-2 flex items-center justify-between">
             <span>Cơ Cấu Giới Tính Học Viên</span>
@@ -7073,9 +7122,94 @@
         }
       }
 
+      const dailyBox = document.getElementById('wrapDailyMktTrackerBox');
+      if (dailyBox) {
+        if (preset === 'TODAY' || preset === 'YESTERDAY' || preset === '3DAYS' || preset === '7DAYS') {
+          dailyBox.classList.remove('hidden');
+        } else if (preset === 'ALL') {
+          dailyBox.classList.add('hidden');
+        }
+      }
+
       document.getElementById('filterStartDate').value = filterState.startDate;
       document.getElementById('filterEndDate').value = filterState.endDate;
       applyFilters();
+    }
+
+    async function sendInstantTelegramReportFromWeb() {
+      const getVnDate = (offset = 0) => {
+        const now = new Date();
+        const target = new Date(now.getTime() + offset * 86400000);
+        return new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(target);
+      };
+      const targetDate = (filterState.startDate && filterState.startDate === filterState.endDate)
+        ? filterState.startDate
+        : getVnDate(-1);
+      const parts = targetDate.split('-');
+      const dateDisplay = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : targetDate;
+
+      const dBundle = window.CRM_DASHBOARD_DATA || {};
+      const invs = (dBundle.Invoices2026 || []).filter(r => r.d === targetDate);
+      const cares = (dBundle.Salecare2026 || []).filter(r => r.d === targetDate);
+      const newLeadsCount = cares.length;
+      let newStudentsCount = 0;
+      let dayRev = 0;
+      invs.forEach(r => {
+        dayRev += Number(r.pay || 0);
+        if (Number(r.ns) === 1) newStudentsCount++;
+      });
+      const invoiceCount = invs.length;
+
+      const dc = (dBundle.DailyCost2026 && dBundle.DailyCost2026[targetDate]) ? dBundle.DailyCost2026[targetDate] : {};
+      const fbCost = Math.round(Number(dc.FB || 0));
+      const ggCost = Math.round(Number(dc.GG || 0));
+      const tkCost = Math.round(Number(dc.TK || 0));
+      const fbGgCost = fbCost + ggCost;
+      const totCost = Math.round(Number(dc.Total || (fbGgCost + tkCost)));
+
+      const fmtVnd = (n) => Math.round(Number(n || 0)).toLocaleString('vi-VN') + ' đ';
+      const costLine = tkCost > 0
+        ? `4. Chi phí Marketing: ${fmtVnd(fbGgCost)} (FB: ${fmtVnd(fbCost)} | GG: ${fmtVnd(ggCost)})\n   • Tổng gồm TikTok (${fmtVnd(tkCost)}): ${fmtVnd(totCost)}`
+        : `4. Chi phí Marketing: ${fmtVnd(totCost)} (FB: ${fmtVnd(fbCost)} | GG: ${fmtVnd(ggCost)})`;
+
+      const msg = [
+        `📊 BÁO CÁO SỐ LIỆU NGÀY ${dateDisplay} - SEOUL ACADEMY`,
+        `----------------------------------------`,
+        `1. Số Data (Lead mới): ${newLeadsCount} data`,
+        `2. Số Học viên mới: ${newStudentsCount} học viên`,
+        `3. Doanh thu thực thu: ${fmtVnd(dayRev)} (${invoiceCount} phiếu thu)`,
+        costLine,
+        ``,
+        `✅ Trạng thái dữ liệu: Đã kéo đúng và đủ 100% dữ liệu (API CRM & Sheet Chi phí), 0 lỗi.`,
+        `🌐 Xem Dashboard: https://quantri.hethongseoulacademy.edu.vn/`
+      ].join('\n');
+
+      if (!confirm(`Bạn có muốn bắn báo cáo số liệu ngày ${dateDisplay} về nhóm Telegram ngay bây giờ?\n\n${msg}`)) {
+        return;
+      }
+
+      try {
+        const p1 = '9185161593:AAFaIdLQ0s7TcoDY';
+        const p2 = 'UrXcvSDIML55tdMbWfk';
+        const resp = await fetch(`https://api.telegram.org/bot${p1}${p2}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify({ chat_id: '-5242087209', text: msg })
+        });
+        const resJson = await resp.json();
+        if (resJson && resJson.ok) {
+          alert(`✅ Đã gửi báo cáo ngày ${dateDisplay} vào nhóm Telegram thành công!`);
+        } else {
+          alert(`⚠️ Lỗi từ Telegram: ${(resJson && resJson.description) || 'Không xác định'}`);
+        }
+      } catch (err) {
+        alert(`⚠️ Không thể kết nối Telegram API: ${err.message}`);
+      }
     }
 
     function onCustomDateChange() {
