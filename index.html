@@ -149,13 +149,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.21_20261106_074501"></script>
-  <script src="crm_data.js?v=v3.21_20261106_074501"></script>
+  <script src="crm_mapping.js?v=v3.22_20261106_094946"></script>
+  <script src="crm_data.js?v=v3.22_20261106_094946"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.21_20261106_074501') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.21_20261106_074501').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.22_20261106_094946') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.22_20261106_094946').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -853,6 +853,95 @@
             <div id="pacingProgressBar"
               class="bg-gradient-to-r from-sa-gold via-amber-400 to-emerald-400 h-full rounded-full transition-all duration-500"
               style="width: 70%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG & NGÂN SÁCH WHAT-IF (EXECUTIVE SIMULATOR v3.22) -->
+      <div id="whatIfSimulatorCard" class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ PHỎNG WHAT-IF v3.22</span>
+              <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
+            </div>
+            <p class="text-[11px] text-slate-600 mt-0.5">
+              📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>, <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button type="button" onclick="applyWhatIfPreset(20, -10, 15, 5)"
+              class="px-2.5 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold transition">
+              🚀 Kịch bản Bứt phá (+20% NS, -10% CPL, +15% CVR)
+            </button>
+            <button type="button" onclick="applyWhatIfPreset(0, -15, 20, 10)"
+              class="px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-300 text-[11px] font-bold transition">
+              💎 Tối ưu Hiệu suất (Giữ NS, -15% CPL, +20% CVR)
+            </button>
+            <button type="button" onclick="resetWhatIfSimulator()"
+              class="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-[11px] font-bold transition">
+              🔄 Đặt lại (0%)
+            </button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3">
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <span>1. Ngân sách MKT:</span>
+              <span id="lblSimBudgetPct" class="text-sa-navy">0%</span>
+            </div>
+            <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện tại</span><span>+100%</span></div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <span>2. Giá Data (CPL):</span>
+              <span id="lblSimCplPct" class="text-emerald-700">0%</span>
+            </div>
+            <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-emerald-600 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ hơn)</span><span>0%</span><span>+50%</span></div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <span>3. Tỷ lệ chốt (CVR):</span>
+              <span id="lblSimCvrPct" class="text-blue-700">0%</span>
+            </div>
+            <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-blue-700 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+60%</span></div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
+            <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+              <span>4. Học phí TB/HV (ARPU):</span>
+              <span id="lblSimArpuPct" class="text-purple-700">0%</span>
+            </div>
+            <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+50%</span></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-3 pt-2.5 border-t border-slate-200/80">
+          <div class="p-2.5 rounded-lg bg-slate-100/80 border border-slate-200">
+            <div class="text-[10px] font-bold text-slate-500 uppercase">Chi phí MKT Dự phóng</div>
+            <div id="simOutCost" class="text-sm font-heading font-bold text-slate-800 mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-blue-50/70 border border-blue-200">
+            <div class="text-[10px] font-bold text-blue-700 uppercase">Tổng Data Dự phóng</div>
+            <div id="simOutData" class="text-sm font-heading font-bold text-blue-900 mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-emerald-50/70 border border-emerald-200">
+            <div class="text-[10px] font-bold text-emerald-700 uppercase">Học Viên Mới Dự phóng</div>
+            <div id="simOutStudents" class="text-sm font-heading font-bold text-emerald-900 mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-sa-navy text-white border border-sa-gold shadow-sm">
+            <div class="text-[10px] font-bold text-sa-gold uppercase">Doanh Thu Dự phóng</div>
+            <div id="simOutRev" class="text-sm font-heading font-bold text-white mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-amber-50 border border-amber-300">
+            <div class="text-[10px] font-bold text-amber-800 uppercase">Chênh Lệch Doanh Thu</div>
+            <div id="simOutRevDelta" class="text-sm font-heading font-bold text-emerald-700 mt-0.5">+0</div>
+          </div>
+          <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200">
+            <div class="text-[10px] font-bold text-purple-800 uppercase">ROAS &amp; Tỷ Lệ CP/DT</div>
+            <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> • <span id="simOutCpDt">0.0%</span></div>
           </div>
         </div>
       </div>
@@ -2158,14 +2247,20 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div>
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded bg-purple-900 text-sa-gold font-heading font-bold text-[10px] uppercase">PHÂN KHÚC ĐỐI TƯỢNG &amp; CHIẾN DỊCH (CAMPAIGN CRM)</span>
-              <span class="px-2 py-0.5 rounded bg-purple-50 text-purple-800 font-bold text-[10px] border border-purple-200">VN Tuổi Nhỏ • VN Tuổi Lớn • Lớp 12 • Livestream • Việt Kiều</span>
+              <span
+                class="px-2 py-0.5 rounded bg-purple-900 text-sa-gold font-heading font-bold text-[10px] uppercase">PHÂN
+                KHÚC ĐỐI TƯỢNG &amp; CHIẾN DỊCH (CAMPAIGN CRM)</span>
+              <span
+                class="px-2 py-0.5 rounded bg-purple-50 text-purple-800 font-bold text-[10px] border border-purple-200">VN
+                Tuổi Nhỏ • VN Tuổi Lớn • Lớp 12 • Livestream • Việt Kiều</span>
             </div>
             <h3 class="text-base font-heading font-bold text-sa-navy mt-1 uppercase">
               🎯 HIỆU QUẢ CHUYỂN ĐỔI &amp; DOANH THU THEO TỆP ĐỐI TƯỢNG CHIẾN DỊCH (<code>campaign</code>)
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">
-              📐 <strong>Logic phân tích:</strong> Bóc tách trường <code>campaign</code> trên CRM Salecare &amp; Phiếu thu để đo lường sức mua thực tế (ARPU = Doanh thu ÷ Số HV) và tỷ lệ chốt (%) của từng tệp chân dung học viên.
+              📐 <strong>Logic phân tích:</strong> Bóc tách trường <code>campaign</code> trên CRM Salecare &amp; Phiếu
+              thu để đo lường sức mua thực tế (ARPU = Doanh thu ÷ Số HV) và tỷ lệ chốt (%) của từng tệp chân dung học
+              viên.
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
@@ -2724,10 +2819,13 @@
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
           <div>
             <h3 class="font-heading font-bold text-sa-navy text-sm uppercase flex items-center gap-2">
-              🌐 ĐỐI SÁNH HIỆU QUẢ LEAD ĐỔ TỰ ĐỘNG (<code>Booking Website</code>) VS. LEAD TƯ VẤN VIÊN / HỆ THỐNG NHẬP (<code>created_by_data</code>)
+              🌐 ĐỐI SÁNH HIỆU QUẢ LEAD ĐỔ TỰ ĐỘNG (<code>Booking Website</code>) VS. LEAD TƯ VẤN VIÊN / HỆ THỐNG NHẬP
+              (<code>created_by_data</code>)
             </h3>
             <p class="text-[11px] text-slate-500 mt-0.5">
-              📐 <strong>Logic phân tích:</strong> Tách riêng tệp khách hàng chủ động để lại thông tin qua <code>Booking Website</code> và tệp khách hàng do đội ngũ Tư vấn viên / Trực Page nhập lên CRM để đo lường tỷ lệ nghe máy và tỷ lệ chốt thực tế.
+              📐 <strong>Logic phân tích:</strong> Tách riêng tệp khách hàng chủ động để lại thông tin qua
+              <code>Booking Website</code> và tệp khách hàng do đội ngũ Tư vấn viên / Trực Page nhập lên CRM để đo lường
+              tỷ lệ nghe máy và tỷ lệ chốt thực tế.
             </p>
           </div>
           <button onclick="exportTableToExcel('tblLeadCreatorCompare', 'Doi_Sanh_Lead_Booking_Website_vs_Sale_Nhap')"
@@ -2814,6 +2912,46 @@
           </div>
         </div>
       </div>
+
+      <!-- BẢNG TOP KHÓA HỌC CỤ THỂ (COURSE_NAME) & GÓI COMBO ĐA KHÓA (v3.22) -->
+      <div class="card-sa p-5 border-t-4 border-sa-navy">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-base font-heading font-bold text-sa-navy flex items-center gap-2 uppercase">
+              <span class="w-3 h-3 bg-sa-gold rounded-full border border-sa-navy"></span>
+              BẢNG XẾP HẠNG TOP KHÓA HỌC CỤ THỂ (`course_name`) &amp; TỶ TRỌNG GÓI COMBO ĐA KHÓA
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              📐 <strong>Logic:</strong> Bóc tách chi tiết từng khóa học cụ thể học viên đăng ký (`course_name` + `program_group`), số lượng Học viên mới, số học viên mua kèm Combo (`combo_course_id` / `amount_course >= 2`), Doanh thu thực thu và Học phí trung bình/HV.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="lblTopSpecificCourseSummary" class="px-3 py-1.5 rounded-lg bg-sa-navy/10 text-sa-navy text-xs font-bold">0 khóa học</span>
+            <button onclick="exportTableToExcel('tblTopSpecificCourses', 'Top_Khoa_Hoc_Chi_Tiet_Va_Combo')"
+              class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 transition">
+              📥 Xuất Excel
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
+          <table id="tblTopSpecificCourses" class="min-w-full text-xs text-left divide-y divide-slate-200">
+            <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
+              <tr>
+                <th class="py-2.5 px-3">Hạng</th>
+                <th class="py-2.5 px-3">Tên Khóa Học Cụ Thể (`course_name`)</th>
+                <th class="py-2.5 px-3">Nhóm Ngành (`program_group`)</th>
+                <th class="py-2.5 px-2 text-right">Số Phiếu Thu</th>
+                <th class="py-2.5 px-2 text-right">Số HV Mới</th>
+                <th class="py-2.5 px-2 text-right">Phiếu Mua Combo/Đa Khóa</th>
+                <th class="py-2.5 px-3 text-right bg-sa-gold text-sa-navy">Doanh Thu Thực Thu (VNĐ)</th>
+                <th class="py-2.5 px-2 text-right">Tỷ Trọng DT (%)</th>
+                <th class="py-2.5 px-3 text-right">Thực Thu TB / Phiếu</th>
+              </tr>
+            </thead>
+            <tbody id="tblTopSpecificCoursesBody" class="divide-y divide-slate-200 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
       <!-- Upsell Candidates Table (Học viên khóa ngắn hạn tiềm năng Upsell CAC = 0đ) -->
       <div class="card-sa p-5 border-t-4 border-emerald-600">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
@@ -2866,10 +3004,13 @@
           <div>
             <h3 class="text-base font-heading font-bold text-sa-navy flex items-center gap-2 uppercase">
               <span class="w-3 h-3 bg-indigo-600 rounded-full"></span>
-              🔄 ĐỐI SOÁT TUYỂN SINH &amp; ĐÀO TẠO CHÉO CƠ SỞ: NƠI THU HỌC PHÍ (<code>store_invoice</code>) VS. NƠI HỌC THỰC TẾ (<code>store_course</code>)
+              🔄 ĐỐI SOÁT TUYỂN SINH &amp; ĐÀO TẠO CHÉO CƠ SỞ: NƠI THU HỌC PHÍ (<code>store_invoice</code>) VS. NƠI HỌC
+              THỰC TẾ (<code>store_course</code>)
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">
-              📐 <strong>Logic hạch toán nội bộ:</strong> Thống kê các phiếu thu có <code>store_course ≠ store_invoice</code> (Học viên đóng tiền tại Cơ sở A nhưng đăng ký lớp học tại Cơ sở B) để Kế toán &amp; Ban Giám Đốc phân bổ đúng chi phí đào tạo giữa các chi nhánh.
+              📐 <strong>Logic hạch toán nội bộ:</strong> Thống kê các phiếu thu có
+              <code>store_course ≠ store_invoice</code> (Học viên đóng tiền tại Cơ sở A nhưng đăng ký lớp học tại Cơ sở
+              B) để Kế toán &amp; Ban Giám Đốc phân bổ đúng chi phí đào tạo giữa các chi nhánh.
             </p>
           </div>
           <div class="flex items-center gap-3 no-print">
@@ -3806,10 +3947,14 @@
           class="px-4 py-1.5 rounded-lg border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-200 transition">
           Đóng
         </button>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <button type="button" onclick="triggerPrintExecutiveReport()"
             class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow transition">
             🖨️ In / Xuất PDF A4
+          </button>
+          <button type="button" id="btnSendBriefingTelegram" onclick="sendExecBriefingToTelegram()"
+            class="bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-md transition flex items-center gap-1.5">
+            <span>✈️ Bắn Báo Cáo Này Vào Nhóm Telegram</span>
           </button>
           <button type="button" id="btnCopyExecBriefing" onclick="copyExecBriefingText()"
             class="bg-sa-navy hover:bg-sa-navyDark text-sa-gold px-5 py-2 rounded-lg text-xs font-bold shadow-md transition flex items-center gap-2">
@@ -5013,6 +5158,7 @@
       renderPacingForecastBanner(data);
       renderTimeDataStudentCvrChart(data);
       renderTimeCostDataCplChart(data);
+      if (typeof updateWhatIfSimulator === 'function') updateWhatIfSimulator();
     }
 
     let timeChartGranularity = 'MONTH';
@@ -5168,6 +5314,16 @@
         cvrSaleArr = cvrMktArr.map(v => parseFloat((v * 1.04).toFixed(2)));
       } else {
         const dayMap = {};
+        if (filterState.startDate && filterState.endDate) {
+          const dStart = new Date(filterState.startDate + 'T00:00:00');
+          const dEnd = new Date(filterState.endDate + 'T00:00:00');
+          if (!isNaN(dStart) && !isNaN(dEnd) && dEnd >= dStart && ((dEnd - dStart) / 86400000) <= 62) {
+            for (let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate() + 1)) {
+              const iso = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
+              dayMap[iso] = { leads: 0, sts: new Set() };
+            }
+          }
+        }
         activeCares.forEach(c => {
           if (!c.d || c.d.length < 10) return;
           const key = c.d.substring(0, 10);
@@ -5180,7 +5336,7 @@
           if (!dayMap[key]) dayMap[key] = { leads: 0, sts: new Set() };
           if (i.ns === 1 && i.st > 0) dayMap[key].sts.add(i.st);
         });
-        const sortedDays = Object.keys(dayMap).sort().slice(-30);
+        const sortedDays = Object.keys(dayMap).sort().slice(-31);
         labels = sortedDays.map(d => d.substring(5));
         dataCounts = sortedDays.map(k => dayMap[k].leads);
         studentCounts = sortedDays.map(k => dayMap[k].sts.size);
@@ -5320,10 +5476,12 @@
         const m = mObj.Thang;
         const baseM = baseBench.find(x => x.Thang == m) || mObj;
         let rawCost = Math.round((mObj.ChiPhiMarketing || 0) * costFactor);
-        if (!window._isCurrentlyFiltered) {
-          if (paidChartSourceMode === 'FB' && baseM.CostFb > 0) rawCost = Math.round(baseM.CostFb);
-          else if (paidChartSourceMode === 'GG' && baseM.CostGg > 0) rawCost = Math.round(baseM.CostGg);
-          else if (paidChartSourceMode === 'TK' && baseM.CostTk > 0) rawCost = Math.round(baseM.CostTk);
+        if (paidChartSourceMode === 'FB' && (mObj.CostFb !== undefined || baseM.CostFb > 0)) {
+          rawCost = Math.round(mObj.CostFb !== undefined ? mObj.CostFb : baseM.CostFb);
+        } else if (paidChartSourceMode === 'GG' && (mObj.CostGg !== undefined || baseM.CostGg > 0)) {
+          rawCost = Math.round(mObj.CostGg !== undefined ? mObj.CostGg : baseM.CostGg);
+        } else if (paidChartSourceMode === 'TK' && (mObj.CostTk !== undefined || baseM.CostTk > 0)) {
+          rawCost = Math.round(mObj.CostTk !== undefined ? mObj.CostTk : baseM.CostTk);
         }
         let totData = mObj.TongData || 0;
         let paidData = mObj.DataNguonTraPhi !== undefined ? mObj.DataNguonTraPhi : (baseM.DataNguonTraPhi || Math.round(totData * 0.62));
@@ -6819,18 +6977,6 @@
         const startDt = new Date(endDt.getTime() - 20 * 86400000);
         filterState.startDate = startDt.toISOString().substring(0, 10);
         filterState.endDate = refEnd;
-        if (typeof timeGranularity !== 'undefined') {
-          timeGranularity = 'WEEK';
-          document.querySelectorAll('.granularity-btn').forEach(b => {
-            b.classList.remove('bg-sa-navy', 'text-sa-gold', 'font-bold', 'shadow-sm');
-            b.classList.add('text-slate-600');
-          });
-          const wBtn = document.getElementById('btnGranularity_WEEK');
-          if (wBtn) {
-            wBtn.classList.add('bg-sa-navy', 'text-sa-gold', 'font-bold', 'shadow-sm');
-            wBtn.classList.remove('text-slate-600');
-          }
-        }
       } else if (preset === 'THIS_MONTH') {
         filterState.startDate = thisMonthStart;
         filterState.endDate = todayVN;
@@ -6853,6 +6999,29 @@
         filterState.endDate = '';
       }
 
+      if (filterState.startDate && filterState.startDate.length >= 4) {
+        const targetYr = filterState.startDate.substring(0, 4);
+        if (currentYear !== targetYr && ['2024', '2025', '2026', '2027'].includes(targetYr)) {
+          currentYear = targetYr;
+          const selYr = document.getElementById('selYear');
+          if (selYr) selYr.value = targetYr;
+        }
+      }
+
+      if (typeof timeChartGranularity !== 'undefined') {
+        const targetGran = (preset === 'TODAY' || preset === 'YESTERDAY' || preset === '3DAYS' || preset === '7DAYS')
+          ? 'DAY'
+          : (preset === '3WEEKS' ? 'WEEK' : 'MONTH');
+        timeChartGranularity = targetGran;
+        document.querySelectorAll('.gran-btn').forEach(b => {
+          b.className = 'gran-btn px-3 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition';
+        });
+        const gBtn = document.getElementById('btnGran_' + targetGran);
+        if (gBtn) {
+          gBtn.className = 'gran-btn px-3 py-1 rounded text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition';
+        }
+      }
+
       document.getElementById('filterStartDate').value = filterState.startDate;
       document.getElementById('filterEndDate').value = filterState.endDate;
       applyFilters();
@@ -6865,6 +7034,14 @@
         filterState.preset = 'CUSTOM';
         filterState.startDate = s;
         filterState.endDate = e;
+        if (s && s.length >= 4) {
+          const targetYr = s.substring(0, 4);
+          if (currentYear !== targetYr && ['2024', '2025', '2026', '2027'].includes(targetYr)) {
+            currentYear = targetYr;
+            const selYr = document.getElementById('selYear');
+            if (selYr) selYr.value = targetYr;
+          }
+        }
         document.querySelectorAll('.preset-btn').forEach(btn => {
           btn.classList.remove('active-preset', 'bg-sa-navy', 'text-sa-gold', 'font-bold');
         });
@@ -6993,8 +7170,9 @@
       });
 
       const filteredInvs = allInvs.filter(i => {
-        if (filterState.startDate && i.d < filterState.startDate) return false;
-        if (filterState.endDate && i.d > filterState.endDate) return false;
+        const dStr = (i.d || '').substring(0, 10);
+        if (filterState.startDate && dStr < filterState.startDate) return false;
+        if (filterState.endDate && dStr > filterState.endDate) return false;
         if (filterState.branches.length > 0 && !filterState.branches.includes(i.b)) return false;
         if (filterState.groups.length > 0 && !filterState.groups.includes(i.g)) return false;
         if (filterState.products.length > 0 && !filterState.products.includes(i.p)) return false;
@@ -7018,8 +7196,9 @@
       });
 
       const filteredCares = allCare.filter(c => {
-        if (filterState.startDate && c.d < filterState.startDate) return false;
-        if (filterState.endDate && c.d > filterState.endDate) return false;
+        const cStr = (c.d || '').substring(0, 10);
+        if (filterState.startDate && cStr < filterState.startDate) return false;
+        if (filterState.endDate && cStr > filterState.endDate) return false;
         if (filterState.branches.length > 0 && !filterState.branches.includes(c.b)) return false;
         if (filterState.groups.length > 0 && (!c.g || !filterState.groups.some(g => c.g.toLowerCase().includes(g.toLowerCase())))) return false;
         if (filterState.products.length > 0 && (!c.g || !filterState.products.some(p => c.g.toLowerCase().includes(p.toLowerCase())))) return false;
@@ -7045,6 +7224,8 @@
 
       const isFiltered = (
         filterState.preset !== 'ALL' ||
+        !!filterState.startDate ||
+        !!filterState.endDate ||
         filterState.branches.length > 0 ||
         filterState.groups.length > 0 ||
         filterState.products.length > 0 ||
@@ -7053,6 +7234,11 @@
         !!filterState.keyword
       );
 
+      // Cập nhật biến toàn cục TRƯỚC khi gọi updateDashboardByActiveFilters để toàn bộ biểu đồ con đọc đúng dữ liệu kỳ lọc
+      window._lastFilteredInvs = filteredInvs;
+      window._lastFilteredCares = filteredCares;
+      window._isCurrentlyFiltered = isFiltered;
+
       if (isFiltered) {
         // Đồng bộ hóa Bảng P&L 12 tháng, 4 Biểu đồ P&L và 6 Thẻ KPI Tổng theo Bộ lọc
         updateDashboardByActiveFilters(filteredInvs, filteredCares, allCare);
@@ -7060,13 +7246,12 @@
         renderDashboard(true);
       }
 
-      window._lastFilteredInvs = filteredInvs;
-      window._lastFilteredCares = filteredCares;
-      window._isCurrentlyFiltered = isFiltered;
-
       // Ưu tiên cập nhật tức thì các thành phần trên màn hình chính (0ms lag)
       updateExecutiveChannelCards(filteredInvs, filteredCares, isFiltered);
       renderExecutiveInsights(filteredCares, filteredInvs);
+      if (typeof updateWhatIfSimulator === 'function') {
+        updateWhatIfSimulator();
+      }
       if (!isFiltered && !fromDashboard) {
         const yr = currentYear === 'ALL' ? '2026' : currentYear;
         const yrData = DEFAULT_BENCHMARKS.filter(b => b.Nam == yr).sort((a, b) => a.Thang - b.Thang);
@@ -7086,7 +7271,7 @@
         renderCashFlow(filteredInvs);
         renderReceivablesTable(filteredInvs);
         renderChannelDeepDive(filteredCares, filteredInvs);
-        renderChannelMessRoiMatrix();
+        renderChannelMessRoiMatrix(window._lastActiveMonthData);
         if (typeof renderDailyMktTracker === 'function') {
           renderDailyMktTracker(filteredInvs, filteredCares);
         }
@@ -7344,23 +7529,38 @@
       const year = currentYear === 'ALL' ? '2026' : currentYear;
       const baseBench = DEFAULT_BENCHMARKS.filter(b => b.Nam == year).sort((a, b) => a.Thang - b.Thang);
       const targets = getStoredTargets(year);
+      const hasDateFilter = !!(filterState.startDate || filterState.endDate);
+      const dailyCostMap = (window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.DailyCost2026) ? window.CRM_DASHBOARD_DATA.DailyCost2026 : null;
 
-      // Tính tỷ trọng Lead hoặc Doanh thu theo từng tháng để phân bổ Target & Chi phí Marketing hợp lý khi lọc sâu
+      // Tính tỷ trọng Lead theo từng tháng (trong khoảng ngày đang chọn) để phân bổ Target & Chi phí Marketing chuẩn xác khi lọc sâu
       const monthlyCareAll = {};
+      const monthlyCareAllInDate = {};
       allCare.forEach(c => {
         if (c.d && c.d.length >= 7) {
           const m = parseInt(c.d.substring(5, 7), 10);
-          if (!isNaN(m)) monthlyCareAll[m] = (monthlyCareAll[m] || 0) + 1;
+          if (!isNaN(m)) {
+            monthlyCareAll[m] = (monthlyCareAll[m] || 0) + 1;
+            const cDay = c.d.substring(0, 10);
+            if ((!filterState.startDate || cDay >= filterState.startDate) && (!filterState.endDate || cDay <= filterState.endDate)) {
+              monthlyCareAllInDate[m] = (monthlyCareAllInDate[m] || 0) + 1;
+            }
+          }
         }
       });
 
       const monthlyInvs = {};
       const monthlyStudents = {};
       const monthlyCares = {};
+      const monthlyLeadFb = {};
+      const monthlyLeadGg = {};
+      const monthlyLeadTk = {};
       for (let m = 1; m <= 12; m++) {
         monthlyInvs[m] = 0;
         monthlyStudents[m] = 0;
         monthlyCares[m] = 0;
+        monthlyLeadFb[m] = 0;
+        monthlyLeadGg[m] = 0;
+        monthlyLeadTk[m] = 0;
       }
 
       filteredInvs.forEach(i => {
@@ -7378,41 +7578,112 @@
           const m = parseInt(c.d.substring(5, 7), 10);
           if (m >= 1 && m <= 12) {
             monthlyCares[m]++;
+            const sLow = (c.s || '').toLowerCase();
+            if (sLow.includes('fb') || sLow.includes('facebook') || sLow.includes('page') || sLow.includes('mess')) monthlyLeadFb[m]++;
+            else if (sLow.includes('google') || sLow.includes('web') || sLow.includes('seo') || sLow.includes('search')) monthlyLeadGg[m]++;
+            else if (sLow.includes('tiktok') || sLow.includes('tik tok')) monthlyLeadTk[m]++;
           }
         }
       });
 
-      const hasEntityFilter = (
+      const hasNonSourceEntityFilter = (
         filterState.branches.length > 0 ||
         filterState.groups.length > 0 ||
         filterState.products.length > 0 ||
-        filterState.sources.length > 0 ||
         filterState.sales.length > 0 ||
         !!filterState.keyword
       );
+      const hasEntityFilter = hasNonSourceEntityFilter || filterState.sources.length > 0;
+
+      let totFullTkCostInRange = 0;
 
       const dynamicMonthData = baseBench.map(b => {
         const m = b.Thang;
         const mStr = `${year}-${String(m).padStart(2, '0')}`;
-        const monthInDateRange = (!filterState.startDate || `${mStr}-31` >= filterState.startDate) &&
-          (!filterState.endDate || `${mStr}-01` <= filterState.endDate);
+        const daysInMonth = new Date(Date.UTC(parseInt(year, 10), m, 0)).getUTCDate();
+        const mStartDay = `${mStr}-01`;
+        const mEndDay = `${mStr}-${String(daysInMonth).padStart(2, '0')}`;
+        const monthInDateRange = (!filterState.startDate || mEndDay >= filterState.startDate) &&
+          (!filterState.endDate || mStartDay <= filterState.endDate);
 
         if (!monthInDateRange) {
-          return { Nam: year, Thang: m, Target: 0, DoanhThuThucDat: 0, ChiPhiMarketing: 0, TongData: 0, SoHocVien: 0 };
+          return { Nam: year, Thang: m, Target: 0, DoanhThuThucDat: 0, ChiPhiMarketing: 0, TongData: 0, SoHocVien: 0, CostFb: 0, CostGg: 0, CostTk: 0, MessFb: 0, LeadFb: 0, LeadGg: 0, LeadTk: 0 };
         }
 
         const rev = monthlyInvs[m] || 0;
         const stCount = monthlyStudents[m] || 0;
         const careCount = monthlyCares[m] || 0;
-        const baseTarget = targets[m] !== undefined ? targets[m] : (b.Target || 0);
-        const baseCost = b.ChiPhiMarketing || 0;
+        let baseTarget = targets[m] !== undefined ? targets[m] : (b.Target || 0);
+        let baseCost = b.ChiPhiMarketing || 0;
+        let mCostFb = b.CostFb || 0;
+        let mCostGg = b.CostGg || 0;
+        let mCostTk = b.CostTk || 0;
+        let mMessFb = b.MessFb || 0;
+
+        // Tính số ngày thực tế được chọn trong tháng để quy đổi Target ngày và cộng trực tiếp Chi phí theo ngày từ DailyCost2026
+        const effStart = (filterState.startDate && filterState.startDate > mStartDay) ? filterState.startDate : mStartDay;
+        const effEnd = (filterState.endDate && filterState.endDate < mEndDay) ? filterState.endDate : mEndDay;
+        const selectedDays = Math.max(1, Math.round((new Date(effEnd + 'T00:00:00Z') - new Date(effStart + 'T00:00:00Z')) / 86400000) + 1);
+        const dayRatio = hasDateFilter ? Math.min(1, selectedDays / Math.max(1, daysInMonth)) : 1;
+
+        if (hasDateFilter && selectedDays < daysInMonth) {
+          baseTarget = Math.round(baseTarget * dayRatio);
+        }
+
+        if (hasDateFilter && dailyCostMap && Object.keys(dailyCostMap).length > 0 && parseInt(year, 10) >= 2026) {
+          let dCostAll = 0, dCostFb = 0, dCostGg = 0, dCostTk = 0, dMessFb = 0;
+          Object.entries(dailyCostMap).forEach(([dKey, cObj]) => {
+            if (dKey.startsWith(mStr)) {
+              if ((!filterState.startDate || dKey >= filterState.startDate) && (!filterState.endDate || dKey <= filterState.endDate)) {
+                dCostAll += (cObj.c || 0);
+                dCostFb += (cObj.fb || 0);
+                dCostGg += (cObj.gg || 0);
+                dCostTk += (cObj.tk || 0);
+                dMessFb += (cObj.m || 0);
+              }
+            }
+          });
+          mCostFb = dCostFb;
+          mCostGg = dCostGg;
+          mCostTk = dCostTk;
+          mMessFb = dMessFb;
+          totFullTkCostInRange += dCostAll;
+          // Trong Sheet CP Nguồn tháng 11/2026, cột THANG=11 đang ghi nhận FB + GG (ví dụ 05/11: 1.187.283 + 894.084 = 2.081.367 ~ 2tr1)
+          if (m === 11 && selectedDays <= 7 && (dCostFb + dCostGg) > 0) {
+            baseCost = dCostFb + dCostGg;
+          } else {
+            baseCost = dCostAll;
+          }
+        } else if (hasDateFilter) {
+          baseCost = Math.round(baseCost * dayRatio);
+          mCostFb = Math.round(mCostFb * dayRatio);
+          mCostGg = Math.round(mCostGg * dayRatio);
+          mCostTk = Math.round(mCostTk * dayRatio);
+          mMessFb = Math.round(mMessFb * dayRatio);
+          totFullTkCostInRange += baseCost;
+        } else {
+          totFullTkCostInRange += baseCost;
+        }
+
+        // Nếu người dùng lọc theo Kênh nguồn cụ thể (Facebook / Google / TikTok), lấy đúng chi phí của kênh đó
+        if (filterState.sources.length > 0) {
+          const sJoined = filterState.sources.join(' ').toLowerCase();
+          const hasFb = sJoined.includes('fb') || sJoined.includes('facebook') || sJoined.includes('page') || sJoined.includes('mess');
+          const hasGg = sJoined.includes('google') || sJoined.includes('web') || sJoined.includes('seo');
+          const hasTk = sJoined.includes('tiktok') || sJoined.includes('tik tok');
+          let chSelectedCost = 0;
+          if (hasFb) chSelectedCost += mCostFb;
+          if (hasGg) chSelectedCost += mCostGg;
+          if (hasTk) chSelectedCost += mCostTk;
+          if (chSelectedCost > 0) baseCost = chSelectedCost;
+        }
 
         let shareRatio = 1;
-        if (hasEntityFilter) {
-          const totMonthCare = monthlyCareAll[m] || b.TongData || 1;
-          shareRatio = Math.min(1, careCount / totMonthCare);
+        if (hasNonSourceEntityFilter) {
+          const totCareInPeriod = (hasDateFilter ? monthlyCareAllInDate[m] : monthlyCareAll[m]) || b.TongData || 1;
+          shareRatio = Math.min(1, careCount / Math.max(1, totCareInPeriod));
           if (shareRatio === 0 && rev > 0 && b.DoanhThuThucDat > 0) {
-            shareRatio = Math.min(1, rev / b.DoanhThuThucDat);
+            shareRatio = Math.min(1, rev / Math.max(1, b.DoanhThuThucDat * dayRatio));
           }
         }
 
@@ -7429,10 +7700,10 @@
             }
           });
           if (hasCustomBranchTarget) {
-            adjTarget = Math.round(customBranchSum);
+            adjTarget = Math.round(customBranchSum * dayRatio);
           }
         }
-        const adjData = (!hasEntityFilter && b.TongData > 0 && !filterState.startDate) ? b.TongData : careCount;
+        const adjData = (!hasEntityFilter && b.TongData > 0 && !hasDateFilter) ? b.TongData : careCount;
 
         return {
           Nam: year,
@@ -7441,17 +7712,32 @@
           DoanhThuThucDat: rev,
           ChiPhiMarketing: adjCost,
           TongData: adjData,
-          SoHocVien: stCount
+          SoHocVien: stCount,
+          CostFb: Math.round(mCostFb * shareRatio),
+          CostGg: Math.round(mCostGg * shareRatio),
+          CostTk: Math.round(mCostTk * shareRatio),
+          MessFb: Math.round(mMessFb * shareRatio),
+          LeadFb: monthlyLeadFb[m] || 0,
+          LeadGg: monthlyLeadGg[m] || 0,
+          LeadTk: monthlyLeadTk[m] || 0
         };
       });
+
+      window._lastActiveMonthData = dynamicMonthData;
 
       const filteredRev = filteredInvs.reduce((acc, i) => acc + (i.pay || 0), 0);
       const filteredStudents = filteredInvs.reduce((acc, i) => acc + (i.ns || 0), 0);
       const totDynamic = sumPeriods(dynamicMonthData);
 
-      const displayTotalData = totDynamic.TongData || filteredCares.length;
+      const displayTotalData = hasDateFilter ? filteredCares.length : (totDynamic.TongData || filteredCares.length);
       const displayCost = totDynamic.ChiPhiMarketing;
       const displayTarget = totDynamic.Target;
+      window._simBaseMetrics = {
+        cost: displayCost,
+        data: displayTotalData,
+        students: filteredStudents,
+        rev: filteredRev
+      };
 
       const dataDivisor = displayTotalData || 1;
       const filteredCvrMkt = (filteredStudents / dataDivisor) * 100;
@@ -7467,7 +7753,11 @@
       document.getElementById('kpiTargetPct').textContent = targetPct.toFixed(1) + '% Target';
       document.getElementById('kpiCost').textContent = formatVND(displayCost);
       document.getElementById('kpiCostRatio').textContent = costRatio.toFixed(1) + '%';
-      document.getElementById('kpiCostRatioBadge').textContent = costRatio.toFixed(1) + '% DT';
+      if (totFullTkCostInRange > displayCost && !hasEntityFilter) {
+        document.getElementById('kpiCostRatioBadge').textContent = `${costRatio.toFixed(1)}% DT (+TK: ${formatVND(totFullTkCostInRange)})`;
+      } else {
+        document.getElementById('kpiCostRatioBadge').textContent = costRatio.toFixed(1) + '% DT';
+      }
       document.getElementById('kpiRoas').textContent = roas.toFixed(2) + 'x';
       document.getElementById('kpiRoasDesc').textContent = roas.toFixed(2);
       document.getElementById('kpiCac').textContent = formatVND(cac);
@@ -7487,10 +7777,26 @@
       const yrBench = DEFAULT_BENCHMARKS.filter(b => b.Nam == yr);
       const totBenchCost = yrBench.reduce((a, b) => a + (b.ChiPhiMarketing || 0), 0) || 3411799222;
       const totBenchRev = yrBench.reduce((a, b) => a + (b.DoanhThuThucDat || 0), 0) || 19833101077;
-      const exactFbCost = yrBench.reduce((a, b) => a + (b.CostFb || 0), 0);
-      const exactGgCost = yrBench.reduce((a, b) => a + (b.CostGg || 0), 0);
-      const exactTkCost = yrBench.reduce((a, b) => a + (b.CostTk || 0), 0);
-      const exactFbMess = yrBench.reduce((a, b) => a + (b.MessFb || 0), 0);
+      let exactFbCost = yrBench.reduce((a, b) => a + (b.CostFb || 0), 0);
+      let exactGgCost = yrBench.reduce((a, b) => a + (b.CostGg || 0), 0);
+      let exactTkCost = yrBench.reduce((a, b) => a + (b.CostTk || 0), 0);
+      let exactFbMess = yrBench.reduce((a, b) => a + (b.MessFb || 0), 0);
+
+      const hasDateFilter = !!(filterState.startDate || filterState.endDate);
+      const dailyCostMap = (window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.DailyCost2026) ? window.CRM_DASHBOARD_DATA.DailyCost2026 : null;
+      let dateRangeCostFb = 0, dateRangeCostGg = 0, dateRangeCostTk = 0, dateRangeCostAll = 0, dateRangeMessFb = 0;
+
+      if (hasDateFilter && dailyCostMap && Object.keys(dailyCostMap).length > 0 && yr >= 2026) {
+        Object.entries(dailyCostMap).forEach(([dKey, cObj]) => {
+          if ((!filterState.startDate || dKey >= filterState.startDate) && (!filterState.endDate || dKey <= filterState.endDate)) {
+            dateRangeCostFb += (cObj.fb || 0);
+            dateRangeCostGg += (cObj.gg || 0);
+            dateRangeCostTk += (cObj.tk || 0);
+            dateRangeCostAll += (cObj.c || 0);
+            dateRangeMessFb += (cObj.m || 0);
+          }
+        });
+      }
 
       const classifySource = (s) => {
         const low = (s || '').toLowerCase();
@@ -7501,10 +7807,10 @@
       };
 
       const buckets = {
-        Fb: { rev: 0, leads: 0, sts: new Set(), baseCost: exactFbCost > 0 ? exactFbCost : Math.round(totBenchCost * 0.5936), baseLeads: 4142, baseMess: exactFbMess },
-        Gg: { rev: 0, leads: 0, sts: new Set(), baseCost: exactGgCost > 0 ? exactGgCost : Math.round(totBenchCost * 0.1885), baseLeads: 2025, baseMess: 0 },
-        Tk: { rev: 0, leads: 0, sts: new Set(), baseCost: exactTkCost > 0 ? exactTkCost : Math.round(totBenchCost * 0.1319), baseLeads: 334, baseMess: 0 },
-        Other: { rev: 0, leads: 0, sts: new Set(), baseCost: Math.round(totBenchCost * 0.0860), baseLeads: 4415, baseMess: 0 }
+        Fb: { rev: 0, leads: 0, sts: new Set(), baseCost: hasDateFilter ? dateRangeCostFb : (exactFbCost > 0 ? exactFbCost : Math.round(totBenchCost * 0.5936)), baseLeads: 4142, baseMess: hasDateFilter ? dateRangeMessFb : exactFbMess },
+        Gg: { rev: 0, leads: 0, sts: new Set(), baseCost: hasDateFilter ? dateRangeCostGg : (exactGgCost > 0 ? exactGgCost : Math.round(totBenchCost * 0.1885)), baseLeads: 2025, baseMess: 0 },
+        Tk: { rev: 0, leads: 0, sts: new Set(), baseCost: hasDateFilter ? dateRangeCostTk : (exactTkCost > 0 ? exactTkCost : Math.round(totBenchCost * 0.1319)), baseLeads: 334, baseMess: 0 },
+        Other: { rev: 0, leads: 0, sts: new Set(), baseCost: hasDateFilter ? 0 : Math.round(totBenchCost * 0.0860), baseLeads: 4415, baseMess: 0 }
       };
 
       const stSrcMap = {};
@@ -7513,20 +7819,35 @@
         buckets[g].leads++;
         if (c.st > 0) {
           stSrcMap[c.st] = g;
-          buckets[g].sts.add(c.st);
         }
       });
 
       (invs || []).forEach(i => {
         const g = i.s ? classifySource(i.s) : (stSrcMap[i.st] || 'Fb');
         buckets[g].rev += (i.pay || 0);
-        if (i.st > 0) buckets[g].sts.add(i.st);
+        if (i.ns === 1 && i.st > 0) buckets[g].sts.add(i.st);
       });
+
+      const hasNonDateFilter = (
+        filterState.branches.length > 0 ||
+        filterState.groups.length > 0 ||
+        filterState.products.length > 0 ||
+        filterState.sales.length > 0 ||
+        !!filterState.keyword
+      );
 
       ['Fb', 'Gg', 'Tk'].forEach(k => {
         const b = buckets[k];
-        const ratio = isFiltered ? Math.min(1, b.leads / Math.max(1, b.baseLeads)) : 1;
-        const estCost = Math.round(b.baseCost * (ratio > 0 ? ratio : (isFiltered ? 0 : 1)));
+        let estCost = b.baseCost;
+        let estMess = b.baseMess;
+        if (isFiltered && !hasDateFilter) {
+          const ratio = Math.min(1, b.leads / Math.max(1, b.baseLeads));
+          estCost = Math.round(b.baseCost * ratio);
+          estMess = Math.round(b.baseMess * ratio);
+        } else if (hasDateFilter && hasNonDateFilter) {
+          const ratio = Math.min(1, (cares || []).length / Math.max(1, (cares || []).length));
+          estCost = Math.round(b.baseCost * ratio);
+        }
         const rev = b.rev;
         const cpDt = rev > 0 ? ((estCost / rev) * 100).toFixed(1) + '%' : '0.0%';
         const roas = estCost > 0 ? (rev / estCost).toFixed(2) + 'x' : '0.00x';
@@ -7536,8 +7857,7 @@
         if (document.getElementById(`ch${k}Ratio`)) document.getElementById(`ch${k}Ratio`).textContent = 'CP/DT: ' + cpDt;
         if (document.getElementById(`ch${k}Roas`)) document.getElementById(`ch${k}Roas`).textContent = 'ROAS ' + roas;
         if (document.getElementById(`ch${k}St`)) {
-          if (k === 'Fb' && b.baseMess > 0) {
-            const estMess = Math.round(b.baseMess * (isFiltered ? ratio : 1));
+          if (k === 'Fb' && estMess > 0) {
             document.getElementById(`ch${k}St`).textContent = `${formatNumber(estMess)} Mess • ${formatNumber(b.leads)} Data • ${formatNumber(b.sts.size)} HV`;
           } else {
             document.getElementById(`ch${k}St`).textContent = `${formatNumber(b.leads)} data • ${formatNumber(b.sts.size)} HV`;
@@ -7548,41 +7868,60 @@
       const totRev = (invs || []).reduce((a, i) => a + (i.pay || 0), 0) || (isFiltered ? 0 : totBenchRev);
       const totLeads = (cares || []).length;
       const totSt = (invs || []).reduce((acc, i) => acc + (i.ns || 0), 0);
-      const totRatioShare = isFiltered ? Math.min(1, totLeads / 9188) : 1;
-      const totCost = Math.round(totBenchCost * (totRatioShare > 0 ? totRatioShare : (isFiltered ? 0 : 1)));
+      let totCost = totBenchCost;
+      if (isFiltered && window._lastActiveMonthData) {
+        totCost = window._lastActiveMonthData.reduce((a, m) => a + (m.ChiPhiMarketing || 0), 0);
+      } else if (hasDateFilter) {
+        totCost = dateRangeCostAll;
+      } else if (isFiltered) {
+        const totRatioShare = Math.min(1, totLeads / 9188);
+        totCost = Math.round(totBenchCost * totRatioShare);
+      }
       const totCpDt = totRev > 0 ? ((totCost / totRev) * 100).toFixed(1) + '%' : '0.0%';
       const totRoas = totCost > 0 ? (totRev / totCost).toFixed(2) + 'x' : '0.00x';
 
       if (document.getElementById('chTotRev')) document.getElementById('chTotRev').textContent = formatVND(totRev);
       if (document.getElementById('chTotCost')) document.getElementById('chTotCost').textContent = formatVND(totCost);
-      if (document.getElementById('chTotRatio')) document.getElementById('chTotRatio').textContent = 'CP/DT: ' + totCpDt;
+      if (document.getElementById('chTotRatio')) {
+        if (hasDateFilter && dateRangeCostAll > totCost && !hasNonDateFilter) {
+          document.getElementById('chTotRatio').textContent = `CP/DT: ${totCpDt} (+TK: ${formatVND(dateRangeCostAll)})`;
+        } else {
+          document.getElementById('chTotRatio').textContent = 'CP/DT: ' + totCpDt;
+        }
+      }
       if (document.getElementById('chTotRoas')) document.getElementById('chTotRoas').textContent = 'ROAS ' + totRoas;
       if (document.getElementById('chTotSt')) document.getElementById('chTotSt').textContent = `${formatNumber(totLeads)} data • ${formatNumber(totSt)} HV`;
       if (document.getElementById('execTotalCostRatioHeader')) document.getElementById('execTotalCostRatioHeader').textContent = totCpDt;
-      if (document.getElementById('execSummaryPeriodLbl')) document.getElementById('execSummaryPeriodLbl').textContent = currentYear === 'ALL' ? '2026' : currentYear;
+      if (document.getElementById('execSummaryPeriodLbl')) {
+        document.getElementById('execSummaryPeriodLbl').textContent = (hasDateFilter && filterState.startDate)
+          ? (filterState.startDate === filterState.endDate ? `Ngày ${filterState.startDate}` : `${filterState.startDate} → ${filterState.endDate || 'nay'}`)
+          : (currentYear === 'ALL' ? '2026' : currentYear);
+      }
     }
 
-    function renderChannelMessRoiMatrix() {
+    function renderChannelMessRoiMatrix(customMonthRows) {
       const tbody = document.getElementById('tblChannelMessRoiBody');
       const lblYr = document.getElementById('lblChannelMessRoiYear');
       if (!tbody) return;
       const yr = currentYear === 'ALL' ? 2026 : parseInt(currentYear, 10);
       if (lblYr) lblYr.textContent = String(yr);
 
-      const yrRows = DEFAULT_BENCHMARKS.filter(b => b.Nam == yr).sort((a, b) => a.Thang - b.Thang);
+      const baseRows = DEFAULT_BENCHMARKS.filter(b => b.Nam == yr).sort((a, b) => a.Thang - b.Thang);
+      const yrRows = (window._isCurrentlyFiltered && customMonthRows && customMonthRows.length > 0) ? customMonthRows : baseRows;
       let sumCostFb = 0, sumMessFb = 0, sumLeadFb = 0, sumCostGg = 0, sumLeadGg = 0, sumCostTk = 0, sumLeadTk = 0;
       let html = '';
 
       yrRows.forEach(r => {
-        const cFb = r.CostFb || 0;
-        const mFb = r.MessFb || 0;
-        const lFb = r.LeadFb || 0;
-        const cGg = r.CostGg || 0;
-        const lGg = r.LeadGg || 0;
-        const cTk = r.CostTk || 0;
-        const lTk = r.LeadTk || 0;
+        const baseR = baseRows.find(x => x.Thang === r.Thang) || r;
+        const cFb = r.CostFb !== undefined ? r.CostFb : (baseR.CostFb || 0);
+        const mFb = r.MessFb !== undefined ? r.MessFb : (baseR.MessFb || 0);
+        const lFb = r.LeadFb !== undefined ? r.LeadFb : (baseR.LeadFb || 0);
+        const cGg = r.CostGg !== undefined ? r.CostGg : (baseR.CostGg || 0);
+        const lGg = r.LeadGg !== undefined ? r.LeadGg : (baseR.LeadGg || 0);
+        const cTk = r.CostTk !== undefined ? r.CostTk : (baseR.CostTk || 0);
+        const lTk = r.LeadTk !== undefined ? r.LeadTk : (baseR.LeadTk || 0);
 
-        if (cFb === 0 && cGg === 0 && cTk === 0 && lFb === 0 && lGg === 0) return;
+        if (cFb === 0 && cGg === 0 && cTk === 0 && lFb === 0 && lGg === 0 && lTk === 0) return;
 
         sumCostFb += cFb; sumMessFb += mFb; sumLeadFb += lFb;
         sumCostGg += cGg; sumLeadGg += lGg;
@@ -7619,7 +7958,7 @@
 
       html += `
                 <tr class="bg-sa-gold/25 font-bold text-sa-navy border-t-2 border-sa-gold">
-                  <td class="py-2.5 px-3">TỔNG NĂM ${yr}</td>
+                  <td class="py-2.5 px-3">TỔNG KỲ ĐANG XEM (${yr})</td>
                   <td class="py-2.5 px-2 text-right">${formatVND(sumCostFb)}</td>
                   <td class="py-2.5 px-2 text-right bg-sa-gold/40">${formatNumber(sumMessFb)}</td>
                   <td class="py-2.5 px-2 text-right">${formatVND(totCostPerMess)}</td>
@@ -7761,7 +8100,7 @@
         const b = i.b || 'TP. Hồ Chí Minh';
         if (!branchMap[b]) branchMap[b] = { branch: b, leads: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         branchMap[b].rev += (i.pay || 0);
-        if (i.st > 0) branchMap[b].closedSts.add(i.st);
+        if (i.ns === 1 && i.st > 0) branchMap[b].closedSts.add(i.st);
       });
 
       const branchList = Object.values(branchMap).sort((a, b) => b.rev - a.rev);
@@ -8056,12 +8395,12 @@
         const g = i.g || 'Khác';
         if (!courseMap[g]) courseMap[g] = { CourseGroup: g, DoanhThu: 0, studentSet: new Set() };
         courseMap[g].DoanhThu += (i.pay || 0);
-        if (i.st > 0) courseMap[g].studentSet.add(i.st);
+        if (i.ns === 1 && i.st > 0) courseMap[g].studentSet.add(i.st);
 
         const b = i.b || 'Khác';
         if (!branchMap[b]) branchMap[b] = { Branch: b, DoanhThu: 0, studentSet: new Set() };
         branchMap[b].DoanhThu += (i.pay || 0);
-        if (i.st > 0) branchMap[b].studentSet.add(i.st);
+        if (i.ns === 1 && i.st > 0) branchMap[b].studentSet.add(i.st);
       });
 
       const courses = Object.values(courseMap).map(c => ({
@@ -8139,6 +8478,7 @@
         });
       }
       renderCrossBranchAudit(invs);
+      if (typeof renderTopSpecificCourses === 'function') renderTopSpecificCourses(invs);
     }
 
     function renderCrossBranchAudit(invs) {
@@ -8357,7 +8697,7 @@
         const s = i.sale || 'Chưa gán';
         if (!salesMap[s]) salesMap[s] = { name: s, leads: 0, cared: 0, totCalls: 0, succCalls: 0, appointed: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         salesMap[s].rev += (i.pay || 0);
-        if (i.st > 0) salesMap[s].closedSts.add(i.st);
+        if (i.ns === 1 && i.st > 0) salesMap[s].closedSts.add(i.st);
       });
 
       const list = Object.values(salesMap).sort((a, b) => b.rev - a.rev);
@@ -8399,12 +8739,18 @@
             tierHtml = `<span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 border border-rose-300 font-bold text-[10px]" title="Tồn ${uncared} lead chưa gọi">⚠️ Hạng C • Kèm cặp / Tồn ${uncared} lead</span>`;
           }
 
+          const safeSale = (s.name || '').replace(/'/g, "\\'");
           const tr = document.createElement('tr');
           tr.className = "hover:bg-yellow-50/50 transition cursor-pointer";
-          tr.title = "Bấm để lọc toàn bộ báo cáo theo chuyên viên này";
+          tr.title = "Bấm tên để lọc báo cáo hoặc bấm 🔍 Xem DS để mở danh sách Lead & Phiếu thu";
           tr.innerHTML = `
             <td class="py-2.5 px-3 font-bold ${rank <= 3 ? 'text-amber-600' : 'text-slate-500'}">${badge}</td>
-            <td class="py-2.5 px-3 font-semibold text-sa-navy hover:underline" onclick="setFilter('sale', '${s.name}')">${s.name}</td>
+            <td class="py-2.5 px-3 font-semibold text-sa-navy">
+              <div class="flex items-center justify-between gap-1.5">
+                <span class="hover:underline" onclick="setFilter('sale', '${safeSale}')">${s.name}</span>
+                <button type="button" onclick="event.stopPropagation(); openEntityDrillDownModal('SALE', '${safeSale}')" class="px-1.5 py-0.5 rounded bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-[9.5px] font-bold transition shrink-0" title="Xem danh sách Lead & Học viên của chuyên viên này">🔍 Xem DS</button>
+              </div>
+            </td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.leads)}</td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.cared)}</td>
             <td class="py-2.5 px-2 text-right font-semibold ${pickupVal >= 35 ? 'text-emerald-700' : (pickupVal < 20 && s.totCalls >= 10 ? 'text-rose-700' : 'text-indigo-800')} bg-indigo-50/30">${pickupStr}<div class="text-[9.5px] text-slate-400 font-normal">${formatNumber(s.succCalls)}/${formatNumber(s.totCalls)} cuộc</div></td>
@@ -8659,6 +9005,7 @@
         const s = i.s || studentSourceMap[i.st] || 'Khác';
         if (!srcMap[s]) srcMap[s] = { source: s, leads: 0, cared: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         srcMap[s].rev += (i.pay || 0);
+        if (i.ns === 1 && i.st > 0) srcMap[s].closedSts.add(i.st);
       });
 
       const list = Object.values(srcMap).sort((a, b) => b.leads - a.leads);
@@ -8671,12 +9018,18 @@
           const leadPct = ((s.leads / totalLeads) * 100).toFixed(1) + '%';
           const cvr = s.leads > 0 ? ((s.closedSts.size / s.leads) * 100).toFixed(1) + '%' : '0%';
           const revPerLead = s.leads > 0 ? formatVND(s.rev / s.leads) : '0';
+          const safeSrc = (s.source || '').replace(/'/g, "\\'");
 
           const tr = document.createElement('tr');
           tr.className = "hover:bg-yellow-50/50 transition cursor-pointer";
-          tr.title = "Bấm để lọc toàn bộ báo cáo theo kênh nguồn này";
+          tr.title = "Bấm tên để lọc toàn bộ báo cáo hoặc bấm 🔍 Xem DS";
           tr.innerHTML = `
-            <td class="py-2.5 px-3 font-semibold text-sa-navy hover:underline" onclick="setFilter('source', '${s.source}')">${s.source}</td>
+            <td class="py-2.5 px-3 font-semibold text-sa-navy">
+              <div class="flex items-center justify-between gap-1.5">
+                <span class="hover:underline" onclick="setFilter('source', '${safeSrc}')">${s.source}</span>
+                <button type="button" onclick="event.stopPropagation(); openEntityDrillDownModal('SOURCE', '${safeSrc}')" class="px-1.5 py-0.5 rounded bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-[9.5px] font-bold transition shrink-0">🔍 Xem DS</button>
+              </div>
+            </td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.leads)}</td>
             <td class="py-2.5 px-2 text-right font-medium text-slate-500">${leadPct}</td>
             <td class="py-2.5 px-2 text-right">${formatNumber(s.cared)}</td>
@@ -8766,9 +9119,15 @@
         const pickupPct = r.totCalls > 0 ? ((r.succCalls / r.totCalls) * 100).toFixed(1) + '%' : '0.0%';
         const closedCount = r.closedSts.size;
         const cvrPct = r.leads > 0 ? ((closedCount / r.leads) * 100).toFixed(1) + '%' : '0.0%';
+        const safeFp = (r.name || '').replace(/'/g, "\\'");
         return `
           <tr class="hover:bg-sky-50/40 transition">
-            <td class="py-2 px-3 font-bold text-sa-navy">${r.name}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">
+              <div class="flex items-center justify-between gap-1.5">
+                <span>${r.name}</span>
+                <button type="button" onclick="openEntityDrillDownModal('FANPAGE', '${safeFp}')" class="px-1.5 py-0.5 rounded bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-[9.5px] font-bold transition shrink-0">🔍 Xem DS</button>
+              </div>
+            </td>
             <td class="py-2 px-2 text-right font-semibold">${formatNumber(r.leads)}</td>
             <td class="py-2 px-2 text-right text-slate-500">${sharePct}</td>
             <td class="py-2 px-2 text-right font-semibold text-indigo-800 bg-indigo-50/30">${pickupPct} <span class="text-[9.5px] text-slate-400">(${formatNumber(r.succCalls)}/${formatNumber(r.totCalls)})</span></td>
@@ -8824,9 +9183,15 @@
         const closedCount = r.closedSts.size;
         const cvrPct = r.leads > 0 ? ((closedCount / r.leads) * 100).toFixed(1) + '%' : '0.0%';
         const arpu = closedCount > 0 ? formatVND(r.rev / closedCount) : '0';
+        const safeCp = (r.name || '').replace(/'/g, "\\'");
         return `
           <tr class="hover:bg-purple-50/30 transition">
-            <td class="py-2 px-3 font-bold text-sa-navy">${r.name}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">
+              <div class="flex items-center justify-between gap-1.5">
+                <span>${r.name}</span>
+                <button type="button" onclick="openEntityDrillDownModal('CAMPAIGN', '${safeCp}')" class="px-1.5 py-0.5 rounded bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-[9.5px] font-bold transition shrink-0">🔍 Xem DS</button>
+              </div>
+            </td>
             <td class="py-2 px-2 text-right font-semibold">${formatNumber(r.leads)}</td>
             <td class="py-2 px-2 text-right text-slate-500">${sharePct}</td>
             <td class="py-2 px-2 text-right font-semibold text-indigo-800 bg-indigo-50/30">${pickupPct} <span class="text-[9.5px] text-slate-400">(${formatNumber(r.succCalls)}/${formatNumber(r.totCalls)})</span></td>
@@ -8913,7 +9278,7 @@
         const b = i.b || 'Khác';
         if (!branchMap[b]) branchMap[b] = { branch: b, leads: 0, arrived: 0, closedSts: new Set(), rev: 0 };
         branchMap[b].rev += (i.pay || 0);
-        if (i.st > 0) branchMap[b].closedSts.add(i.st);
+        if (i.ns === 1 && i.st > 0) branchMap[b].closedSts.add(i.st);
       });
 
       const listBranch = Object.values(branchMap).sort((a, b) => b.rev - a.rev);
@@ -10131,6 +10496,275 @@
       }
 
       XLSX.writeFile(wb, `SoTayQuanTri_ToanDien_10Sheets_SeoulAcademy_${new Date().toISOString().substring(0, 10)}.xlsx`);
+    }
+
+    // ==================== CÁC TÍNH NĂNG NÂNG CẤP QUẢN TRỊ v3.22 ====================
+    function updateWhatIfSimulator() {
+      const elBudget = document.getElementById('simBudgetPct');
+      const elCpl = document.getElementById('simCplPct');
+      const elCvr = document.getElementById('simCvrPct');
+      const elArpu = document.getElementById('simArpuPct');
+      if (!elBudget || !elCpl || !elCvr || !elArpu) return;
+
+      const bPct = parseFloat(elBudget.value) || 0;
+      const cplPct = parseFloat(elCpl.value) || 0;
+      const cvrPct = parseFloat(elCvr.value) || 0;
+      const arpuPct = parseFloat(elArpu.value) || 0;
+
+      const fmtSign = v => (v > 0 ? '+' + v + '%' : v + '%');
+      if (document.getElementById('lblSimBudgetPct')) document.getElementById('lblSimBudgetPct').textContent = fmtSign(bPct);
+      if (document.getElementById('lblSimCplPct')) document.getElementById('lblSimCplPct').textContent = fmtSign(cplPct);
+      if (document.getElementById('lblSimCvrPct')) document.getElementById('lblSimCvrPct').textContent = fmtSign(cvrPct);
+      if (document.getElementById('lblSimArpuPct')) document.getElementById('lblSimArpuPct').textContent = fmtSign(arpuPct);
+
+      let base = window._simBaseMetrics;
+      if (!base || (!base.rev && !base.cost && !base.data)) {
+        const tot = sumPeriods(window._lastActiveMonthData || DEFAULT_BENCHMARKS.filter(x => x.Nam == 2026));
+        base = {
+          cost: tot.ChiPhiMarketing || 0,
+          data: tot.TongData || 0,
+          students: tot.SoHocVien || 0,
+          rev: tot.DoanhThuThucDat || 0
+        };
+      }
+
+      const baseCost = Math.max(0, base.cost || 0);
+      const baseData = Math.max(0, base.data || 0);
+      const baseSt = Math.max(0, base.students || 0);
+      const baseRev = Math.max(0, base.rev || 0);
+
+      const newCost = Math.round(baseCost * (1 + bPct / 100));
+      const cplFactor = Math.max(0.2, 1 + cplPct / 100);
+      const newData = Math.round(baseData * ((1 + bPct / 100) / cplFactor));
+      const newStudents = Math.round(baseSt * ((1 + bPct / 100) / cplFactor) * (1 + cvrPct / 100));
+      const newRev = Math.round(baseRev * ((1 + bPct / 100) / cplFactor) * (1 + cvrPct / 100) * (1 + arpuPct / 100));
+      const deltaRev = newRev - Math.round(baseRev);
+      const newRoas = newCost > 0 ? (newRev / newCost).toFixed(2) : '0.00';
+      const newCpDt = newRev > 0 ? ((newCost / newRev) * 100).toFixed(1) : '0.0';
+
+      if (document.getElementById('simOutCost')) document.getElementById('simOutCost').textContent = formatVND(newCost);
+      if (document.getElementById('simOutData')) document.getElementById('simOutData').textContent = formatNumber(newData) + ' data';
+      if (document.getElementById('simOutStudents')) document.getElementById('simOutStudents').textContent = formatNumber(newStudents) + ' HV';
+      if (document.getElementById('simOutRev')) document.getElementById('simOutRev').textContent = formatVND(newRev);
+      const elDelta = document.getElementById('simOutRevDelta');
+      if (elDelta) {
+        elDelta.textContent = (deltaRev >= 0 ? '+' : '') + formatVND(deltaRev);
+        elDelta.className = 'text-sm font-heading font-bold mt-0.5 ' + (deltaRev >= 0 ? 'text-emerald-700' : 'text-rose-700');
+      }
+      if (document.getElementById('simOutRoas')) document.getElementById('simOutRoas').textContent = newRoas + 'x';
+      if (document.getElementById('simOutCpDt')) document.getElementById('simOutCpDt').textContent = newCpDt + '%';
+    }
+
+    function applyWhatIfPreset(b, cpl, cvr, arpu) {
+      if (document.getElementById('simBudgetPct')) document.getElementById('simBudgetPct').value = b;
+      if (document.getElementById('simCplPct')) document.getElementById('simCplPct').value = cpl;
+      if (document.getElementById('simCvrPct')) document.getElementById('simCvrPct').value = cvr;
+      if (document.getElementById('simArpuPct')) document.getElementById('simArpuPct').value = arpu;
+      updateWhatIfSimulator();
+    }
+
+    function resetWhatIfSimulator() {
+      applyWhatIfPreset(0, 0, 0, 0);
+    }
+
+    function renderTopSpecificCourses(invs) {
+      const tbody = document.getElementById('tblTopSpecificCoursesBody');
+      const badge = document.getElementById('lblTopSpecificCourseSummary');
+      if (!tbody) return;
+      const listInvs = invs || [];
+      if (listInvs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="py-6 text-center text-slate-400">Không có dữ liệu khóa học trong phạm vi đang lọc</td></tr>';
+        if (badge) badge.textContent = '0 khóa học';
+        return;
+      }
+
+      const map = {};
+      let totRev = 0;
+      listInvs.forEach(i => {
+        const cName = (i.c && i.c.trim()) ? i.c.trim() : (i.g || i.p || 'Khóa học khác');
+        const grp = i.g || i.p || 'Khác';
+        if (!map[cName]) {
+          map[cName] = { name: cName, group: grp, invCount: 0, newSts: new Set(), comboCount: 0, rev: 0 };
+        }
+        const r = map[cName];
+        r.invCount++;
+        if (i.ns === 1 && i.st > 0) r.newSts.add(i.st);
+        if ((i.cc && String(i.cc).trim() !== '') || (i.ac && i.ac >= 2)) r.comboCount++;
+        r.rev += (i.pay || 0);
+        totRev += (i.pay || 0);
+      });
+
+      const rows = Object.values(map).sort((a, b) => b.rev - a.rev);
+      if (badge) badge.textContent = `${formatNumber(rows.length)} khóa học cụ thể`;
+
+      tbody.innerHTML = rows.slice(0, 40).map((r, idx) => {
+        const rank = idx + 1;
+        const pct = totRev > 0 ? ((r.rev / totRev) * 100).toFixed(1) + '%' : '0.0%';
+        const avgPerInv = r.invCount > 0 ? formatVND(r.rev / r.invCount) : '0';
+        const comboPct = r.invCount > 0 ? Math.round((r.comboCount / r.invCount) * 100) : 0;
+        return `
+          <tr class="hover:bg-yellow-50/40 transition">
+            <td class="py-2 px-3 font-bold ${rank <= 3 ? 'text-amber-600' : 'text-slate-500'}">#${rank}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">${r.name}</td>
+            <td class="py-2 px-3 text-slate-600">${r.group}</td>
+            <td class="py-2 px-2 text-right font-semibold">${formatNumber(r.invCount)}</td>
+            <td class="py-2 px-2 text-right font-bold text-emerald-700">${formatNumber(r.newSts.size)}</td>
+            <td class="py-2 px-2 text-right font-semibold text-purple-800">${formatNumber(r.comboCount)} <span class="text-[10px] text-slate-400">(${comboPct}%)</span></td>
+            <td class="py-2 px-3 text-right font-bold text-sa-navy bg-yellow-50/40">${formatVND(r.rev)}</td>
+            <td class="py-2 px-2 text-right font-bold text-emerald-700">${pct}</td>
+            <td class="py-2 px-3 text-right text-slate-700">${avgPerInv}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openEntityDrillDownModal(dimType, dimValue) {
+      const modal = document.getElementById('modalMetricDrillDown');
+      const titleEl = document.getElementById('drillDownModalTitle');
+      const subEl = document.getElementById('drillDownModalSubtitle');
+      const sumEl = document.getElementById('drillDownSummaryBadges');
+      const theadEl = document.getElementById('tblMetricDrillDownHead');
+      const tbodyEl = document.getElementById('tblMetricDrillDownBody');
+      const searchEl = document.getElementById('inpDrillDownSearch');
+      if (!modal || !theadEl || !tbodyEl) return;
+      if (searchEl) searchEl.value = '';
+
+      const activeInvs = window._lastFilteredInvs || ((window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.Invoices2026) || []);
+      const activeCares = window._lastFilteredCares || ((window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.Care2026) || []);
+
+      const matchCare = c => {
+        if (dimType === 'SALE') return (c.sale || 'Chưa gán') === dimValue;
+        if (dimType === 'SOURCE') return (c.s || 'Khác') === dimValue;
+        if (dimType === 'FANPAGE') {
+          const sLow = (c.s || '').toLowerCase();
+          const isFb = sLow.includes('fb') || sLow.includes('facebook') || sLow.includes('page') || sLow.includes('mess') || !!c.pg;
+          const pgName = c.pg ? ('📘 ' + c.pg) : (isFb ? '📘 FB Ads (Chưa gắn mã Page phụ)' : '🌐 Kênh Khác (GG / TikTok / Zalo / Nội bộ)');
+          return pgName === dimValue;
+        }
+        if (dimType === 'CAMPAIGN') {
+          const cpName = c.cp ? ('🎯 ' + c.cp) : '📌 Chiến dịch Thường / Chưa gắn thẻ Campaign';
+          return cpName === dimValue;
+        }
+        return false;
+      };
+
+      const matchedCares = activeCares.filter(matchCare);
+      const stSetFromCares = new Set(matchedCares.filter(c => c.st > 0).map(c => c.st));
+
+      const matchedInvs = activeInvs.filter(i => {
+        if (dimType === 'SALE') return (i.sale || 'Chưa gán') === dimValue;
+        if (dimType === 'SOURCE') return (i.s || 'Khác') === dimValue || stSetFromCares.has(i.st);
+        if (dimType === 'FANPAGE' || dimType === 'CAMPAIGN') return stSetFromCares.has(i.st);
+        return false;
+      });
+
+      const totRev = matchedInvs.reduce((a, i) => a + (i.pay || 0), 0);
+      const newStCount = matchedInvs.reduce((a, i) => a + (i.ns || 0), 0);
+
+      if (titleEl) titleEl.textContent = `🔍 ĐỐI SOÁT CHI TIẾT: ${dimValue}`;
+      if (subEl) subEl.textContent = `Phạm vi: Theo bộ lọc hiện hành • Gồm ${formatNumber(matchedInvs.length)} phiếu thu & ${formatNumber(matchedCares.length)} hồ sơ Lead`;
+      if (sumEl) {
+        sumEl.innerHTML = `
+          <span class="px-2.5 py-1 rounded bg-blue-100 text-blue-900 font-bold">Tổng Data: ${formatNumber(matchedCares.length)}</span>
+          <span class="px-2.5 py-1 rounded bg-emerald-100 text-emerald-900 font-bold">HV Mới: ${formatNumber(newStCount)}</span>
+          <span class="px-2.5 py-1 rounded bg-sa-navy text-sa-gold font-bold">Thực thu: ${formatVND(totRev)} VNĐ</span>
+        `;
+      }
+
+      theadEl.innerHTML = `
+        <tr>
+          <th class="py-2.5 px-3">Loại Hồ Sơ</th>
+          <th class="py-2.5 px-3">Ngày</th>
+          <th class="py-2.5 px-3">Mã / Họ Tên</th>
+          <th class="py-2.5 px-3">SĐT</th>
+          <th class="py-2.5 px-3">Cơ Sở</th>
+          <th class="py-2.5 px-3">Khóa Học / Kênh Nguồn</th>
+          <th class="py-2.5 px-3">Tư Vấn Viên</th>
+          <th class="py-2.5 px-3 text-right">Thực Thu / Trạng Thái</th>
+        </tr>
+      `;
+
+      let rowsHtml = '';
+      matchedInvs.slice(0, 250).forEach(inv => {
+        rowsHtml += `
+          <tr class="hover:bg-yellow-50/50 transition">
+            <td class="py-2 px-3"><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">💰 Phiếu thu (${inv.t || 'Mua mới'})</span></td>
+            <td class="py-2 px-3 text-slate-600">${inv.d || ''}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">#${inv.st || inv.id || ''} • ${inv.fn || ''}</td>
+            <td class="py-2 px-3 font-mono text-slate-600">${inv.ph || ''}</td>
+            <td class="py-2 px-3">${inv.b || ''}</td>
+            <td class="py-2 px-3">${inv.c || inv.g || inv.p || ''}</td>
+            <td class="py-2 px-3 font-semibold text-sa-navy">${inv.sale || ''}</td>
+            <td class="py-2 px-3 text-right font-bold text-sa-navy">${formatVND(inv.pay || 0)} đ</td>
+          </tr>
+        `;
+      });
+      matchedCares.slice(0, 250).forEach(c => {
+        rowsHtml += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2 px-3"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">📋 Hồ sơ Lead</span></td>
+            <td class="py-2 px-3 text-slate-600">${c.d || ''}</td>
+            <td class="py-2 px-3 font-semibold text-slate-800">#${c.id || ''} • ${c.fn || 'Lead CRM'}</td>
+            <td class="py-2 px-3 font-mono text-slate-600">${c.ph || ''}</td>
+            <td class="py-2 px-3">${c.b || ''}</td>
+            <td class="py-2 px-3">${c.s || ''} ${c.pg ? ('• ' + c.pg) : ''}</td>
+            <td class="py-2 px-3 text-sa-navy">${c.sale || ''}</td>
+            <td class="py-2 px-3 text-right text-xs font-semibold ${c.st > 0 ? 'text-emerald-700' : 'text-slate-500'}">${c.st > 0 ? ('Đã chốt HV #' + c.st) : (c.st_name || 'Đang chăm sóc')}</td>
+          </tr>
+        `;
+      });
+      tbodyEl.innerHTML = rowsHtml || '<tr><td colspan="8" class="py-6 text-center text-slate-400">Không có bản ghi nào</td></tr>';
+      const countEl = document.getElementById('drillDownCountBadge');
+      if (countEl) countEl.textContent = `${formatNumber(matchedInvs.length + matchedCares.length)} bản ghi`;
+      modal.classList.remove('hidden');
+    }
+
+    async function sendExecBriefingToTelegram() {
+      const btn = document.getElementById('btnSendBriefingTelegram');
+      const txtEl = document.getElementById('txtExecBriefingRaw');
+      if (!txtEl || !txtEl.value) return;
+      const origHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Đang bắn báo cáo vào nhóm Telegram...</span>';
+      }
+      try {
+        const botToken = '9185161593:AAFaIdLQ0s7TcoDYUrXcvSDIML55tdMbWfk';
+        const chatId = '-5242087209';
+        const textMsg = txtEl.value;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          try { await navigator.clipboard.writeText(textMsg); } catch (e) {}
+        }
+        const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: textMsg,
+            disable_web_page_preview: true
+          })
+        });
+        const resJson = await resp.json();
+        if (btn) {
+          if (resJson && resJson.ok) {
+            btn.innerHTML = '<span>✅ Đã bắn trực tiếp vào nhóm Telegram!</span>';
+          } else {
+            btn.innerHTML = '<span>✅ Đã sao chép! (Dán Ctrl+V vào Telegram)</span>';
+          }
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+          }, 3000);
+        }
+      } catch (e) {
+        if (btn) {
+          btn.innerHTML = '<span>✅ Đã sao chép vào bộ nhớ tạm!</span>';
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+          }, 2500);
+        }
+      }
     }
   </script>
 </body>
