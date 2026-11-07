@@ -163,13 +163,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.24_20261106_135059"></script>
-  <script src="crm_data.js?v=v3.24_20261106_135059"></script>
+  <script src="crm_mapping.js?v=v3.23_20261106_121453"></script>
+  <script src="crm_data.js?v=v3.23_20261106_121453"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.24_20261106_135059') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.24_20261106_135059').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.23_20261106_121453') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.23_20261106_121453').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -301,25 +301,30 @@
 
           <!-- Consolidated Tools & Export Dropdown (v3.23 Decluttered Header) -->
           <div class="relative">
-            <button type="button" id="btnHeaderToolsMenu" onclick="document.getElementById('menuHeaderToolsDropdown').classList.toggle('hidden')"
+            <button type="button" id="btnHeaderToolsMenu"
+              onclick="document.getElementById('menuHeaderToolsDropdown').classList.toggle('hidden')"
               class="bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-500 transition flex items-center gap-1.5 shadow-sm">
               <span>🧰 Công Cụ &amp; Xuất File ▾</span>
             </button>
             <div id="menuHeaderToolsDropdown"
               class="hidden absolute right-0 mt-1.5 w-64 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 text-xs font-semibold divide-y divide-slate-100">
-              <button type="button" id="btnSendInstantTelegramWeb" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); sendInstantTelegramReportFromWeb();"
+              <button type="button" id="btnSendInstantTelegramWeb"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); sendInstantTelegramReportFromWeb();"
                 class="w-full px-3.5 py-2 text-left hover:bg-blue-50 flex items-center gap-2 text-blue-700 font-bold">
                 <span>📲 Bắn Báo Cáo Telegram Ngay</span>
               </button>
-              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
+              <button type="button"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
                 class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-emerald-700 font-bold">
                 <span>🖨️ In / Xuất Báo Cáo PDF (A4)</span>
               </button>
-              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); exportFullReportExcel();"
+              <button type="button"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); exportFullReportExcel();"
                 class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-sa-navy font-bold">
                 <span>📥 Xuất Sổ Tay Quản Trị (10 Sheet Excel)</span>
               </button>
-              <a href="dinh_danh_du_lieu_chuan_hoa.csv" download onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden')"
+              <a href="dinh_danh_du_lieu_chuan_hoa.csv" download
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden')"
                 class="block w-full px-3.5 py-2 text-left hover:bg-slate-50 text-slate-700">
                 📄 Tải File Định Danh Chuẩn Hóa (.csv)
               </a>
@@ -833,7 +838,8 @@
             </h2>
           </div>
           <div class="flex flex-wrap items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCollapsiblePacingSim').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCollapsiblePacingSim').classList.toggle('hidden')"
               class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
               🎛️ Mở / Thu gọn: Dự Báo Cuối Kỳ &amp; Mô Phỏng Kịch Bản What-If
             </button>
@@ -851,7 +857,11 @@
         <div class="card-sa p-4">
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2.5">
             <p class="text-[11px] text-slate-600">
-              📐 <strong>Chuẩn hiển thị:</strong> Đơn vị tiền <strong>VNĐ đầy đủ đến hàng đơn vị</strong>. 👆 <strong>Đối soát 1-Click:</strong> Bấm trực tiếp vào con số ở dòng <span class="underline decoration-sa-gold font-bold text-sa-navy">Tổng data</span> hoặc <span class="underline decoration-sa-gold font-bold text-sa-navy">Số học viên mới</span> để mở danh sách chi tiết từng hồ sơ.
+              📐 <strong>Chuẩn hiển thị:</strong> Đơn vị tiền <strong>VNĐ đầy đủ đến hàng đơn vị</strong>. 👆
+              <strong>Đối soát 1-Click:</strong> Bấm trực tiếp vào con số ở dòng <span
+                class="underline decoration-sa-gold font-bold text-sa-navy">Tổng data</span> hoặc <span
+                class="underline decoration-sa-gold font-bold text-sa-navy">Số học viên mới</span> để mở danh sách chi
+              tiết từng hồ sơ.
             </p>
           </div>
 
@@ -905,7 +915,8 @@
             <div class="space-y-1">
               <div class="flex items-center gap-2">
                 <span
-                  class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">DỰ BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
+                  class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">DỰ
+                  BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
                 <span id="pacingStatusBadge"
                   class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">🟢
                   Đang theo dõi nhịp độ thực thu</span>
@@ -922,15 +933,16 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs lg:min-w-[600px]">
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Tốc Độ Thu / Ngày</div>
-                <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span> <span
-                    class="text-[10px] font-normal">đ</span></div>
+                <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span>
+                  <span class="text-[10px] font-normal">đ</span></div>
                 <div class="text-[10px] text-slate-300" id="pacingActiveDays">0 ngày phát sinh</div>
               </div>
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Dự Báo Cuối Kỳ</div>
                 <div class="text-base font-heading font-bold text-emerald-300 mt-0.5"><span
                     id="pacingForecastRev">0</span> <span class="text-[10px] font-normal">đ</span></div>
-                <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target</div>
+                <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target
+                </div>
               </div>
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Khoảng Cách Tới Target</div>
@@ -962,15 +974,22 @@
         </div>
 
         <!-- BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG & NGÂN SÁCH WHAT-IF (EXECUTIVE SIMULATOR v3.22) -->
-        <div id="whatIfSimulatorCard" class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
+        <div id="whatIfSimulatorCard"
+          class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
+          <div
+            class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ PHỎNG WHAT-IF</span>
-                <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
+                <span
+                  class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ
+                  PHỎNG WHAT-IF</span>
+                <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN
+                  TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
               </div>
               <p class="text-[11px] text-slate-600 mt-0.5">
-                📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>, <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
+                📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi
+                <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>,
+                <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
               </p>
             </div>
             <div class="flex flex-wrap items-center gap-1.5">
@@ -994,32 +1013,40 @@
                 <span>1. Ngân sách MKT:</span>
                 <span id="lblSimBudgetPct" class="text-sa-navy">0%</span>
               </div>
-              <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện tại</span><span>+100%</span></div>
+              <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0"
+                oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện
+                  tại</span><span>+100%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>2. Giá Data (CPL):</span>
                 <span id="lblSimCplPct" class="text-emerald-700">0%</span>
               </div>
-              <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-emerald-600 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ hơn)</span><span>0%</span><span>+50%</span></div>
+              <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()"
+                class="w-full accent-emerald-600 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ
+                  hơn)</span><span>0%</span><span>+50%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>3. Tỷ lệ chốt (CVR):</span>
                 <span id="lblSimCvrPct" class="text-blue-700">0%</span>
               </div>
-              <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-blue-700 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+60%</span></div>
+              <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()"
+                class="w-full accent-blue-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <span>-30%</span><span>0%</span><span>+60%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>4. Học phí TB/HV (ARPU):</span>
                 <span id="lblSimArpuPct" class="text-purple-700">0%</span>
               </div>
-              <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+50%</span></div>
+              <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0"
+                oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <span>-30%</span><span>0%</span><span>+50%</span></div>
             </div>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-3 pt-2.5 border-t border-slate-200/80">
@@ -1045,7 +1072,8 @@
             </div>
             <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200">
               <div class="text-[10px] font-bold text-purple-800 uppercase">ROAS &amp; Tỷ Lệ CP/DT</div>
-              <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> • <span id="simOutCpDt">0.0%</span></div>
+              <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> •
+                <span id="simOutCpDt">0.0%</span></div>
             </div>
           </div>
         </div>
@@ -1583,7 +1611,8 @@
               </p>
             </div>
             <div class="flex items-center gap-2 no-print">
-              <button type="button" onclick="document.getElementById('wrapDailyMktTrackerBox').classList.toggle('hidden')"
+              <button type="button"
+                onclick="document.getElementById('wrapDailyMktTrackerBox').classList.toggle('hidden')"
                 class="bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-sa-navy/30 transition">
                 👁️ Mở / Thu gọn Bảng Theo Ngày
               </button>
@@ -1593,7 +1622,8 @@
               </button>
             </div>
           </div>
-          <div id="wrapDailyMktTrackerBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
+          <div id="wrapDailyMktTrackerBox"
+            class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
             <table id="tblDailyMktTracker" class="min-w-full text-xs text-left divide-y divide-slate-200">
               <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
                 <tr>
@@ -1761,7 +1791,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapTagDispositionBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
+        <div id="wrapTagDispositionBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
           <table id="tblLeadTagDisposition" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -1955,7 +1986,8 @@
       <!-- HẠNG MỤC MỚI V3.20: BÓC TÁCH DOANH THU THEO LOẠI SẢN PHẨM (TYPE_COURSE) & KIỂM TOÁN GIẢM GIÁ / THU NGÂN (DISCOUNT AUDIT) -->
       <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
         <div class="text-xs font-bold text-sa-navy">
-          🛡️ Bảng Kiểm Toán Chuyên Sâu: Bóc Tách Học Phí / Bằng Cấp / Đổi Khóa &amp; Quỹ Giảm Giá Học Bổng (Thu gọn mặc định cho đỡ rối)
+          🛡️ Bảng Kiểm Toán Chuyên Sâu: Bóc Tách Học Phí / Bằng Cấp / Đổi Khóa &amp; Quỹ Giảm Giá Học Bổng (Thu gọn mặc
+          định cho đỡ rối)
         </div>
         <button type="button" onclick="document.getElementById('wrapCashAuditSubTables').classList.toggle('hidden')"
           class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
@@ -2287,7 +2319,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapFanpageRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapFanpageRoiBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblFanpageRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -2331,7 +2364,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCampaignSegmentRoiBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCampaignSegmentRoiBox').classList.toggle('hidden')"
               class="bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-purple-300 transition">
               👁️ Mở / Thu gọn Bảng Chiến Dịch
             </button>
@@ -2341,7 +2375,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapCampaignSegmentRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapCampaignSegmentRoiBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblCampaignSegmentRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -2900,7 +2935,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapLeadCreatorCompareBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapLeadCreatorCompareBox').classList.toggle('hidden')"
               class="text-[11px] font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 px-2.5 py-1 rounded border border-teal-300">
               👁️ Mở / Thu gọn Bảng
             </button>
@@ -2910,7 +2946,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapLeadCreatorCompareBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+        <div id="wrapLeadCreatorCompareBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
           <table id="tblLeadCreatorCompare" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -2999,11 +3036,14 @@
               BẢNG XẾP HẠNG TOP KHÓA HỌC CỤ THỂ (`course_name`) &amp; TỶ TRỌNG GÓI COMBO ĐA KHÓA
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">
-              📐 <strong>Logic:</strong> Bóc tách chi tiết từng khóa học cụ thể học viên đăng ký (`course_name` + `program_group`), số lượng Học viên mới, số học viên mua kèm Combo (`combo_course_id` / `amount_course >= 2`), Doanh thu thực thu và Học phí trung bình/HV.
+              📐 <strong>Logic:</strong> Bóc tách chi tiết từng khóa học cụ thể học viên đăng ký (`course_name` +
+              `program_group`), số lượng Học viên mới, số học viên mua kèm Combo (`combo_course_id` / `amount_course >=
+              2`), Doanh thu thực thu và Học phí trung bình/HV.
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <span id="lblTopSpecificCourseSummary" class="px-3 py-1.5 rounded-lg bg-sa-navy/10 text-sa-navy text-xs font-bold">0 khóa học</span>
+            <span id="lblTopSpecificCourseSummary"
+              class="px-3 py-1.5 rounded-lg bg-sa-navy/10 text-sa-navy text-xs font-bold">0 khóa học</span>
             <button onclick="exportTableToExcel('tblTopSpecificCourses', 'Top_Khoa_Hoc_Chi_Tiet_Va_Combo')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 transition">
               📥 Xuất Excel
@@ -3048,7 +3088,8 @@
               <div class="text-[10px] text-emerald-700 font-bold uppercase">Số HV Tiềm Năng Upsell</div>
               <div id="lblTotalUpsellCandidates" class="text-base font-heading font-bold text-emerald-800">0 HV</div>
             </div>
-            <button type="button" onclick="document.getElementById('wrapUpsellCandidatesBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapUpsellCandidatesBox').classList.toggle('hidden')"
               class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-2 rounded-lg border border-emerald-300 transition no-print">
               👁️ Mở / Thu gọn DS Upsell
             </button>
@@ -3058,7 +3099,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapUpsellCandidatesBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
+        <div id="wrapUpsellCandidatesBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
           <table id="tblUpsellCandidates" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3095,7 +3137,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCrossBranchAuditBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCrossBranchAuditBox').classList.toggle('hidden')"
               class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold px-3 py-2 rounded-lg border border-indigo-300 transition">
               👁️ Mở / Thu gọn Bảng Liên Cơ Sở
             </button>
@@ -3105,7 +3148,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapCrossBranchAuditBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
+        <div id="wrapCrossBranchAuditBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
           <table id="tblCrossBranchAudit" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3173,7 +3217,8 @@
 
       <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
         <div class="text-xs font-bold text-sa-navy">
-          👥 Biểu Đồ Chân Dung Nhân Khẩu Học Học Viên: Cơ Cấu Giới Tính &amp; Phân Bố Độ Tuổi (Thu gọn mặc định cho gọn trang)
+          👥 Biểu Đồ Chân Dung Nhân Khẩu Học Học Viên: Cơ Cấu Giới Tính &amp; Phân Bố Độ Tuổi (Thu gọn mặc định cho gọn
+          trang)
         </div>
         <button type="button" onclick="document.getElementById('wrapDemoChartsBox').classList.toggle('hidden')"
           class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
@@ -3306,7 +3351,8 @@
         <div id="salesVelocityCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
           <!-- Populated dynamically -->
         </div>
-        <div id="wrapSalesVelocityBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg mt-2">
+        <div id="wrapSalesVelocityBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg mt-2">
           <table id="tblSalesVelocity" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -10938,7 +10984,7 @@
         const chatId = '-5242087209';
         const textMsg = txtEl.value;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          try { await navigator.clipboard.writeText(textMsg); } catch (e) {}
+          try { await navigator.clipboard.writeText(textMsg); } catch (e) { }
         }
         const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
           method: 'POST',
