@@ -1,6 +1,6 @@
 {
-  "ConfigVersion": "20261108110628",
-  "UpdatedAt": "18:06:28 8/11/2026",
+  "ConfigVersion": "2026.11.05.2",
+  "UpdatedAt": "2026-11-05 16:18:00",
   "UpdatedBy": "admin",
   "TargetsByYear": {
     "2026": {
@@ -32,125 +32,7 @@
       "12": 1500000000
     }
   },
-  "BranchTargetsByYear": {
-    "2024": {},
-    "2025": {},
-    "2026": {},
-    "2027": {}
-  },
+  "BranchTargetsByYear": {},
   "Users": null,
-  "RolePerms": null,
-  "RolePermissions": {
-    "admin": {
-      "title": "Ban Giám Đốc (Super Admin - Bạn)",
-      "viewRevenue": true,
-      "viewCost": true,
-      "viewFunnel": true,
-      "viewSales": true,
-      "viewCourse": true,
-      "editTarget": true
-    },
-    "marketing": {
-      "title": "Trưởng Phòng / Quản Lý Marketing",
-      "viewRevenue": true,
-      "viewCost": true,
-      "viewFunnel": true,
-      "viewSales": false,
-      "viewCourse": true,
-      "editTarget": false
-    },
-    "sales": {
-      "title": "Trưởng Phòng Tuyển Sinh / Salecare",
-      "viewRevenue": true,
-      "viewCost": false,
-      "viewFunnel": true,
-      "viewSales": true,
-      "viewCourse": true,
-      "editTarget": false
-    },
-    "branch": {
-      "title": "Giám Đốc Chi Nhánh / Vận Hành",
-      "viewRevenue": true,
-      "viewCost": false,
-      "viewFunnel": true,
-      "viewSales": true,
-      "viewCourse": true,
-      "editTarget": false
-    },
-    "viewonly": {
-      "title": "Kiểm Soát Nội Bộ / Kế Toán (View-Only)",
-      "viewRevenue": true,
-      "viewCost": true,
-      "viewFunnel": true,
-      "viewSales": true,
-      "viewCourse": true,
-      "editTarget": false
-    }
-  },
-  "SystemAccounts": [
-    {
-      "username": "admin",
-      "password": "2026",
-      "name": "Ban Giám Đốc (Bạn)",
-      "role": "admin",
-      "roleTitle": "Ban Giám Đốc (Super Admin)",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "mkt",
-      "password": "123456",
-      "name": "Trưởng Phòng MKT",
-      "role": "marketing",
-      "roleTitle": "Trưởng Phòng Marketing",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "anhpham@diemnhan.vn",
-      "password": "123456",
-      "name": "Ánh Phạm",
-      "role": "marketing",
-      "roleTitle": "Quản Lý Marketing",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "nguyenhoa@diemnhan.vn",
-      "password": "123456",
-      "name": "Nguyên Hòa",
-      "role": "branch",
-      "roleTitle": "Giám Đốc Chi Nhánh",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "tinhnguyen@diemnhan.vn",
-      "password": "123456",
-      "name": "Tình Nguyễn",
-      "role": "sales",
-      "roleTitle": "Quản Lý Tuyển Sinh (Sale)",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "thuyntt@diemnhan.vn",
-      "password": "123456",
-      "name": "Thủy Nguyễn",
-      "role": "sales",
-      "roleTitle": "Chuyên Viên Quản Trị Sale",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "ngocanhle@diemnhan.vn",
-      "password": "123456",
-      "name": "Ngọc Ánh Lê",
-      "role": "branch",
-      "roleTitle": "Quản Lý Vận Hành Cơ Sở",
-      "branchScope": "ALL"
-    },
-    {
-      "username": "thomnt@diemnhan.vn",
-      "password": "123456",
-      "name": "Thơm Nguyễn",
-      "role": "viewonly",
-      "roleTitle": "Kiểm Soát Nội Bộ / Kế Toán",
-      "branchScope": "ALL"
-    }
-  ]
+  "RolePerms": null
 }
