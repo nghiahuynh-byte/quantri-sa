@@ -163,13 +163,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.25_20261111_095113"></script>
-  <script src="crm_data.js?v=v3.25_20261111_095113"></script>
+  <script src="crm_mapping.js?v=v3.26_20261111_101342"></script>
+  <script src="crm_data.js?v=v3.26_20261111_101342"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.25_20261111_095113') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.25_20261111_095113').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.26_20261111_101342') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.26_20261111_101342').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -478,6 +478,23 @@
             <button onclick="setTimePreset('LAST_MONTH')" id="preset-LAST_MONTH"
               class="preset-btn px-2 py-1 rounded border border-slate-300 hover:border-sa-navy text-[11px] font-medium transition">Tháng
               trước</button>
+            <select id="selQuickMonthFilter" onchange="onQuickMonthSelect(this.value)"
+              class="px-2 py-1 rounded border border-slate-300 bg-white text-sa-navy hover:border-sa-navy text-[11px] font-semibold transition cursor-pointer"
+              title="Chọn nhanh 1 tháng cụ thể để xem biểu đồ tăng giảm từng ngày của tháng đó">
+              <option value="">📅 Chọn Tháng (T1-T12)...</option>
+              <option value="1">Tháng 01 (Xem từng ngày)</option>
+              <option value="2">Tháng 02 (Xem từng ngày)</option>
+              <option value="3">Tháng 03 (Xem từng ngày)</option>
+              <option value="4">Tháng 04 (Xem từng ngày)</option>
+              <option value="5">Tháng 05 (Xem từng ngày)</option>
+              <option value="6">Tháng 06 (Xem từng ngày)</option>
+              <option value="7">Tháng 07 (Xem từng ngày)</option>
+              <option value="8">Tháng 08 (Xem từng ngày)</option>
+              <option value="9">Tháng 09 (Xem từng ngày)</option>
+              <option value="10">Tháng 10 (Xem từng ngày)</option>
+              <option value="11">Tháng 11 (Xem từng ngày)</option>
+              <option value="12">Tháng 12 (Xem từng ngày)</option>
+            </select>
             <button onclick="setTimePreset('3MONTHS')" id="preset-3MONTHS"
               class="preset-btn px-2.5 py-1 rounded border border-amber-300 bg-amber-50/60 text-amber-900 hover:border-sa-navy text-[11px] font-semibold transition"
               title="Lọc nhanh 3 tháng liền kề gần nhất (Tháng 8, 9, 10)">📅 3 tháng liền kề</button>
@@ -1094,6 +1111,11 @@
               class="px-2 py-0.5 rounded bg-blue-50 text-sa-navy border border-blue-200 text-[11px] font-bold">
               📅 Đang xem: Theo Tháng (T1 → T12)
             </span>
+            <button type="button" id="btnToggleChartLabels" onclick="toggleDirectChartLabels()"
+              class="no-print px-2.5 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-[11px] font-bold shadow-sm transition flex items-center gap-1"
+              title="Bật/tắt hiển thị số liệu làm tròn trực tiếp bên trong biểu đồ">
+              🔢 Hiện số trên biểu đồ: BẬT
+            </button>
           </div>
           <div class="flex flex-wrap items-center gap-2 no-print">
             <!-- Unified Granularity Switcher (Applies to ALL 4 Time Charts) -->
@@ -1133,6 +1155,18 @@
                 👁️ Tất Cả
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Quick Peak / Average / Interactive Drill-Down Strip (v3.26) -->
+        <div id="timeChartSummaryStrip"
+          class="bg-gradient-to-r from-blue-50/80 via-white to-amber-50/70 border border-blue-200/80 rounded-xl px-3.5 py-2 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+          <div id="timeChartSummaryStats" class="flex flex-wrap items-center gap-3 text-slate-700">
+            <span>🏆 <strong>Đỉnh Doanh thu:</strong> --</span>
+            <span>📊 <strong>Trung bình/kỳ:</strong> --</span>
+          </div>
+          <div class="text-[11px] font-semibold text-sa-navy flex items-center gap-1">
+            <span>👆 <strong>Mẹo:</strong> Bấm trực tiếp vào bất kỳ cột nào trên biểu đồ để xem danh sách Học viên &amp; Data của ngày/tháng đó</span>
           </div>
         </div>
 
@@ -5573,10 +5607,341 @@
       });
     }
 
+    let showDirectChartLabels = true;
+
+    function formatCompactChartVal(val, unitType) {
+      if (val === null || val === undefined || isNaN(val)) return '';
+      const n = Number(val);
+      if (n === 0) return '';
+      const abs = Math.abs(n);
+      if (unitType === 'pct') {
+        return n.toFixed(1).replace('.0', '').replace('.', ',') + '%';
+      }
+      if (unitType === 'count') {
+        return Math.round(n).toLocaleString('vi-VN');
+      }
+      if (unitType === 'cpl') {
+        if (abs >= 1e6) return (n / 1e6).toFixed(1).replace('.0', '').replace('.', ',') + 'tr';
+        if (abs >= 1e3) return Math.round(n / 1e3) + 'k';
+        return Math.round(n).toString();
+      }
+      // Default: 'money' (VNĐ rounded for inside/top of chart bars)
+      if (abs >= 1e9) {
+        return (n / 1e9).toFixed(2).replace(/\.?0+$/, '').replace('.', ',') + ' tỷ';
+      }
+      if (abs >= 1e6) {
+        if (abs >= 100e6) return Math.round(n / 1e6) + 'tr';
+        return (n / 1e6).toFixed(1).replace('.0', '').replace('.', ',') + 'tr';
+      }
+      if (abs >= 1e3) {
+        return Math.round(n / 1e3) + 'k';
+      }
+      return Math.round(n).toLocaleString('vi-VN');
+    }
+
+    function toggleDirectChartLabels() {
+      showDirectChartLabels = !showDirectChartLabels;
+      const btn = document.getElementById('btnToggleChartLabels');
+      if (btn) {
+        if (showDirectChartLabels) {
+          btn.textContent = '🔢 Hiện số trên biểu đồ: BẬT';
+          btn.className = 'no-print px-2.5 py-1 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-[11px] font-bold shadow-sm transition flex items-center gap-1';
+        } else {
+          btn.textContent = '🔢 Hiện số trên biểu đồ: TẮT';
+          btn.className = 'no-print px-2.5 py-1 rounded-lg bg-slate-200 text-slate-700 hover:bg-slate-300 text-[11px] font-bold shadow-sm transition flex items-center gap-1';
+        }
+      }
+      Object.values(chartInstances).forEach(c => {
+        if (c && typeof c.update === 'function') c.update();
+      });
+    }
+
+    // Đăng ký Plugin vẽ số liệu làm tròn trực tiếp bên trong cột & trên đỉnh dây cho Chart.js
+    if (typeof Chart !== 'undefined' && !window._saDirectLabelsRegistered) {
+      window._saDirectLabelsRegistered = true;
+      Chart.register({
+        id: 'saDirectChartLabelsPlugin',
+        afterDatasetsDraw(chart) {
+          if (!showDirectChartLabels) return;
+          const cType = chart.config.type;
+          if (cType !== 'bar' && cType !== 'line') return;
+
+          const ctx = chart.ctx;
+          const area = chart.chartArea;
+          if (!area) return;
+
+          const placedBoxes = [];
+          const overlaps = (box) => {
+            for (let i = 0; i < placedBoxes.length; i++) {
+              const b = placedBoxes[i];
+              if (box.x1 < b.x2 && box.x2 > b.x1 && box.y1 < b.y2 && box.y2 > b.y1) {
+                return true;
+              }
+            }
+            return false;
+          };
+
+          // Draw primary datasets first (bars & primary metric lines)
+          const dsCount = chart.data.datasets.length;
+          for (let dsIdx = 0; dsIdx < dsCount; dsIdx++) {
+            if (!chart.isDatasetVisible(dsIdx)) continue;
+            const ds = chart.data.datasets[dsIdx];
+            if (ds.saSkipLabel) continue;
+            const meta = chart.getDatasetMeta(dsIdx);
+            if (!meta || !meta.data || meta.data.length === 0) continue;
+
+            const numPts = meta.data.length;
+            const fontSize = numPts > 22 ? 9 : (numPts > 13 ? 10 : 11);
+            const lbl = ds.label || '';
+            const unitType = ds.saLabelUnit || (
+              lbl.includes('%') ? 'pct'
+              : ((lbl.includes('đ/data') || lbl.includes('CPL')) ? 'cpl'
+              : ((lbl.includes('VNĐ') || lbl.includes('Doanh Thu') || lbl.includes('Target') || lbl.includes('Chi Phí')) ? 'money' : 'count'))
+            );
+
+            ctx.save();
+            ctx.font = `700 ${fontSize}px Inter, system-ui, sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            const isHorizontal = chart.options && chart.options.indexAxis === 'y';
+
+            for (let i = 0; i < numPts; i++) {
+              const rawVal = ds.data[i];
+              const text = formatCompactChartVal(rawVal, unitType);
+              if (!text) continue;
+
+              const el = meta.data[i];
+              if (!el || isNaN(el.x) || isNaN(el.y)) continue;
+
+              const tw = ctx.measureText(text).width;
+              const padX = 3.5;
+              const boxW = tw + padX * 2;
+              const boxH = fontSize + 4;
+
+              let cx = el.x;
+              let cy = el.y;
+
+              if (meta.type === 'bar' || (cType === 'bar' && ds.type !== 'line')) {
+                if (isHorizontal) {
+                  const barW = Math.abs(el.x - el.base);
+                  cx = barW > (boxW + 10) ? (el.x - boxW / 2 - 4) : (el.x + boxW / 2 + 4);
+                  cy = el.y;
+                } else {
+                  const barH = Math.abs(el.base - el.y);
+                  // Cho hiện số liệu trực tiếp BÊN TRONG cột nếu cột đủ chiều cao, hoặc ngay sát đỉnh cột nếu cột thấp
+                  if (barH >= boxH + 8) {
+                    cy = el.y + Math.min(barH * 0.45, Math.max(boxH / 2 + 3, 14));
+                  } else {
+                    cy = Math.max(area.top + boxH / 2 + 1, el.y - boxH / 2 - 3);
+                  }
+                }
+              } else {
+                // Line point: draw right above point
+                cy = Math.max(area.top + boxH / 2 + 1, el.y - boxH / 2 - 5);
+              }
+
+              let candidate = {
+                x1: cx - boxW / 2,
+                x2: cx + boxW / 2,
+                y1: cy - boxH / 2,
+                y2: cy + boxH / 2
+              };
+
+              if (overlaps(candidate)) {
+                // Try shifting up or down slightly to avoid collision
+                const shiftUp = cy - (boxH + 2);
+                const candUp = { x1: cx - boxW / 2, x2: cx + boxW / 2, y1: shiftUp - boxH / 2, y2: shiftUp + boxH / 2 };
+                const shiftDown = cy + (boxH + 2);
+                const candDown = { x1: cx - boxW / 2, x2: cx + boxW / 2, y1: shiftDown - boxH / 2, y2: shiftDown + boxH / 2 };
+                if (shiftUp > area.top && !overlaps(candUp)) {
+                  cy = shiftUp;
+                  candidate = candUp;
+                } else if (shiftDown < area.bottom - 2 && !overlaps(candDown)) {
+                  cy = shiftDown;
+                  candidate = candDown;
+                } else if (numPts > 16) {
+                  continue;
+                }
+              }
+
+              placedBoxes.push(candidate);
+
+              // Draw crisp pill background inside/above bar so numbers are 100% legible on any bar color
+              const isLine = meta.type === 'line' || ds.type === 'line';
+              ctx.fillStyle = isLine ? 'rgba(255, 255, 255, 0.94)' : 'rgba(255, 255, 255, 0.90)';
+              ctx.strokeStyle = isLine ? (ds.borderColor || '#001489') : 'rgba(0, 20, 137, 0.22)';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              if (typeof ctx.roundRect === 'function') {
+                ctx.roundRect(cx - boxW / 2, cy - boxH / 2, boxW, boxH, 3);
+              } else {
+                ctx.rect(cx - boxW / 2, cy - boxH / 2, boxW, boxH);
+              }
+              ctx.fill();
+              ctx.stroke();
+
+              ctx.fillStyle = isLine
+                ? (typeof ds.borderColor === 'string' ? ds.borderColor : '#be123c')
+                : '#001489';
+              ctx.fillText(text, cx, cy + 0.5);
+            }
+            ctx.restore();
+          }
+        }
+      });
+    }
+
+    function updateTimeChartSummaryStrip(buckets) {
+      const stripEl = document.getElementById('timeChartSummaryStats');
+      if (!stripEl || !buckets || buckets.length === 0) return;
+      const activeBuckets = buckets.filter(b => (b.rev || 0) > 0 || (b.leads || 0) > 0 || (b.cost || 0) > 0);
+      const list = activeBuckets.length > 0 ? activeBuckets : buckets;
+      const count = Math.max(1, list.length);
+      const bestRevB = [...list].sort((a, b) => (b.rev || 0) - (a.rev || 0))[0];
+      const totRev = list.reduce((a, b) => a + (b.rev || 0), 0);
+      const totCost = list.reduce((a, b) => a + (b.cost || 0), 0);
+      const totLeads = list.reduce((a, b) => a + (b.leads || 0), 0);
+      const totSt = list.reduce((a, b) => a + (b.students || 0), 0);
+      const unitWord = timeChartGranularity === 'DAY' ? 'ngày' : (timeChartGranularity === 'WEEK' ? 'tuần' : 'tháng');
+
+      stripEl.innerHTML = `
+        <span class="px-2 py-0.5 rounded bg-amber-100/80 text-sa-navy border border-amber-300 font-semibold">
+          🏆 <strong>Đỉnh Doanh thu:</strong> ${bestRevB ? `${bestRevB.tableLabel || bestRevB.label} (${formatVND(bestRevB.rev)} đ • ${formatNumber(bestRevB.students)} HV)` : '--'}
+        </span>
+        <span class="px-2 py-0.5 rounded bg-white text-slate-700 border border-slate-200">
+          📊 <strong>Trung bình/${unitWord} (${list.length} ${unitWord} có phát sinh):</strong>
+          DT <strong class="text-sa-navy">${formatCompactChartVal(totRev / count, 'money')}</strong> •
+          CP <strong class="text-amber-700">${formatCompactChartVal(totCost / count, 'money')}</strong> •
+          Data <strong class="text-blue-700">${Math.round(totLeads / count)}</strong> •
+          HV <strong class="text-emerald-700">${(totSt / count).toFixed(1).replace('.', ',')}</strong>
+        </span>
+      `;
+    }
+
+    function buildTimeChartDeltaFooter(tooltipItems, buckets) {
+      if (!tooltipItems || tooltipItems.length === 0 || !buckets) return '';
+      const idx = tooltipItems[0].dataIndex;
+      if (idx <= 0 || idx >= buckets.length) return '👆 Bấm vào cột này để xem danh sách Học viên & Data chi tiết';
+      const cur = buckets[idx];
+      const prev = buckets[idx - 1];
+      if (!cur || !prev) return '';
+      const lines = [];
+      if (prev.rev > 0 || cur.rev > 0) {
+        const diff = (cur.rev || 0) - (prev.rev || 0);
+        const pct = prev.rev > 0 ? ((diff / prev.rev) * 100).toFixed(1) : '100.0';
+        const sign = diff >= 0 ? '📈 +' : '📉 ';
+        lines.push(`${sign}${pct}% Doanh thu (${diff >= 0 ? '+' : ''}${formatNumber(diff)} đ) so với ${prev.label}`);
+      }
+      if (prev.leads > 0 || cur.leads > 0) {
+        const lDiff = (cur.leads || 0) - (prev.leads || 0);
+        lines.push(`👥 Data: ${lDiff >= 0 ? '+' : ''}${lDiff} data | Học viên: ${(cur.students || 0) - (prev.students || 0) >= 0 ? '+' : ''}${(cur.students || 0) - (prev.students || 0)} HV so với ${prev.label}`);
+      }
+      lines.push('👆 Bấm chuột vào cột để mở danh sách chi tiết');
+      return lines.join('\n');
+    }
+
+    function openDateDrillDownModal(isoDate) {
+      const modal = document.getElementById('modalDrillDown');
+      const titleEl = document.getElementById('drillDownModalTitle');
+      const subEl = document.getElementById('drillDownModalSub');
+      const countEl = document.getElementById('drillDownCountBadge');
+      const thead = document.getElementById('tblDrillDownHead');
+      const tbody = document.getElementById('tblDrillDownBody');
+      const searchInput = document.getElementById('drillDownSearchInput');
+      if (!modal || !thead || !tbody) return;
+      if (searchInput) searchInput.value = '';
+
+      const dBundle = window.CRM_DASHBOARD_DATA || {};
+      const baseInvs = window._lastFilteredInvsNoDate || dBundle.Invoices2026 || [];
+      const baseCares = window._lastFilteredCaresNoDate || dBundle.Salecare2026 || [];
+      const dayInvs = baseInvs.filter(i => i.d && i.d.substring(0, 10) === isoDate);
+      const dayCares = baseCares.filter(c => c.d && c.d.substring(0, 10) === isoDate);
+      const dc = (dBundle.DailyCost2026 && dBundle.DailyCost2026[isoDate]) ? dBundle.DailyCost2026[isoDate] : {};
+      const dayRev = dayInvs.reduce((a, i) => a + (i.pay || 0), 0);
+      const daySt = dayInvs.filter(i => i.ns === 1).length;
+      const parts = isoDate.split('-');
+      const vnDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : isoDate;
+
+      titleEl.textContent = `CHI TIẾT NGÀY ${vnDate} — DT: ${formatVND(dayRev)} Đ | ${daySt} HỌC VIÊN MỚI | ${dayCares.length} DATA`;
+      subEl.innerHTML = `📐 <strong>Tổng hợp ngày ${vnDate}:</strong> <strong>${dayInvs.length}</strong> phiếu thu (${daySt} HV mới) • <strong>${dayCares.length}</strong> Data mới • Chi phí MKT: <strong>${formatVND((dc.fb || 0) + (dc.gg || 0))} đ</strong> (FB: ${formatVND(dc.fb || 0)} | GG: ${formatVND(dc.gg || 0)} | TK: ${formatVND(dc.tk || 0)}).`;
+      countEl.textContent = `${dayInvs.length} phiếu thu & ${dayCares.length} data`;
+
+      thead.innerHTML = `
+        <tr>
+          <th class="py-2.5 px-2 text-center">#</th>
+          <th class="py-2.5 px-2">Phân Loại</th>
+          <th class="py-2.5 px-2">Mã Số</th>
+          <th class="py-2.5 px-3">Họ Tên Học Viên / Khách Hàng</th>
+          <th class="py-2.5 px-2">Cơ Sở</th>
+          <th class="py-2.5 px-3">Khóa Học / Ngành Quan Tâm</th>
+          <th class="py-2.5 px-2">Nguồn</th>
+          <th class="py-2.5 px-2">Tư Vấn Viên</th>
+          <th class="py-2.5 px-3 text-right">Thực Thu / Trạng Thái</th>
+        </tr>
+      `;
+
+      let rowsHtml = '';
+      let idx = 1;
+      dayInvs.forEach(r => {
+        const badge = r.ns === 1
+          ? '<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">🎓 Học viên mới</span>'
+          : '<span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">💰 Thu đợt 2+</span>';
+        rowsHtml += `
+          <tr class="bg-yellow-50/40 hover:bg-yellow-100/50 transition">
+            <td class="py-2 px-2 text-center text-slate-400">${idx++}</td>
+            <td class="py-2 px-2">${badge}</td>
+            <td class="py-2 px-2 font-mono font-bold text-sa-navy">#${r.st || r.id}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">${r.fn || ''}</td>
+            <td class="py-2 px-2 text-slate-700">${r.b || ''}</td>
+            <td class="py-2 px-3 text-slate-700">${r.p || r.g || ''}</td>
+            <td class="py-2 px-2 text-slate-600">${r.s || ''}</td>
+            <td class="py-2 px-2 font-medium text-sa-navy">${r.sale || ''}</td>
+            <td class="py-2 px-3 text-right font-bold text-emerald-700">${formatVND(r.pay)} đ</td>
+          </tr>
+        `;
+      });
+
+      dayCares.forEach(c => {
+        const stBadge = c.st > 0
+          ? `<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">✅ Đã chốt (#${c.st})</span>`
+          : `<span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px]">Đang chăm (${c.tc || 0} lần)</span>`;
+        rowsHtml += `
+          <tr class="hover:bg-blue-50/40 transition">
+            <td class="py-2 px-2 text-center text-slate-400">${idx++}</td>
+            <td class="py-2 px-2"><span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[10px]">📥 Data mới</span></td>
+            <td class="py-2 px-2 font-mono text-slate-600">#${c.id}</td>
+            <td class="py-2 px-3 font-semibold text-slate-800">${c.fn || ''}</td>
+            <td class="py-2 px-2 text-slate-700">${c.b || ''}</td>
+            <td class="py-2 px-3 text-slate-600">${c.g || ''}</td>
+            <td class="py-2 px-2 text-slate-700">${c.s || ''}</td>
+            <td class="py-2 px-2 font-medium text-sa-navy">${c.sale || ''}</td>
+            <td class="py-2 px-3 text-right">${stBadge}</td>
+          </tr>
+        `;
+      });
+
+      tbody.innerHTML = rowsHtml || `<tr><td colspan="9" class="py-6 text-center text-slate-400">Không có bản ghi phát sinh trong ngày ${vnDate}</td></tr>`;
+      modal.classList.remove('hidden');
+    }
+
+    function handleTimeChartBarClick(evt, elements, buckets) {
+      if (!elements || elements.length === 0 || !buckets) return;
+      const idx = elements[0].index;
+      const b = buckets[idx];
+      if (!b || !b.key) return;
+      if (String(b.key).startsWith('M')) {
+        openMetricDrillDown('SoHocVien', b.key, 'ALL');
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(String(b.key))) {
+        openDateDrillDownModal(String(b.key));
+      }
+    }
+
     function renderManagementCharts(data) {
       window._lastActiveMonthData = data;
       syncGranularityButtonsUI();
       const buckets = buildActiveTimeSeriesBuckets(data);
+      updateTimeChartSummaryStrip(buckets);
       const isDayOrWeek = timeChartGranularity !== 'MONTH' && (currentYear === '2026' || currentYear === '2027' || currentYear === 'ALL');
 
       const labels = buckets.map(b => b.label);
@@ -5594,6 +5959,7 @@
                 type: 'bar',
                 label: 'Doanh Thu Thực Đạt (VNĐ)',
                 data: revData,
+                saLabelUnit: 'money',
                 backgroundColor: buckets.map(b => b.isSelectedSingleDay ? '#FED141' : 'rgba(0, 20, 137, 0.78)'),
                 borderColor: '#001489',
                 borderWidth: 1.5,
@@ -5604,6 +5970,7 @@
                 type: 'line',
                 label: 'Đường Tăng/Giảm Doanh Thu (VNĐ)',
                 data: revData,
+                saSkipLabel: true,
                 borderColor: '#10b981',
                 backgroundColor: '#10b981',
                 borderWidth: 2.5,
@@ -5616,6 +5983,7 @@
                 type: 'line',
                 label: 'Định Mức Target Ngày/Tuần (VNĐ)',
                 data: targetData,
+                saSkipLabel: true,
                 borderColor: '#94a3b8',
                 backgroundColor: '#94a3b8',
                 borderDash: [5, 4],
@@ -5626,8 +5994,8 @@
               }
             ]
           : [
-              { label: 'Target Kế Hoạch (VNĐ)', data: targetData, backgroundColor: '#cbd5e1', borderRadius: 4 },
-              { label: 'Doanh Thu Thực Đạt (VNĐ)', data: revData, backgroundColor: '#001489', borderRadius: 4 }
+              { label: 'Target Kế Hoạch (VNĐ)', data: targetData, saLabelUnit: 'money', backgroundColor: '#cbd5e1', borderRadius: 4 },
+              { label: 'Doanh Thu Thực Đạt (VNĐ)', data: revData, saLabelUnit: 'money', backgroundColor: '#001489', borderRadius: 4 }
             ];
 
         chartInstances.targetRev = new Chart(canvasTargetRev, {
@@ -5639,9 +6007,17 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
             interaction: { mode: 'index', intersect: false },
-            plugins: { legend: { position: 'top' } },
-            scales: { y: { ticks: { callback: v => formatNumber(v) } } }
+            plugins: {
+              legend: { position: 'top' },
+              tooltip: {
+                callbacks: {
+                  footer: (items) => buildTimeChartDeltaFooter(items, buckets)
+                }
+              }
+            },
+            scales: { y: { grace: '12%', ticks: { callback: v => formatNumber(v) } } }
           }
         });
       }
@@ -5658,6 +6034,7 @@
                 type: 'bar',
                 label: isDayOrWeek ? 'Chi Phí Quảng Cáo Ngày/Tuần (VNĐ)' : 'Chi Phí Marketing (VNĐ)',
                 data: costData,
+                saLabelUnit: 'money',
                 backgroundColor: '#FED141',
                 borderColor: '#d97706',
                 borderWidth: 1,
@@ -5669,6 +6046,7 @@
                 type: 'line',
                 label: 'Tỷ lệ CP/DT thực (%)',
                 data: costRatioData,
+                saLabelUnit: 'pct',
                 borderColor: '#e11d48',
                 backgroundColor: '#e11d48',
                 borderWidth: 2.5,
@@ -5682,10 +6060,18 @@
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
             interaction: { mode: 'index', intersect: false },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  footer: (items) => buildTimeChartDeltaFooter(items, buckets)
+                }
+              }
+            },
             scales: {
-              y: { position: 'left', ticks: { callback: v => formatNumber(v) } },
-              y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
+              y: { position: 'left', grace: '12%', ticks: { callback: v => formatNumber(v) } },
+              y1: { position: 'right', grace: '12%', grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
             }
           }
         });
@@ -5827,6 +6213,7 @@
               type: 'bar',
               label: 'Số Data (Lead hợp lệ)',
               data: dataCounts,
+              saLabelUnit: 'count',
               backgroundColor: 'rgba(30, 64, 175, 0.72)',
               borderColor: '#001489',
               borderWidth: 1,
@@ -5838,6 +6225,7 @@
               type: 'bar',
               label: 'Số Học Viên Nhập Học',
               data: studentCounts,
+              saLabelUnit: 'count',
               backgroundColor: '#FED141',
               borderColor: '#001489',
               borderWidth: 1.5,
@@ -5849,6 +6237,7 @@
               type: 'line',
               label: 'Tỉ Lệ Chốt Marketing (%)',
               data: cvrMktArr,
+              saLabelUnit: 'pct',
               borderColor: '#e11d48',
               backgroundColor: '#e11d48',
               borderWidth: 3,
@@ -5862,6 +6251,7 @@
               type: 'line',
               label: 'Tỉ Lệ Chốt Salecare (%)',
               data: cvrSaleArr,
+              saSkipLabel: true,
               borderColor: '#10b981',
               backgroundColor: '#10b981',
               borderDash: [5, 4],
@@ -5876,6 +6266,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { position: 'top' },
@@ -5886,7 +6277,8 @@
                   const val = ctx.parsed.y;
                   if (lbl.includes('%')) return `${lbl}: ${val}%`;
                   return `${lbl}: ${formatNumber(val)} người`;
-                }
+                },
+                footer: (items) => buildTimeChartDeltaFooter(items, buckets)
               }
             }
           },
@@ -5894,12 +6286,14 @@
             y: {
               type: 'linear',
               position: 'left',
+              grace: '12%',
               title: { display: true, text: 'Số lượng Data & Học viên (Người)', font: { size: 11, weight: 'bold' } },
               ticks: { callback: v => formatNumber(v) }
             },
             y1: {
               type: 'linear',
               position: 'right',
+              grace: '12%',
               grid: { drawOnChartArea: false },
               title: { display: true, text: 'Tỉ lệ chốt CVR (%)', font: { size: 11, weight: 'bold' } },
               ticks: { callback: v => v + '%' }
@@ -6015,6 +6409,7 @@
           type: 'bar',
           label: 'Tổng Chi Phí MKT (VNĐ)',
           data: rows.map(r => r.CostK),
+          saLabelUnit: 'money',
           backgroundColor: 'rgba(203, 213, 225, 0.65)',
           borderColor: '#94a3b8',
           borderWidth: 1,
@@ -6029,6 +6424,7 @@
           type: 'bar',
           label: 'Số Data Nguồn Trả Phí (Paid)',
           data: rows.map(r => r.PaidData),
+          saLabelUnit: 'count',
           backgroundColor: 'rgba(37, 99, 235, 0.78)',
           borderRadius: 4,
           yAxisID: 'y1',
@@ -6038,6 +6434,7 @@
           type: 'line',
           label: 'Giá 1 Data Nguồn Trả Phí (đ/data)',
           data: rows.map(r => r.CplPaidK),
+          saLabelUnit: 'cpl',
           borderColor: '#ea580c',
           backgroundColor: '#ea580c',
           borderWidth: 3,
@@ -6053,6 +6450,7 @@
           type: 'bar',
           label: 'Tổng Số Data (Tất cả nguồn)',
           data: rows.map(r => r.TotalData),
+          saLabelUnit: 'count',
           backgroundColor: 'rgba(16, 185, 129, 0.65)',
           borderRadius: 4,
           yAxisID: 'y1',
@@ -6062,6 +6460,8 @@
           type: 'line',
           label: 'Giá 1 Data Tổng Nguồn (đ/data)',
           data: rows.map(r => r.CplTotalK),
+          saLabelUnit: 'cpl',
+          saSkipLabel: paidChartSourceMode === 'COMPARE',
           borderColor: '#059669',
           backgroundColor: '#059669',
           borderWidth: 3,
@@ -6080,6 +6480,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { position: 'top' },
@@ -6090,7 +6491,8 @@
                   const val = ctx.parsed.y;
                   if (lbl.includes('đ')) return `${lbl}: ${formatNumber(val)} đ`;
                   return `${lbl}: ${formatNumber(val)} data`;
-                }
+                },
+                footer: (items) => buildTimeChartDeltaFooter(items, buckets)
               }
             }
           },
@@ -6098,12 +6500,14 @@
             y: {
               type: 'linear',
               position: 'left',
+              grace: '12%',
               title: { display: true, text: 'Chi Phí & Giá Data CPL (VNĐ)', font: { size: 11, weight: 'bold' } },
               ticks: { callback: v => formatNumber(v) }
             },
             y1: {
               type: 'linear',
               position: 'right',
+              grace: '12%',
               grid: { drawOnChartArea: false },
               title: { display: true, text: 'Số lượng Data (Người)', font: { size: 11, weight: 'bold' } },
               ticks: { callback: v => formatNumber(v) }
@@ -7446,8 +7850,34 @@
         }
       }
 
+      const qmSel = document.getElementById('selQuickMonthFilter');
+      if (qmSel) qmSel.value = '';
       document.getElementById('filterStartDate').value = filterState.startDate;
       document.getElementById('filterEndDate').value = filterState.endDate;
+      applyFilters();
+    }
+
+    function onQuickMonthSelect(mVal) {
+      if (!mVal) {
+        setTimePreset('ALL');
+        return;
+      }
+      const mNum = parseInt(mVal, 10);
+      const yrNum = (currentYear === 'ALL' || !currentYear) ? 2026 : parseInt(currentYear, 10);
+      const mmStr = String(mNum).padStart(2, '0');
+      const lastDay = new Date(Date.UTC(yrNum, mNum, 0)).getUTCDate();
+      filterState.preset = 'CUSTOM';
+      filterState.startDate = `${yrNum}-${mmStr}-01`;
+      filterState.endDate = `${yrNum}-${mmStr}-${String(lastDay).padStart(2, '0')}`;
+      document.getElementById('filterStartDate').value = filterState.startDate;
+      document.getElementById('filterEndDate').value = filterState.endDate;
+      timeChartGranularity = 'DAY';
+      syncGranularityButtonsUI();
+      const dailyBox = document.getElementById('wrapDailyMktTrackerBox');
+      if (dailyBox) dailyBox.classList.remove('hidden');
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.remove('active-preset', 'bg-sa-navy', 'text-sa-gold', 'font-bold');
+      });
       applyFilters();
     }
 
