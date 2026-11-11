@@ -163,13 +163,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.24_20261111_074242"></script>
-  <script src="crm_data.js?v=v3.24_20261111_074242"></script>
+  <script src="crm_mapping.js?v=v3.25_20261111_095113"></script>
+  <script src="crm_data.js?v=v3.25_20261111_095113"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.24_20261111_074242') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.24_20261111_074242').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.25_20261111_095113') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.25_20261111_095113').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -301,25 +301,30 @@
 
           <!-- Consolidated Tools & Export Dropdown (v3.23 Decluttered Header) -->
           <div class="relative">
-            <button type="button" id="btnHeaderToolsMenu" onclick="document.getElementById('menuHeaderToolsDropdown').classList.toggle('hidden')"
+            <button type="button" id="btnHeaderToolsMenu"
+              onclick="document.getElementById('menuHeaderToolsDropdown').classList.toggle('hidden')"
               class="bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-500 transition flex items-center gap-1.5 shadow-sm">
               <span>🧰 Công Cụ &amp; Xuất File ▾</span>
             </button>
             <div id="menuHeaderToolsDropdown"
               class="hidden absolute right-0 mt-1.5 w-64 bg-white text-slate-800 rounded-xl shadow-2xl border border-slate-200 z-50 py-1.5 text-xs font-semibold divide-y divide-slate-100">
-              <button type="button" id="btnSendInstantTelegramWeb" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); sendInstantTelegramReportFromWeb();"
+              <button type="button" id="btnSendInstantTelegramWeb"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); sendInstantTelegramReportFromWeb();"
                 class="w-full px-3.5 py-2 text-left hover:bg-blue-50 flex items-center gap-2 text-blue-700 font-bold">
                 <span>📲 Bắn Báo Cáo Telegram Ngay</span>
               </button>
-              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
+              <button type="button"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); triggerPrintExecutiveReport();"
                 class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-emerald-700 font-bold">
                 <span>🖨️ In / Xuất Báo Cáo PDF (A4)</span>
               </button>
-              <button type="button" onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); exportFullReportExcel();"
+              <button type="button"
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden'); exportFullReportExcel();"
                 class="w-full px-3.5 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-sa-navy font-bold">
                 <span>📥 Xuất Sổ Tay Quản Trị (10 Sheet Excel)</span>
               </button>
-              <a href="dinh_danh_du_lieu_chuan_hoa.csv" download onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden')"
+              <a href="dinh_danh_du_lieu_chuan_hoa.csv" download
+                onclick="document.getElementById('menuHeaderToolsDropdown').classList.add('hidden')"
                 class="block w-full px-3.5 py-2 text-left hover:bg-slate-50 text-slate-700">
                 📄 Tải File Định Danh Chuẩn Hóa (.csv)
               </a>
@@ -833,7 +838,8 @@
             </h2>
           </div>
           <div class="flex flex-wrap items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCollapsiblePacingSim').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCollapsiblePacingSim').classList.toggle('hidden')"
               class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-300 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
               🎛️ Mở / Thu gọn: Dự Báo Cuối Kỳ &amp; Mô Phỏng Kịch Bản What-If
             </button>
@@ -851,7 +857,11 @@
         <div class="card-sa p-4">
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2.5">
             <p class="text-[11px] text-slate-600">
-              📐 <strong>Chuẩn hiển thị:</strong> Đơn vị tiền <strong>VNĐ đầy đủ đến hàng đơn vị</strong>. 👆 <strong>Đối soát 1-Click:</strong> Bấm trực tiếp vào con số ở dòng <span class="underline decoration-sa-gold font-bold text-sa-navy">Tổng data</span> hoặc <span class="underline decoration-sa-gold font-bold text-sa-navy">Số học viên mới</span> để mở danh sách chi tiết từng hồ sơ.
+              📐 <strong>Chuẩn hiển thị:</strong> Đơn vị tiền <strong>VNĐ đầy đủ đến hàng đơn vị</strong>. 👆
+              <strong>Đối soát 1-Click:</strong> Bấm trực tiếp vào con số ở dòng <span
+                class="underline decoration-sa-gold font-bold text-sa-navy">Tổng data</span> hoặc <span
+                class="underline decoration-sa-gold font-bold text-sa-navy">Số học viên mới</span> để mở danh sách chi
+              tiết từng hồ sơ.
             </p>
           </div>
 
@@ -905,7 +915,8 @@
             <div class="space-y-1">
               <div class="flex items-center gap-2">
                 <span
-                  class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">DỰ BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
+                  class="px-2 py-0.5 rounded bg-sa-gold text-sa-navy font-heading font-bold text-[10px] uppercase">DỰ
+                  BÁO NHỊP ĐỘ TARGET (PACING &amp; RUN-RATE)</span>
                 <span id="pacingStatusBadge"
                   class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-bold">🟢
                   Đang theo dõi nhịp độ thực thu</span>
@@ -922,15 +933,16 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs lg:min-w-[600px]">
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Tốc Độ Thu / Ngày</div>
-                <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span> <span
-                    class="text-[10px] font-normal">đ</span></div>
+                <div class="text-base font-heading font-bold text-sa-gold mt-0.5"><span id="pacingDailyRev">0</span>
+                  <span class="text-[10px] font-normal">đ</span></div>
                 <div class="text-[10px] text-slate-300" id="pacingActiveDays">0 ngày phát sinh</div>
               </div>
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Dự Báo Cuối Kỳ</div>
                 <div class="text-base font-heading font-bold text-emerald-300 mt-0.5"><span
                     id="pacingForecastRev">0</span> <span class="text-[10px] font-normal">đ</span></div>
-                <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target</div>
+                <div class="text-[10px] text-emerald-200 font-semibold" id="pacingForecastPct">Dự kiến đạt 0% Target
+                </div>
               </div>
               <div class="bg-white/10 rounded-lg p-2.5 border border-white/15">
                 <div class="text-[10px] text-slate-300 uppercase">Khoảng Cách Tới Target</div>
@@ -962,15 +974,22 @@
         </div>
 
         <!-- BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG & NGÂN SÁCH WHAT-IF (EXECUTIVE SIMULATOR v3.22) -->
-        <div id="whatIfSimulatorCard" class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
-          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
+        <div id="whatIfSimulatorCard"
+          class="card-sa p-4 border-l-4 border-sa-gold bg-gradient-to-r from-slate-50 via-white to-amber-50/30 no-print">
+          <div
+            class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-3 border-b border-slate-200">
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ PHỎNG WHAT-IF</span>
-                <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
+                <span
+                  class="px-2 py-0.5 rounded bg-sa-navy text-sa-gold text-[10px] font-heading font-bold uppercase">MÔ
+                  PHỎNG WHAT-IF</span>
+                <h3 class="text-sm sm:text-base font-heading font-bold text-sa-navy uppercase">🎛️ BỘ MÔ PHỎNG KỊCH BẢN
+                  TĂNG TRƯỞNG &amp; ĐÒN BẨY NGÂN SÁCH (WHAT-IF SIMULATOR)</h3>
               </div>
               <p class="text-[11px] text-slate-600 mt-0.5">
-                📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>, <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
+                📐 <strong>Logic:</strong> Lấy số liệu thực tế đang lọc làm gốc $\rightarrow$ Kéo thanh trượt thay đổi
+                <strong>Ngân sách MKT</strong>, <strong>Giá Data (CPL)</strong>, <strong>Tỷ lệ chốt (CVR)</strong>,
+                <strong>Doanh thu/HV (ARPU)</strong> để dự phóng ngay Doanh thu, Số Học viên, ROAS và % CP/DT.
               </p>
             </div>
             <div class="flex flex-wrap items-center gap-1.5">
@@ -994,32 +1013,40 @@
                 <span>1. Ngân sách MKT:</span>
                 <span id="lblSimBudgetPct" class="text-sa-navy">0%</span>
               </div>
-              <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện tại</span><span>+100%</span></div>
+              <input id="simBudgetPct" type="range" min="-50" max="100" step="5" value="0"
+                oninput="updateWhatIfSimulator()" class="w-full accent-sa-navy cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-50%</span><span>Hiện
+                  tại</span><span>+100%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>2. Giá Data (CPL):</span>
                 <span id="lblSimCplPct" class="text-emerald-700">0%</span>
               </div>
-              <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-emerald-600 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ hơn)</span><span>0%</span><span>+50%</span></div>
+              <input id="simCplPct" type="range" min="-40" max="50" step="5" value="0" oninput="updateWhatIfSimulator()"
+                class="w-full accent-emerald-600 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-40% (Rẻ
+                  hơn)</span><span>0%</span><span>+50%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>3. Tỷ lệ chốt (CVR):</span>
                 <span id="lblSimCvrPct" class="text-blue-700">0%</span>
               </div>
-              <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-blue-700 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+60%</span></div>
+              <input id="simCvrPct" type="range" min="-30" max="60" step="5" value="0" oninput="updateWhatIfSimulator()"
+                class="w-full accent-blue-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <span>-30%</span><span>0%</span><span>+60%</span></div>
             </div>
             <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm">
               <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
                 <span>4. Học phí TB/HV (ARPU):</span>
                 <span id="lblSimArpuPct" class="text-purple-700">0%</span>
               </div>
-              <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0" oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5"><span>-30%</span><span>0%</span><span>+50%</span></div>
+              <input id="simArpuPct" type="range" min="-30" max="50" step="5" value="0"
+                oninput="updateWhatIfSimulator()" class="w-full accent-purple-700 cursor-pointer">
+              <div class="flex justify-between text-[10px] text-slate-400 mt-0.5">
+                <span>-30%</span><span>0%</span><span>+50%</span></div>
             </div>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mt-3 pt-2.5 border-t border-slate-200/80">
@@ -1045,7 +1072,8 @@
             </div>
             <div class="p-2.5 rounded-lg bg-purple-50/70 border border-purple-200">
               <div class="text-[10px] font-bold text-purple-800 uppercase">ROAS &amp; Tỷ Lệ CP/DT</div>
-              <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> • <span id="simOutCpDt">0.0%</span></div>
+              <div class="text-sm font-heading font-bold text-purple-900 mt-0.5"><span id="simOutRoas">0.00x</span> •
+                <span id="simOutCpDt">0.0%</span></div>
             </div>
           </div>
         </div>
@@ -1054,33 +1082,57 @@
       <!-- ==================== PHÂN KHU 1.3: HỆ THỐNG BIỂU ĐỒ XU HƯỚNG THỜI GIAN (GOM GỌN 1 KHUNG CHUYỂN ĐỔI NHANH v3.23) ==================== -->
       <div class="space-y-4" id="sectionPnlCharts">
         <div
-          class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 border-b-2 border-sa-navy/15 pb-2">
-          <div class="flex items-center gap-2">
+          class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-2.5 border-b-2 border-sa-navy/15 pb-2.5">
+          <div class="flex flex-wrap items-center gap-2">
             <span
               class="px-2.5 py-1 rounded bg-sa-navy text-sa-gold font-heading font-bold text-xs uppercase shadow-sm">PHÂN
               KHU 1.2</span>
             <h2 class="text-base sm:text-lg font-heading font-bold text-sa-navy uppercase">
-              BIỂU ĐỒ XU HƯỚNG THỜI GIAN (CHỌN GÓC NHÌN ĐỂ XEM GỌN GÀNG)
+              BIỂU ĐỒ XU HƯỚNG THỜI GIAN
             </h2>
+            <span id="lblTimeChartGranBadge"
+              class="px-2 py-0.5 rounded bg-blue-50 text-sa-navy border border-blue-200 text-[11px] font-bold">
+              📅 Đang xem: Theo Tháng (T1 → T12)
+            </span>
           </div>
-          <!-- 4-in-1 Time Chart Switcher Buttons -->
-          <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200 no-print">
-            <button type="button" id="btnTimeChartTab_1" onclick="switchTimeChartSubTab(1)"
-              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition">
-              📊 1. Doanh Thu, Target &amp; % CP/DT
-            </button>
-            <button type="button" id="btnTimeChartTab_2" onclick="switchTimeChartSubTab(2)"
-              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
-              👥 2. Số Data, Học Viên &amp; Tỷ Lệ Chốt (Tháng/Tuần/Ngày)
-            </button>
-            <button type="button" id="btnTimeChartTab_3" onclick="switchTimeChartSubTab(3)"
-              class="timechart-tab-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
-              🏷️ 3. Giá Data Nguồn Trả Phí vs. Tổng Nguồn
-            </button>
-            <button type="button" id="btnTimeChartTab_ALL" onclick="switchTimeChartSubTab('ALL')"
-              class="timechart-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-white transition">
-              👁️ Mở Tất Cả
-            </button>
+          <div class="flex flex-wrap items-center gap-2 no-print">
+            <!-- Unified Granularity Switcher (Applies to ALL 4 Time Charts) -->
+            <div class="flex flex-wrap items-center gap-1 bg-amber-50/80 p-1 rounded-xl border border-amber-300 shadow-sm">
+              <span class="text-[11px] font-bold text-sa-navy px-1.5">Đơn vị trục thời gian:</span>
+              <button type="button" onclick="setTimeChartGranularity('DAY')" id="btnGran_DAY"
+                class="gran-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition"
+                title="Xem tăng giảm theo từng ngày (Tự động bật khi lọc Tháng này / Tháng trước / Ngày cụ thể)">
+                🕒 Theo Ngày
+              </button>
+              <button type="button" onclick="setTimeChartGranularity('WEEK')" id="btnGran_WEEK"
+                class="gran-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
+                📆 Theo Tuần
+              </button>
+              <button type="button" onclick="setTimeChartGranularity('MONTH')" id="btnGran_MONTH"
+                class="gran-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition"
+                title="Xem theo 12 tháng (Tự động bật khi lọc Cả năm)">
+                📅 Theo Tháng (T1 → T12)
+              </button>
+            </div>
+            <!-- 4-in-1 Time Chart Switcher Buttons -->
+            <div class="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
+              <button type="button" id="btnTimeChartTab_1" onclick="switchTimeChartSubTab(1)"
+                class="timechart-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition">
+                📊 1. Doanh Thu, Target &amp; % CP/DT
+              </button>
+              <button type="button" id="btnTimeChartTab_2" onclick="switchTimeChartSubTab(2)"
+                class="timechart-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
+                👥 2. Số Data, Học Viên &amp; Tỷ Lệ Chốt
+              </button>
+              <button type="button" id="btnTimeChartTab_3" onclick="switchTimeChartSubTab(3)"
+                class="timechart-tab-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition">
+                🏷️ 3. Giá Data Paid vs. Tổng
+              </button>
+              <button type="button" id="btnTimeChartTab_ALL" onclick="switchTimeChartSubTab('ALL')"
+                class="timechart-tab-btn px-2 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-white transition">
+                👁️ Tất Cả
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1141,23 +1193,7 @@
               </p>
             </div>
 
-            <!-- Granularity Switcher -->
-            <div
-              class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200 self-start lg:self-center">
-              <span class="text-[11px] font-bold text-slate-600 px-2">Khung thời gian:</span>
-              <button type="button" onclick="setTimeChartGranularity('MONTH')" id="btnGran_MONTH"
-                class="gran-btn px-3 py-1 rounded text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition">
-                📅 Theo Tháng (T1 → T12)
-              </button>
-              <button type="button" onclick="setTimeChartGranularity('WEEK')" id="btnGran_WEEK"
-                class="gran-btn px-3 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition">
-                📆 Theo Tuần
-              </button>
-              <button type="button" onclick="setTimeChartGranularity('DAY')" id="btnGran_DAY"
-                class="gran-btn px-3 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition">
-                🕒 Theo Ngày Phát Sinh
-              </button>
-            </div>
+            <!-- Granularity Switcher moved to PHÂN KHU 1.2 Header -->
           </div>
 
           <!-- 4 Summary Mini-KPIs for Chart #3 -->
@@ -1583,7 +1619,8 @@
               </p>
             </div>
             <div class="flex items-center gap-2 no-print">
-              <button type="button" onclick="document.getElementById('wrapDailyMktTrackerBox').classList.toggle('hidden')"
+              <button type="button"
+                onclick="document.getElementById('wrapDailyMktTrackerBox').classList.toggle('hidden')"
                 class="bg-sa-navy/10 hover:bg-sa-navy hover:text-sa-gold text-sa-navy text-xs font-bold px-3 py-1.5 rounded-lg border border-sa-navy/30 transition">
                 👁️ Mở / Thu gọn Bảng Theo Ngày
               </button>
@@ -1593,7 +1630,8 @@
               </button>
             </div>
           </div>
-          <div id="wrapDailyMktTrackerBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
+          <div id="wrapDailyMktTrackerBox"
+            class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[420px]">
             <table id="tblDailyMktTracker" class="min-w-full text-xs text-left divide-y divide-slate-200">
               <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
                 <tr>
@@ -1761,7 +1799,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapTagDispositionBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
+        <div id="wrapTagDispositionBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[440px]">
           <table id="tblLeadTagDisposition" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -1955,7 +1994,8 @@
       <!-- HẠNG MỤC MỚI V3.20: BÓC TÁCH DOANH THU THEO LOẠI SẢN PHẨM (TYPE_COURSE) & KIỂM TOÁN GIẢM GIÁ / THU NGÂN (DISCOUNT AUDIT) -->
       <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
         <div class="text-xs font-bold text-sa-navy">
-          🛡️ Bảng Kiểm Toán Chuyên Sâu: Bóc Tách Học Phí / Bằng Cấp / Đổi Khóa &amp; Quỹ Giảm Giá Học Bổng (Thu gọn mặc định cho đỡ rối)
+          🛡️ Bảng Kiểm Toán Chuyên Sâu: Bóc Tách Học Phí / Bằng Cấp / Đổi Khóa &amp; Quỹ Giảm Giá Học Bổng (Thu gọn mặc
+          định cho đỡ rối)
         </div>
         <button type="button" onclick="document.getElementById('wrapCashAuditSubTables').classList.toggle('hidden')"
           class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
@@ -2287,7 +2327,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapFanpageRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapFanpageRoiBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblFanpageRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -2331,7 +2372,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCampaignSegmentRoiBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCampaignSegmentRoiBox').classList.toggle('hidden')"
               class="bg-purple-50 hover:bg-purple-100 text-purple-900 text-xs font-bold px-3 py-1.5 rounded-lg border border-purple-300 transition">
               👁️ Mở / Thu gọn Bảng Chiến Dịch
             </button>
@@ -2341,7 +2383,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapCampaignSegmentRoiBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
+        <div id="wrapCampaignSegmentRoiBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[380px]">
           <table id="tblCampaignSegmentRoi" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -2900,7 +2943,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapLeadCreatorCompareBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapLeadCreatorCompareBox').classList.toggle('hidden')"
               class="text-[11px] font-bold text-teal-900 bg-teal-50 hover:bg-teal-100 px-2.5 py-1 rounded border border-teal-300">
               👁️ Mở / Thu gọn Bảng
             </button>
@@ -2910,7 +2954,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapLeadCreatorCompareBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
+        <div id="wrapLeadCreatorCompareBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg">
           <table id="tblLeadCreatorCompare" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -2999,11 +3044,14 @@
               BẢNG XẾP HẠNG TOP KHÓA HỌC CỤ THỂ (`course_name`) &amp; TỶ TRỌNG GÓI COMBO ĐA KHÓA
             </h3>
             <p class="text-xs text-slate-500 mt-0.5">
-              📐 <strong>Logic:</strong> Bóc tách chi tiết từng khóa học cụ thể học viên đăng ký (`course_name` + `program_group`), số lượng Học viên mới, số học viên mua kèm Combo (`combo_course_id` / `amount_course >= 2`), Doanh thu thực thu và Học phí trung bình/HV.
+              📐 <strong>Logic:</strong> Bóc tách chi tiết từng khóa học cụ thể học viên đăng ký (`course_name` +
+              `program_group`), số lượng Học viên mới, số học viên mua kèm Combo (`combo_course_id` / `amount_course >=
+              2`), Doanh thu thực thu và Học phí trung bình/HV.
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <span id="lblTopSpecificCourseSummary" class="px-3 py-1.5 rounded-lg bg-sa-navy/10 text-sa-navy text-xs font-bold">0 khóa học</span>
+            <span id="lblTopSpecificCourseSummary"
+              class="px-3 py-1.5 rounded-lg bg-sa-navy/10 text-sa-navy text-xs font-bold">0 khóa học</span>
             <button onclick="exportTableToExcel('tblTopSpecificCourses', 'Top_Khoa_Hoc_Chi_Tiet_Va_Combo')"
               class="bg-slate-100 hover:bg-slate-200 text-sa-navy text-xs font-bold px-3 py-2 rounded-lg border border-slate-300 transition">
               📥 Xuất Excel
@@ -3048,7 +3096,8 @@
               <div class="text-[10px] text-emerald-700 font-bold uppercase">Số HV Tiềm Năng Upsell</div>
               <div id="lblTotalUpsellCandidates" class="text-base font-heading font-bold text-emerald-800">0 HV</div>
             </div>
-            <button type="button" onclick="document.getElementById('wrapUpsellCandidatesBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapUpsellCandidatesBox').classList.toggle('hidden')"
               class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-xs font-bold px-3 py-2 rounded-lg border border-emerald-300 transition no-print">
               👁️ Mở / Thu gọn DS Upsell
             </button>
@@ -3058,7 +3107,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapUpsellCandidatesBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
+        <div id="wrapUpsellCandidatesBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[400px]">
           <table id="tblUpsellCandidates" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3095,7 +3145,8 @@
             </p>
           </div>
           <div class="flex items-center gap-2 no-print">
-            <button type="button" onclick="document.getElementById('wrapCrossBranchAuditBox').classList.toggle('hidden')"
+            <button type="button"
+              onclick="document.getElementById('wrapCrossBranchAuditBox').classList.toggle('hidden')"
               class="bg-indigo-50 hover:bg-indigo-100 text-indigo-900 text-xs font-bold px-3 py-2 rounded-lg border border-indigo-300 transition">
               👁️ Mở / Thu gọn Bảng Liên Cơ Sở
             </button>
@@ -3105,7 +3156,8 @@
             </button>
           </div>
         </div>
-        <div id="wrapCrossBranchAuditBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
+        <div id="wrapCrossBranchAuditBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg max-h-[340px]">
           <table id="tblCrossBranchAudit" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] sticky top-0 z-10 uppercase">
               <tr>
@@ -3173,7 +3225,8 @@
 
       <div class="card-sa p-3.5 bg-slate-50 border border-slate-200 flex items-center justify-between">
         <div class="text-xs font-bold text-sa-navy">
-          👥 Biểu Đồ Chân Dung Nhân Khẩu Học Học Viên: Cơ Cấu Giới Tính &amp; Phân Bố Độ Tuổi (Thu gọn mặc định cho gọn trang)
+          👥 Biểu Đồ Chân Dung Nhân Khẩu Học Học Viên: Cơ Cấu Giới Tính &amp; Phân Bố Độ Tuổi (Thu gọn mặc định cho gọn
+          trang)
         </div>
         <button type="button" onclick="document.getElementById('wrapDemoChartsBox').classList.toggle('hidden')"
           class="px-3 py-1 rounded-lg bg-sa-navy text-sa-gold text-xs font-bold shadow-sm hover:bg-sa-navyDark transition">
@@ -3306,7 +3359,8 @@
         <div id="salesVelocityCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-2">
           <!-- Populated dynamically -->
         </div>
-        <div id="wrapSalesVelocityBox" class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg mt-2">
+        <div id="wrapSalesVelocityBox"
+          class="hidden overflow-x-auto custom-scrollbar border border-sa-borderGray rounded-lg mt-2">
           <table id="tblSalesVelocity" class="min-w-full text-xs text-left divide-y divide-slate-200">
             <thead class="bg-sa-navy text-white font-heading font-bold text-[11px] uppercase">
               <tr>
@@ -5018,6 +5072,23 @@
         document.getElementById('sourceYearTitle').textContent = year;
         document.getElementById('tabCourseYearLabel').textContent = year;
         document.getElementById('printYearLabel').textContent = year;
+        // Khi chọn Năm nay (2026) hoặc Năm ngoái (2025/2024) trên hộp chọn Năm -> mặc định xem Cả năm theo từng Tháng
+        timeChartGranularity = 'MONTH';
+        if (filterState.preset !== 'ALL') {
+          filterState.preset = 'ALL';
+          filterState.startDate = '';
+          filterState.endDate = '';
+          const sInp = document.getElementById('filterStartDate');
+          const eInp = document.getElementById('filterEndDate');
+          if (sInp) sInp.value = '';
+          if (eInp) eInp.value = '';
+          document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.classList.remove('active-preset', 'bg-sa-navy', 'text-sa-gold', 'font-bold');
+          });
+          const allBtn = document.getElementById('btnPreset_ALL');
+          if (allBtn) allBtn.classList.add('active-preset', 'bg-sa-navy', 'text-sa-gold', 'font-bold');
+        }
+        syncGranularityButtonsUI();
         renderDashboard();
       }
     }
@@ -5203,28 +5274,372 @@
       return res;
     }
 
+    let timeChartGranularity = 'MONTH';
+    let paidChartSourceMode = 'COMPARE';
+
+    function syncGranularityButtonsUI() {
+      document.querySelectorAll('.gran-btn').forEach(btn => {
+        btn.className = 'gran-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-700 hover:bg-white transition';
+      });
+      const active = document.getElementById('btnGran_' + timeChartGranularity);
+      if (active) {
+        active.className = 'gran-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition';
+      }
+      const badge = document.getElementById('lblTimeChartGranBadge');
+      if (badge) {
+        if (timeChartGranularity === 'DAY') {
+          badge.textContent = '🕒 Đang xem: Tăng / Giảm Theo Từng Ngày (DD/MM)';
+          badge.className = 'px-2.5 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] font-bold shadow-sm';
+        } else if (timeChartGranularity === 'WEEK') {
+          badge.textContent = '📆 Đang xem: Xu Hướng Theo Tuần';
+          badge.className = 'px-2.5 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 text-[11px] font-bold shadow-sm';
+        } else {
+          badge.textContent = '📅 Đang xem: Theo Tháng (T1 → T12)';
+          badge.className = 'px-2.5 py-0.5 rounded bg-blue-50 text-sa-navy border border-blue-200 text-[11px] font-bold';
+        }
+      }
+    }
+
+    function buildActiveTimeSeriesBuckets(monthData) {
+      const yr = currentYear === 'ALL' ? 2026 : parseInt(currentYear, 10);
+      const baseBench = (typeof DEFAULT_BENCHMARKS !== 'undefined')
+        ? DEFAULT_BENCHMARKS.filter(b => b.Nam == yr).sort((a, b) => a.Thang - b.Thang)
+        : [];
+      const mList = (monthData && monthData.length > 0) ? monthData : baseBench;
+      const monthTargetMap = {};
+      mList.forEach(m => { monthTargetMap[m.Thang] = m.Target || 0; });
+      baseBench.forEach(m => { if (!monthTargetMap[m.Thang]) monthTargetMap[m.Thang] = m.Target || 0; });
+
+      // When viewing frozen historical years (2024, 2025) or MONTH granularity -> return 12 monthly buckets
+      if (timeChartGranularity === 'MONTH' || (yr !== 2026 && yr !== 2027)) {
+        const activeCares = window._lastFilteredCares || [];
+        const hasLiveCares = (yr === 2026 && activeCares.length > 0 && window._isCurrentlyFiltered);
+        return mList.map(d => {
+          const m = d.Thang;
+          const baseM = baseBench.find(x => x.Thang == m) || d;
+          const mPrefix = `${yr}-${String(m).padStart(2, '0')}`;
+          const mCares = hasLiveCares ? activeCares.filter(c => c.d && c.d.startsWith(mPrefix)) : [];
+          const totData = d.TongData || 0;
+          const paidData = hasLiveCares
+            ? mCares.filter(c => isPaidMarketingSource(c.s)).length
+            : (d.DataNguonTraPhi !== undefined ? d.DataNguonTraPhi : (baseM.DataNguonTraPhi || Math.round(totData * 0.62)));
+          const fbLeads = hasLiveCares
+            ? mCares.filter(c => (c.s || '').toUpperCase().includes('FACEBOOK')).length
+            : (baseM.LeadFb || Math.round(paidData * 0.62));
+          const ggLeads = hasLiveCares
+            ? mCares.filter(c => (c.s || '').toUpperCase().includes('GOOGLE ADS')).length
+            : (baseM.LeadGg || Math.round(paidData * 0.30));
+          const tkLeads = hasLiveCares
+            ? mCares.filter(c => (c.s || '').toUpperCase().includes('TIKTOK')).length
+            : (baseM.LeadTk || Math.round(paidData * 0.05));
+          const zlLeads = hasLiveCares
+            ? mCares.filter(c => (c.s || '').toUpperCase().includes('ZALO')).length
+            : (baseM.LeadZl || Math.round(paidData * 0.05));
+          const rev = Math.round(d.DoanhThuThucDat || 0);
+          const cost = Math.round(d.ChiPhiMarketing || 0);
+          const students = d.SoHocVien || 0;
+          const saleLead = d.TongLeadSalecare || Math.round(totData * 0.95);
+          return {
+            key: `M${m}`,
+            Thang: m,
+            label: 'Tháng ' + m,
+            tableLabel: 'Tháng ' + m,
+            rev: rev,
+            target: Math.round(d.Target || 0),
+            cost: cost,
+            costFb: Math.round(d.CostFb !== undefined ? d.CostFb : (baseM.CostFb || cost * 0.593)),
+            costGg: Math.round(d.CostGg !== undefined ? d.CostGg : (baseM.CostGg || cost * 0.188)),
+            costTk: Math.round(d.CostTk !== undefined ? d.CostTk : (baseM.CostTk || cost * 0.132)),
+            costRatio: rev > 0 ? parseFloat(((cost / rev) * 100).toFixed(1)) : 0,
+            leads: totData,
+            paidLeads: paidData,
+            fbLeads: fbLeads,
+            ggLeads: ggLeads,
+            tkLeads: tkLeads,
+            zlLeads: zlLeads,
+            orgLeads: Math.max(0, totData - paidData),
+            students: students,
+            cvrMkt: totData > 0 ? parseFloat(((students / totData) * 100).toFixed(2)) : 0,
+            cvrSale: saleLead > 0 ? parseFloat(((students / saleLead) * 100).toFixed(2)) : 0,
+            isSelectedSingleDay: false
+          };
+        });
+      }
+
+      const dBundle = window.CRM_DASHBOARD_DATA || {};
+      const dailyCostMap = dBundle.DailyCost2026 || {};
+      const costScale = (typeof window._lastFilterCostScale === 'number') ? window._lastFilterCostScale : 1.0;
+
+      // Determine whether a single day is selected so we can show the 7-day trend leading up to that day
+      const sDate = (typeof filterState !== 'undefined' && filterState.startDate) ? filterState.startDate : '';
+      const eDate = (typeof filterState !== 'undefined' && filterState.endDate) ? filterState.endDate : '';
+      const isSingleDay = !!(sDate && (!eDate || sDate === eDate)) || !!(!sDate && eDate);
+      const singleTargetIso = sDate || eDate;
+
+      const sourceInvs = isSingleDay
+        ? (window._lastFilteredInvsNoDate || dBundle.Invoices2026 || [])
+        : (window._lastFilteredInvs || dBundle.Invoices2026 || []);
+      const sourceCares = isSingleDay
+        ? (window._lastFilteredCaresNoDate || dBundle.Salecare2026 || [])
+        : (window._lastFilteredCares || dBundle.Salecare2026 || []);
+
+      if (timeChartGranularity === 'WEEK') {
+        const weekMap = {};
+        const ensureWk = (k) => {
+          if (!weekMap[k]) {
+            weekMap[k] = { rev: 0, target: 0, cost: 0, costFb: 0, costGg: 0, costTk: 0, leads: 0, paidLeads: 0, fbLeads: 0, ggLeads: 0, tkLeads: 0, zlLeads: 0, sts: new Set(), daysSet: new Set() };
+          }
+          return weekMap[k];
+        };
+        const getWkKey = (iso) => {
+          const dt = new Date(iso + 'T00:00:00');
+          if (isNaN(dt)) return null;
+          const startOfYear = new Date(dt.getFullYear(), 0, 1);
+          const wk = Math.ceil((((dt - startOfYear) / 86400000) + startOfYear.getDay() + 1) / 7);
+          return `Tuần ${String(wk).padStart(2, '0')}`;
+        };
+        sourceCares.forEach(c => {
+          if (!c.d || c.d.length < 10) return;
+          const iso = c.d.substring(0, 10);
+          const wkKey = getWkKey(iso);
+          if (!wkKey) return;
+          const b = ensureWk(wkKey);
+          b.daysSet.add(iso);
+          b.leads++;
+          const su = (c.s || '').toUpperCase();
+          if (isPaidMarketingSource(su)) b.paidLeads++;
+          if (su.includes('FACEBOOK')) b.fbLeads++;
+          if (su.includes('GOOGLE ADS')) b.ggLeads++;
+          if (su.includes('TIKTOK')) b.tkLeads++;
+          if (su.includes('ZALO')) b.zlLeads++;
+        });
+        sourceInvs.forEach(i => {
+          if (!i.d || i.d.length < 10) return;
+          const iso = i.d.substring(0, 10);
+          const wkKey = getWkKey(iso);
+          if (!wkKey) return;
+          const b = ensureWk(wkKey);
+          b.daysSet.add(iso);
+          b.rev += Number(i.pay || 0);
+          if (i.ns === 1 && i.st > 0) b.sts.add(i.st);
+        });
+        const sortedWks = Object.keys(weekMap).sort().slice(-24);
+        return sortedWks.map(wkKey => {
+          const b = weekMap[wkKey];
+          b.daysSet.forEach(iso => {
+            const dc = dailyCostMap[iso];
+            if (dc) {
+              b.cost += Math.round((dc.c || 0) * costScale);
+              b.costFb += Math.round((dc.fb || 0) * costScale);
+              b.costGg += Math.round((dc.gg || 0) * costScale);
+              b.costTk += Math.round((dc.tk || 0) * costScale);
+            }
+            const mNum = parseInt(iso.substring(5, 7), 10);
+            const daysInM = new Date(parseInt(iso.substring(0, 4), 10), mNum, 0).getDate() || 30;
+            b.target += Math.round((monthTargetMap[mNum] || 0) / daysInM);
+          });
+          const stsCount = b.sts.size;
+          return {
+            key: wkKey,
+            Thang: wkKey,
+            label: wkKey,
+            tableLabel: wkKey,
+            rev: Math.round(b.rev),
+            target: Math.round(b.target),
+            cost: Math.round(b.cost),
+            costFb: Math.round(b.costFb),
+            costGg: Math.round(b.costGg),
+            costTk: Math.round(b.costTk),
+            costRatio: b.rev > 0 ? parseFloat(((b.cost / b.rev) * 100).toFixed(1)) : 0,
+            leads: b.leads,
+            paidLeads: b.paidLeads,
+            fbLeads: b.fbLeads,
+            ggLeads: b.ggLeads,
+            tkLeads: b.tkLeads,
+            zlLeads: b.zlLeads,
+            orgLeads: Math.max(0, b.leads - b.paidLeads),
+            students: stsCount,
+            cvrMkt: b.leads > 0 ? parseFloat(((stsCount / b.leads) * 100).toFixed(2)) : 0,
+            cvrSale: b.leads > 0 ? parseFloat(((stsCount / Math.max(1, b.leads * 0.95)) * 100).toFixed(2)) : 0,
+            isSelectedSingleDay: false
+          };
+        });
+      }
+
+      // DAY GRANULARITY: Compute day-by-day series (DD/MM)
+      const dayMap = {};
+      const ensureDay = (iso) => {
+        if (!dayMap[iso]) {
+          dayMap[iso] = { rev: 0, leads: 0, paidLeads: 0, fbLeads: 0, ggLeads: 0, tkLeads: 0, zlLeads: 0, sts: new Set() };
+        }
+        return dayMap[iso];
+      };
+
+      let rangeStartIso = sDate;
+      let rangeEndIso = eDate;
+      if (isSingleDay && singleTargetIso) {
+        // When a single day is selected (e.g. Hôm qua / Hôm nay / 1 ngày cụ thể), show 7 days ending on that day so user sees daily up/down trend
+        const endDt = new Date(singleTargetIso + 'T00:00:00');
+        const startDt = new Date(endDt.getTime() - 6 * 86400000);
+        rangeStartIso = `${startDt.getFullYear()}-${String(startDt.getMonth() + 1).padStart(2, '0')}-${String(startDt.getDate()).padStart(2, '0')}`;
+        rangeEndIso = singleTargetIso;
+      }
+
+      if (rangeStartIso && rangeEndIso) {
+        const dStart = new Date(rangeStartIso + 'T00:00:00');
+        const dEnd = new Date(rangeEndIso + 'T00:00:00');
+        if (!isNaN(dStart) && !isNaN(dEnd) && dEnd >= dStart && ((dEnd - dStart) / 86400000) <= 95) {
+          for (let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate() + 1)) {
+            const iso = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
+            ensureDay(iso);
+          }
+        }
+      }
+
+      sourceCares.forEach(c => {
+        if (!c.d || c.d.length < 10) return;
+        const iso = c.d.substring(0, 10);
+        if (rangeStartIso && iso < rangeStartIso) return;
+        if (rangeEndIso && iso > rangeEndIso) return;
+        const b = ensureDay(iso);
+        b.leads++;
+        const su = (c.s || '').toUpperCase();
+        if (isPaidMarketingSource(su)) b.paidLeads++;
+        if (su.includes('FACEBOOK')) b.fbLeads++;
+        if (su.includes('GOOGLE ADS')) b.ggLeads++;
+        if (su.includes('TIKTOK')) b.tkLeads++;
+        if (su.includes('ZALO')) b.zlLeads++;
+      });
+
+      sourceInvs.forEach(i => {
+        if (!i.d || i.d.length < 10) return;
+        const iso = i.d.substring(0, 10);
+        if (rangeStartIso && iso < rangeStartIso) return;
+        if (rangeEndIso && iso > rangeEndIso) return;
+        const b = ensureDay(iso);
+        b.rev += Number(i.pay || 0);
+        if (i.ns === 1 && i.st > 0) b.sts.add(i.st);
+      });
+
+      let sortedDays = Object.keys(dayMap).sort();
+      if (!rangeStartIso && !rangeEndIso) {
+        sortedDays = sortedDays.slice(-31);
+      } else if (sortedDays.length > 62) {
+        sortedDays = sortedDays.slice(-62);
+      }
+
+      return sortedDays.map(iso => {
+        const b = dayMap[iso];
+        const parts = iso.split('-');
+        const ddmm = parts.length === 3 ? `${parts[2]}/${parts[1]}` : iso.substring(5);
+        const fullVnDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : iso;
+        const isSelDay = isSingleDay && iso === singleTargetIso;
+        const mNum = parseInt(iso.substring(5, 7), 10);
+        const daysInM = new Date(parseInt(iso.substring(0, 4), 10), mNum, 0).getDate() || 30;
+        const dailyTarget = Math.round((monthTargetMap[mNum] || 0) / daysInM);
+
+        const dc = dailyCostMap[iso] || {};
+        const cost = Math.round((dc.c || 0) * costScale);
+        const costFb = Math.round((dc.fb || 0) * costScale);
+        const costGg = Math.round((dc.gg || 0) * costScale);
+        const costTk = Math.round((dc.tk || 0) * costScale);
+        const rev = Math.round(b.rev || 0);
+        const stsCount = b.sts.size;
+
+        return {
+          key: iso,
+          Thang: fullVnDate,
+          label: isSelDay ? `★ ${ddmm}` : ddmm,
+          tableLabel: `Ngày ${fullVnDate}`,
+          rev: rev,
+          target: dailyTarget,
+          cost: cost,
+          costFb: costFb,
+          costGg: costGg,
+          costTk: costTk,
+          costRatio: rev > 0 ? parseFloat(((cost / rev) * 100).toFixed(1)) : 0,
+          leads: b.leads,
+          paidLeads: b.paidLeads,
+          fbLeads: b.fbLeads,
+          ggLeads: b.ggLeads,
+          tkLeads: b.tkLeads,
+          zlLeads: b.zlLeads,
+          orgLeads: Math.max(0, b.leads - b.paidLeads),
+          students: stsCount,
+          cvrMkt: b.leads > 0 ? parseFloat(((stsCount / b.leads) * 100).toFixed(2)) : 0,
+          cvrSale: b.leads > 0 ? parseFloat(((stsCount / b.leads) * 100).toFixed(2)) : 0,
+          isSelectedSingleDay: isSelDay
+        };
+      });
+    }
+
     function renderManagementCharts(data) {
-      const labels = data.map(d => 'Tháng ' + d.Thang);
-      const revData = data.map(d => Math.round(d.DoanhThuThucDat || 0));
-      const targetData = data.map(d => Math.round(d.Target || 0));
-      const costData = data.map(d => Math.round(d.ChiPhiMarketing || 0));
-      const costRatioData = data.map(d => d.DoanhThuThucDat > 0 ? ((d.ChiPhiMarketing / d.DoanhThuThucDat) * 100).toFixed(1) : 0);
+      window._lastActiveMonthData = data;
+      syncGranularityButtonsUI();
+      const buckets = buildActiveTimeSeriesBuckets(data);
+      const isDayOrWeek = timeChartGranularity !== 'MONTH' && (currentYear === '2026' || currentYear === '2027' || currentYear === 'ALL');
+
+      const labels = buckets.map(b => b.label);
+      const revData = buckets.map(b => Math.round(b.rev || 0));
+      const targetData = buckets.map(b => Math.round(b.target || 0));
+      const costData = buckets.map(b => Math.round(b.cost || 0));
+      const costRatioData = buckets.map(b => b.costRatio || 0);
 
       const canvasTargetRev = document.getElementById('chartTargetVsRev');
       if (canvasTargetRev) {
         if (chartInstances.targetRev) chartInstances.targetRev.destroy();
+        const revDatasets = isDayOrWeek
+          ? [
+              {
+                type: 'bar',
+                label: 'Doanh Thu Thực Đạt (VNĐ)',
+                data: revData,
+                backgroundColor: buckets.map(b => b.isSelectedSingleDay ? '#FED141' : 'rgba(0, 20, 137, 0.78)'),
+                borderColor: '#001489',
+                borderWidth: 1.5,
+                borderRadius: 4,
+                order: 3
+              },
+              {
+                type: 'line',
+                label: 'Đường Tăng/Giảm Doanh Thu (VNĐ)',
+                data: revData,
+                borderColor: '#10b981',
+                backgroundColor: '#10b981',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                tension: 0.25,
+                order: 1
+              },
+              {
+                type: 'line',
+                label: 'Định Mức Target Ngày/Tuần (VNĐ)',
+                data: targetData,
+                borderColor: '#94a3b8',
+                backgroundColor: '#94a3b8',
+                borderDash: [5, 4],
+                borderWidth: 2,
+                pointRadius: 2,
+                tension: 0.1,
+                order: 2
+              }
+            ]
+          : [
+              { label: 'Target Kế Hoạch (VNĐ)', data: targetData, backgroundColor: '#cbd5e1', borderRadius: 4 },
+              { label: 'Doanh Thu Thực Đạt (VNĐ)', data: revData, backgroundColor: '#001489', borderRadius: 4 }
+            ];
+
         chartInstances.targetRev = new Chart(canvasTargetRev, {
           type: 'bar',
           data: {
             labels: labels,
-            datasets: [
-              { label: 'Target Kế Hoạch (VNĐ)', data: targetData, backgroundColor: '#cbd5e1', borderRadius: 4 },
-              { label: 'Doanh Thu Thực Đạt (VNĐ)', data: revData, backgroundColor: '#001489', borderRadius: 4 }
-            ]
+            datasets: revDatasets
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
             plugins: { legend: { position: 'top' } },
             scales: { y: { ticks: { callback: v => formatNumber(v) } } }
           }
@@ -5239,13 +5654,35 @@
           data: {
             labels: labels,
             datasets: [
-              { type: 'bar', label: 'Chi Phí Marketing (VNĐ)', data: costData, backgroundColor: '#FED141', yAxisID: 'y' },
-              { type: 'line', label: 'Tỷ lệ CP/DT thực (%)', data: costRatioData, borderColor: '#e11d48', borderWidth: 2, yAxisID: 'y1' }
+              {
+                type: 'bar',
+                label: isDayOrWeek ? 'Chi Phí Quảng Cáo Ngày/Tuần (VNĐ)' : 'Chi Phí Marketing (VNĐ)',
+                data: costData,
+                backgroundColor: '#FED141',
+                borderColor: '#d97706',
+                borderWidth: 1,
+                borderRadius: 4,
+                yAxisID: 'y',
+                order: 2
+              },
+              {
+                type: 'line',
+                label: 'Tỷ lệ CP/DT thực (%)',
+                data: costRatioData,
+                borderColor: '#e11d48',
+                backgroundColor: '#e11d48',
+                borderWidth: 2.5,
+                pointRadius: 3.5,
+                tension: 0.25,
+                yAxisID: 'y1',
+                order: 1
+              }
             ]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
             scales: {
               y: { position: 'left', ticks: { callback: v => formatNumber(v) } },
               y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: v => v + '%' } }
@@ -5254,26 +5691,16 @@
         });
       }
 
-      window._lastActiveMonthData = data;
       renderPacingForecastBanner(data);
       renderTimeDataStudentCvrChart(data);
       renderTimeCostDataCplChart(data);
       if (typeof updateWhatIfSimulator === 'function') updateWhatIfSimulator();
     }
 
-    let timeChartGranularity = 'MONTH';
-    let paidChartSourceMode = 'COMPARE';
-
     function setTimeChartGranularity(gran) {
       timeChartGranularity = gran;
-      document.querySelectorAll('.gran-btn').forEach(btn => {
-        btn.className = 'gran-btn px-3 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition';
-      });
-      const active = document.getElementById('btnGran_' + gran);
-      if (active) {
-        active.className = 'gran-btn px-3 py-1 rounded text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition';
-      }
-      renderTimeDataStudentCvrChart(window._lastActiveMonthData || []);
+      syncGranularityButtonsUI();
+      renderManagementCharts(window._lastActiveMonthData || []);
     }
 
     function setPaidChartSourceMode(mode) {
@@ -5360,92 +5787,21 @@
       }
     }
 
-    // BIỂU ĐỒ THỜI GIAN MỚI #1: SỐ DATA, SỐ HỌC VIÊN & TỈ LỆ CHỐT (CVR %)
+    // BIỂU ĐỒ THỜI GIAN #3: SỐ DATA, SỐ HỌC VIÊN & TỈ LỆ CHỐT (CVR %)
     function renderTimeDataStudentCvrChart(monthData) {
       const canvas = document.getElementById('chartTimeDataStudentCvr');
       if (!canvas) return;
 
-      let labels = [];
-      let dataCounts = [];
-      let studentCounts = [];
-      let cvrMktArr = [];
-      let cvrSaleArr = [];
+      const buckets = buildActiveTimeSeriesBuckets(monthData);
+      const labels = buckets.map(b => b.label);
+      const dataCounts = buckets.map(b => b.leads);
+      const studentCounts = buckets.map(b => b.students);
+      const cvrMktArr = buckets.map(b => b.cvrMkt);
+      const cvrSaleArr = buckets.map(b => b.cvrSale);
 
-      const activeInvs = window._lastFilteredInvs || ((window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.Invoices2026) ? window.CRM_DASHBOARD_DATA.Invoices2026 : []);
-      const activeCares = window._lastFilteredCares || ((window.CRM_DASHBOARD_DATA && window.CRM_DASHBOARD_DATA.Salecare2026) ? window.CRM_DASHBOARD_DATA.Salecare2026 : []);
-
-      if (timeChartGranularity === 'MONTH' || currentYear !== '2026') {
-        const list = (monthData && monthData.length > 0) ? monthData : DEFAULT_BENCHMARKS.filter(b => b.Nam == (currentYear === 'ALL' ? 2026 : currentYear));
-        labels = list.map(d => 'Tháng ' + d.Thang);
-        dataCounts = list.map(d => d.TongData || 0);
-        studentCounts = list.map(d => d.SoHocVien || 0);
-        cvrMktArr = list.map(d => d.TongData > 0 ? parseFloat(((d.SoHocVien / d.TongData) * 100).toFixed(2)) : 0);
-        cvrSaleArr = list.map(d => {
-          const saleLead = d.TongLeadSalecare || Math.round((d.TongData || 0) * 0.95);
-          return saleLead > 0 ? parseFloat(((d.SoHocVien / saleLead) * 100).toFixed(2)) : 0;
-        });
-      } else if (timeChartGranularity === 'WEEK') {
-        const weekMap = {};
-        activeCares.forEach(c => {
-          if (!c.d || c.d.length < 10) return;
-          const dt = new Date(c.d);
-          if (isNaN(dt)) return;
-          const startOfYear = new Date(dt.getFullYear(), 0, 1);
-          const wk = Math.ceil((((dt - startOfYear) / 86400000) + startOfYear.getDay() + 1) / 7);
-          const key = `Tuần ${String(wk).padStart(2, '0')}`;
-          if (!weekMap[key]) weekMap[key] = { leads: 0, sts: new Set() };
-          weekMap[key].leads++;
-        });
-        activeInvs.forEach(i => {
-          if (!i.d || i.d.length < 10) return;
-          const dt = new Date(i.d);
-          if (isNaN(dt)) return;
-          const startOfYear = new Date(dt.getFullYear(), 0, 1);
-          const wk = Math.ceil((((dt - startOfYear) / 86400000) + startOfYear.getDay() + 1) / 7);
-          const key = `Tuần ${String(wk).padStart(2, '0')}`;
-          if (!weekMap[key]) weekMap[key] = { leads: 0, sts: new Set() };
-          if (i.ns === 1 && i.st > 0) weekMap[key].sts.add(i.st);
-        });
-        const sortedKeys = Object.keys(weekMap).sort().slice(-24);
-        labels = sortedKeys;
-        dataCounts = sortedKeys.map(k => weekMap[k].leads);
-        studentCounts = sortedKeys.map(k => weekMap[k].sts.size);
-        cvrMktArr = sortedKeys.map(k => weekMap[k].leads > 0 ? parseFloat(((weekMap[k].sts.size / weekMap[k].leads) * 100).toFixed(2)) : 0);
-        cvrSaleArr = cvrMktArr.map(v => parseFloat((v * 1.04).toFixed(2)));
-      } else {
-        const dayMap = {};
-        if (filterState.startDate && filterState.endDate) {
-          const dStart = new Date(filterState.startDate + 'T00:00:00');
-          const dEnd = new Date(filterState.endDate + 'T00:00:00');
-          if (!isNaN(dStart) && !isNaN(dEnd) && dEnd >= dStart && ((dEnd - dStart) / 86400000) <= 62) {
-            for (let cur = new Date(dStart); cur <= dEnd; cur.setDate(cur.getDate() + 1)) {
-              const iso = `${cur.getFullYear()}-${String(cur.getMonth() + 1).padStart(2, '0')}-${String(cur.getDate()).padStart(2, '0')}`;
-              dayMap[iso] = { leads: 0, sts: new Set() };
-            }
-          }
-        }
-        activeCares.forEach(c => {
-          if (!c.d || c.d.length < 10) return;
-          const key = c.d.substring(0, 10);
-          if (!dayMap[key]) dayMap[key] = { leads: 0, sts: new Set() };
-          dayMap[key].leads++;
-        });
-        activeInvs.forEach(i => {
-          if (!i.d || i.d.length < 10) return;
-          const key = i.d.substring(0, 10);
-          if (!dayMap[key]) dayMap[key] = { leads: 0, sts: new Set() };
-          if (i.ns === 1 && i.st > 0) dayMap[key].sts.add(i.st);
-        });
-        const sortedDays = Object.keys(dayMap).sort().slice(-31);
-        labels = sortedDays.map(d => d.substring(5));
-        dataCounts = sortedDays.map(k => dayMap[k].leads);
-        studentCounts = sortedDays.map(k => dayMap[k].sts.size);
-        cvrMktArr = sortedDays.map(k => dayMap[k].leads > 0 ? parseFloat(((dayMap[k].sts.size / dayMap[k].leads) * 100).toFixed(2)) : 0);
-        cvrSaleArr = cvrMktArr;
-      }
-
-      const totData = dataCounts.reduce((a, b) => a + b, 0);
-      const totStudents = studentCounts.reduce((a, b) => a + b, 0);
+      const selSingle = buckets.find(b => b.isSelectedSingleDay);
+      const totData = selSingle ? selSingle.leads : dataCounts.reduce((a, b) => a + b, 0);
+      const totStudents = selSingle ? selSingle.students : studentCounts.reduce((a, b) => a + b, 0);
       const avgCvr = totData > 0 ? ((totStudents / totData) * 100).toFixed(2) : '0.00';
       const avgSaleCvr = totData > 0 ? ((totStudents / Math.max(1, totData * 0.94)) * 100).toFixed(2) : '0.00';
 
@@ -5553,70 +5909,35 @@
       });
     }
 
-    // BIỂU ĐỒ THỜI GIAN MỚI #2: DATA, TỔNG CHI PHÍ & GIÁ DATA (NGUỒN TRẢ PHÍ VS. TỔNG NGUỒN)
+    // BIỂU ĐỒ THỜI GIAN #4: DATA, TỔNG CHI PHÍ & GIÁ DATA (NGUỒN TRẢ PHÍ VS. TỔNG NGUỒN)
     function renderTimeCostDataCplChart(monthData) {
       const canvas = document.getElementById('chartTimeCostDataCpl');
       if (!canvas) return;
 
-      const yr = currentYear === 'ALL' ? 2026 : parseInt(currentYear, 10);
-      const baseBench = DEFAULT_BENCHMARKS.filter(b => b.Nam == yr).sort((a, b) => a.Thang - b.Thang);
-      const list = (monthData && monthData.length === 12) ? monthData : baseBench;
-
-      // Also check if user has active filter in 2026 to compute live paid vs total per month
-      const activeCares = window._lastFilteredCares || [];
-      const hasLiveCares = (yr === 2026 && activeCares.length > 0 && window._isCurrentlyFiltered);
-
-      const channelCostShare = {
-        'COMPARE': 1.0, 'PAID': 1.0, 'TOTAL': 1.0,
-        'FB': 0.593, 'GG': 0.188, 'TK': 0.132, 'ZL': 0.087
-      };
-      const costFactor = channelCostShare[paidChartSourceMode] || 1.0;
-
-      const rows = list.map(mObj => {
-        const m = mObj.Thang;
-        const baseM = baseBench.find(x => x.Thang == m) || mObj;
-        let rawCost = Math.round((mObj.ChiPhiMarketing || 0) * costFactor);
-        if (paidChartSourceMode === 'FB' && (mObj.CostFb !== undefined || baseM.CostFb > 0)) {
-          rawCost = Math.round(mObj.CostFb !== undefined ? mObj.CostFb : baseM.CostFb);
-        } else if (paidChartSourceMode === 'GG' && (mObj.CostGg !== undefined || baseM.CostGg > 0)) {
-          rawCost = Math.round(mObj.CostGg !== undefined ? mObj.CostGg : baseM.CostGg);
-        } else if (paidChartSourceMode === 'TK' && (mObj.CostTk !== undefined || baseM.CostTk > 0)) {
-          rawCost = Math.round(mObj.CostTk !== undefined ? mObj.CostTk : baseM.CostTk);
-        }
-        let totData = mObj.TongData || 0;
-        let paidData = mObj.DataNguonTraPhi !== undefined ? mObj.DataNguonTraPhi : (baseM.DataNguonTraPhi || Math.round(totData * 0.62));
-
-        if (hasLiveCares) {
-          const mPrefix = `2026-${String(m).padStart(2, '0')}`;
-          const mCares = activeCares.filter(c => c.d && c.d.startsWith(mPrefix));
-          totData = mCares.length;
-          paidData = mCares.filter(c => isPaidMarketingSource(c.s)).length;
-        }
-
+      const buckets = buildActiveTimeSeriesBuckets(monthData);
+      const rows = buckets.map(b => {
+        let rawCost = b.cost;
+        let paidData = b.paidLeads;
+        const totData = b.leads;
         if (paidChartSourceMode === 'FB') {
-          paidData = hasLiveCares
-            ? activeCares.filter(c => c.d && c.d.startsWith(`2026-${String(m).padStart(2, '0')}`) && (c.s || '').toUpperCase().includes('FACEBOOK')).length
-            : (baseM.LeadFb || Math.round(paidData * 0.62));
+          rawCost = b.costFb;
+          paidData = b.fbLeads;
         } else if (paidChartSourceMode === 'GG') {
-          paidData = hasLiveCares
-            ? activeCares.filter(c => c.d && c.d.startsWith(`2026-${String(m).padStart(2, '0')}`) && (c.s || '').toUpperCase().includes('GOOGLE ADS')).length
-            : (baseM.LeadGg || Math.round(paidData * 0.30));
+          rawCost = b.costGg;
+          paidData = b.ggLeads;
         } else if (paidChartSourceMode === 'TK') {
-          paidData = hasLiveCares
-            ? activeCares.filter(c => c.d && c.d.startsWith(`2026-${String(m).padStart(2, '0')}`) && (c.s || '').toUpperCase().includes('TIKTOK')).length
-            : (baseM.LeadTk || Math.round(paidData * 0.05));
+          rawCost = b.costTk;
+          paidData = b.tkLeads;
         } else if (paidChartSourceMode === 'ZL') {
-          paidData = hasLiveCares
-            ? activeCares.filter(c => c.d && c.d.startsWith(`2026-${String(m).padStart(2, '0')}`) && (c.s || '').toUpperCase().includes('ZALO')).length
-            : (baseM.LeadZl || Math.round(paidData * 0.05));
+          rawCost = Math.round(b.cost * 0.087);
+          paidData = b.zlLeads;
         }
-
         const orgData = Math.max(0, totData - paidData);
         const cplPaid = paidData > 0 ? Math.round(rawCost / paidData) : 0;
         const cplTotal = totData > 0 ? Math.round(rawCost / totData) : 0;
-
         return {
-          Thang: m,
+          Label: b.label,
+          TableLabel: b.tableLabel,
           CostK: Math.round(rawCost),
           RawCost: rawCost,
           PaidData: paidData,
@@ -5624,14 +5945,16 @@
           TotalData: totData,
           CplPaidK: cplPaid,
           CplTotalK: cplTotal,
-          Students: mObj.SoHocVien || 0,
-          Cvr: totData > 0 ? ((mObj.SoHocVien || 0) / totData * 100).toFixed(1) : '0.0'
+          Students: b.students || 0,
+          Cvr: totData > 0 ? ((b.students || 0) / totData * 100).toFixed(1) : '0.0',
+          isSelectedSingleDay: b.isSelectedSingleDay
         };
       });
 
-      const sumRawCost = rows.reduce((a, r) => a + r.RawCost, 0);
-      const sumPaidData = rows.reduce((a, r) => a + r.PaidData, 0);
-      const sumTotalData = rows.reduce((a, r) => a + r.TotalData, 0);
+      const selRow = rows.find(r => r.isSelectedSingleDay);
+      const sumRawCost = selRow ? selRow.RawCost : rows.reduce((a, r) => a + r.RawCost, 0);
+      const sumPaidData = selRow ? selRow.PaidData : rows.reduce((a, r) => a + r.PaidData, 0);
+      const sumTotalData = selRow ? selRow.TotalData : rows.reduce((a, r) => a + r.TotalData, 0);
       const avgPaidCpl = sumPaidData > 0 ? (sumRawCost / sumPaidData) : 0;
       const avgTotalCpl = sumTotalData > 0 ? (sumRawCost / sumTotalData) : 0;
       const paidSharePct = sumTotalData > 0 ? ((sumPaidData / sumTotalData) * 100).toFixed(1) : '0.0';
@@ -5647,7 +5970,6 @@
         document.getElementById('ts2CplSavingNote').innerHTML = `📐 Nguồn tự nhiên giúp giảm <strong>${savingPct}%</strong> giá CPL bình quân`;
       }
 
-      // Render Monthly Comparison Table (#tblPaidVsTotalMonthlyBody)
       const tbody = document.getElementById('tblPaidVsTotalMonthlyBody');
       if (tbody) {
         tbody.innerHTML = '';
@@ -5656,7 +5978,7 @@
           const tr = document.createElement('tr');
           tr.className = 'hover:bg-slate-50 transition';
           tr.innerHTML = `
-            <td class="py-2 px-3 font-bold text-sa-navy">Tháng ${r.Thang}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy">${r.TableLabel}</td>
             <td class="py-2 px-3 text-right font-semibold text-slate-800">${formatNumber(r.CostK)}</td>
             <td class="py-2 px-3 text-right font-bold text-orange-800 bg-orange-50/40">${formatNumber(r.PaidData)}</td>
             <td class="py-2 px-3 text-right font-bold text-orange-700 bg-orange-50/40">${formatNumber(r.CplPaidK)}</td>
@@ -5668,14 +5990,13 @@
           `;
           tbody.appendChild(tr);
         });
-        // Add Total Footer Row
         const trTot = document.createElement('tr');
         trTot.className = 'bg-sa-gold/25 font-bold text-sa-navy border-t-2 border-sa-gold';
-        const totSt = rows.reduce((a, r) => a + r.Students, 0);
-        const totOrg = rows.reduce((a, r) => a + r.OrgData, 0);
+        const totSt = selRow ? selRow.Students : rows.reduce((a, r) => a + r.Students, 0);
+        const totOrg = selRow ? selRow.OrgData : rows.reduce((a, r) => a + r.OrgData, 0);
         const totCvr = sumTotalData > 0 ? ((totSt / sumTotalData) * 100).toFixed(1) : '0.0';
         trTot.innerHTML = `
-          <td class="py-2.5 px-3 font-heading uppercase">TỔNG / TB NĂM</td>
+          <td class="py-2.5 px-3 font-heading uppercase">TỔNG / TB KỲ</td>
           <td class="py-2.5 px-3 text-right">${formatVND(sumRawCost)}</td>
           <td class="py-2.5 px-3 text-right text-orange-900">${formatNumber(sumPaidData)}</td>
           <td class="py-2.5 px-3 text-right text-orange-800">${formatVND(avgPaidCpl)}</td>
@@ -5688,7 +6009,7 @@
         tbody.appendChild(trTot);
       }
 
-      const labels = rows.map(r => 'Tháng ' + r.Thang);
+      const labels = rows.map(r => r.Label);
       const datasets = [
         {
           type: 'bar',
@@ -7109,22 +7430,16 @@
       }
 
       if (typeof timeChartGranularity !== 'undefined') {
-        const targetGran = (preset === 'TODAY' || preset === 'YESTERDAY' || preset === '3DAYS' || preset === '7DAYS')
-          ? 'DAY'
-          : (preset === '3WEEKS' ? 'WEEK' : 'MONTH');
+        // Khi chọn Tháng này, Tháng trước, hoặc các nút lọc Ngày cụ thể -> tự động vẽ biểu đồ tăng giảm theo từng Ngày (DAY).
+        // Chỉ khi chọn Cả năm (ALL) hoặc 3 Tháng (3MONTHS) -> mới hiển thị theo từng Tháng (MONTH).
+        const targetGran = (preset === 'ALL' || preset === '3MONTHS') ? 'MONTH' : 'DAY';
         timeChartGranularity = targetGran;
-        document.querySelectorAll('.gran-btn').forEach(b => {
-          b.className = 'gran-btn px-3 py-1 rounded text-xs font-semibold text-slate-700 hover:bg-white transition';
-        });
-        const gBtn = document.getElementById('btnGran_' + targetGran);
-        if (gBtn) {
-          gBtn.className = 'gran-btn px-3 py-1 rounded text-xs font-bold bg-sa-navy text-sa-gold shadow-sm transition';
-        }
+        syncGranularityButtonsUI();
       }
 
       const dailyBox = document.getElementById('wrapDailyMktTrackerBox');
       if (dailyBox) {
-        if (preset === 'TODAY' || preset === 'YESTERDAY' || preset === '3DAYS' || preset === '7DAYS') {
+        if (preset === 'TODAY' || preset === 'YESTERDAY' || preset === '3DAYS' || preset === '7DAYS' || preset === 'THIS_MONTH' || preset === 'LAST_MONTH') {
           dailyBox.classList.remove('hidden');
         } else if (preset === 'ALL') {
           dailyBox.classList.add('hidden');
@@ -7166,11 +7481,11 @@
       const invoiceCount = invs.length;
 
       const dc = (dBundle.DailyCost2026 && dBundle.DailyCost2026[targetDate]) ? dBundle.DailyCost2026[targetDate] : {};
-      const fbCost = Math.round(Number(dc.FB || 0));
-      const ggCost = Math.round(Number(dc.GG || 0));
-      const tkCost = Math.round(Number(dc.TK || 0));
+      const fbCost = Math.round(Number(dc.fb || dc.FB || 0));
+      const ggCost = Math.round(Number(dc.gg || dc.GG || 0));
+      const tkCost = Math.round(Number(dc.tk || dc.TK || 0));
       const fbGgCost = fbCost + ggCost;
-      const totCost = Math.round(Number(dc.Total || (fbGgCost + tkCost)));
+      const totCost = Math.round(Number(dc.c || dc.Total || (fbGgCost + tkCost)));
 
       const fmtVnd = (n) => Math.round(Number(n || 0)).toLocaleString('vi-VN') + ' đ';
       const costLine = tkCost > 0
@@ -7227,6 +7542,9 @@
             if (selYr) selYr.value = targetYr;
           }
         }
+        // Khi chọn ngày cụ thể từ ô lịch -> tự động chuyển biểu đồ sang xem theo từng Ngày (DAY)
+        timeChartGranularity = 'DAY';
+        syncGranularityButtonsUI();
         document.querySelectorAll('.preset-btn').forEach(btn => {
           btn.classList.remove('active-preset', 'bg-sa-navy', 'text-sa-gold', 'font-bold');
         });
@@ -7354,10 +7672,7 @@
         if (c.st > 0 && c.s) stSourceFallback[c.st] = c.s;
       });
 
-      const filteredInvs = allInvs.filter(i => {
-        const dStr = (i.d || '').substring(0, 10);
-        if (filterState.startDate && dStr < filterState.startDate) return false;
-        if (filterState.endDate && dStr > filterState.endDate) return false;
+      const invsNoDate = allInvs.filter(i => {
         if (filterState.branches.length > 0 && !filterState.branches.includes(i.b)) return false;
         if (filterState.groups.length > 0 && !filterState.groups.includes(i.g)) return false;
         if (filterState.products.length > 0 && !filterState.products.includes(i.p)) return false;
@@ -7380,10 +7695,7 @@
         return true;
       });
 
-      const filteredCares = allCare.filter(c => {
-        const cStr = (c.d || '').substring(0, 10);
-        if (filterState.startDate && cStr < filterState.startDate) return false;
-        if (filterState.endDate && cStr > filterState.endDate) return false;
+      const caresNoDate = allCare.filter(c => {
         if (filterState.branches.length > 0 && !filterState.branches.includes(c.b)) return false;
         if (filterState.groups.length > 0 && (!c.g || !filterState.groups.some(g => c.g.toLowerCase().includes(g.toLowerCase())))) return false;
         if (filterState.products.length > 0 && (!c.g || !filterState.products.some(p => c.g.toLowerCase().includes(p.toLowerCase())))) return false;
@@ -7399,6 +7711,20 @@
             (String(c.id).includes(kw));
           if (!match) return false;
         }
+        return true;
+      });
+
+      const filteredInvs = invsNoDate.filter(i => {
+        const dStr = (i.d || '').substring(0, 10);
+        if (filterState.startDate && dStr < filterState.startDate) return false;
+        if (filterState.endDate && dStr > filterState.endDate) return false;
+        return true;
+      });
+
+      const filteredCares = caresNoDate.filter(c => {
+        const cStr = (c.d || '').substring(0, 10);
+        if (filterState.startDate && cStr < filterState.startDate) return false;
+        if (filterState.endDate && cStr > filterState.endDate) return false;
         return true;
       });
 
@@ -7420,9 +7746,14 @@
       );
 
       // Cập nhật biến toàn cục TRƯỚC khi gọi updateDashboardByActiveFilters để toàn bộ biểu đồ con đọc đúng dữ liệu kỳ lọc
+      window._lastFilteredInvsNoDate = invsNoDate;
+      window._lastFilteredCaresNoDate = caresNoDate;
       window._lastFilteredInvs = filteredInvs;
       window._lastFilteredCares = filteredCares;
       window._isCurrentlyFiltered = isFiltered;
+      window._lastFilterCostScale = (filterState.branches.length > 0 || filterState.groups.length > 0 || filterState.products.length > 0 || filterState.sales.length > 0 || !!filterState.keyword)
+        ? Math.min(1, caresNoDate.length / Math.max(1, allCare.length))
+        : 1;
 
       if (isFiltered) {
         // Đồng bộ hóa Bảng P&L 12 tháng, 4 Biểu đồ P&L và 6 Thẻ KPI Tổng theo Bộ lọc
@@ -10938,7 +11269,7 @@
         const chatId = '-5242087209';
         const textMsg = txtEl.value;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          try { await navigator.clipboard.writeText(textMsg); } catch (e) {}
+          try { await navigator.clipboard.writeText(textMsg); } catch (e) { }
         }
         const resp = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
           method: 'POST',
