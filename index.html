@@ -163,13 +163,13 @@
   </style>
 
   <!-- Load Local CRM Data Bundle & Mappings -->
-  <script src="crm_mapping.js?v=v3.26_20261111_101342"></script>
-  <script src="crm_data.js?v=v3.26_20261111_101342"></script>
+  <script src="crm_mapping.js?v=v3.27_20261111_105003"></script>
+  <script src="crm_data.js?v=v3.27_20261111_105003"></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.26_20261111_101342') caches.delete(k); })); }
-        navigator.serviceWorker.register('./sw.js?v=v3.26_20261111_101342').then(reg => { reg.update(); }).catch(() => { });
+        if ('caches' in window) { caches.keys().then(ks => ks.forEach(k => { if (k !== 'sa-crm-cache-v3.27_20261111_105003') caches.delete(k); })); }
+        navigator.serviceWorker.register('./sw.js?v=v3.27_20261111_105003').then(reg => { reg.update(); }).catch(() => { });
       });
     }
   </script>
@@ -5473,11 +5473,16 @@
             b.target += Math.round((monthTargetMap[mNum] || 0) / daysInM);
           });
           const stsCount = b.sts.size;
+          const sortedWkDays = Array.from(b.daysSet).sort();
+          const wkRangeNote = sortedWkDays.length > 0
+            ? `${wkKey} (${sortedWkDays[0].substring(8, 10)}/${sortedWkDays[0].substring(5, 7)} → ${sortedWkDays[sortedWkDays.length - 1].substring(8, 10)}/${sortedWkDays[sortedWkDays.length - 1].substring(5, 7)})`
+            : wkKey;
           return {
             key: wkKey,
+            daysList: sortedWkDays,
             Thang: wkKey,
             label: wkKey,
-            tableLabel: wkKey,
+            tableLabel: wkRangeNote,
             rev: Math.round(b.rev),
             target: Math.round(b.target),
             cost: Math.round(b.cost),
@@ -5793,29 +5798,60 @@
     }
 
     function updateTimeChartSummaryStrip(buckets) {
+      window._lastRenderedTimeBuckets = buckets || [];
       const stripEl = document.getElementById('timeChartSummaryStats');
       if (!stripEl || !buckets || buckets.length === 0) return;
       const activeBuckets = buckets.filter(b => (b.rev || 0) > 0 || (b.leads || 0) > 0 || (b.cost || 0) > 0);
       const list = activeBuckets.length > 0 ? activeBuckets : buckets;
+      const revActiveList = list.filter(b => (b.rev || 0) > 0);
       const count = Math.max(1, list.length);
       const bestRevB = [...list].sort((a, b) => (b.rev || 0) - (a.rev || 0))[0];
+      const minRevB = revActiveList.length > 1
+        ? [...revActiveList].sort((a, b) => (a.rev || 0) - (b.rev || 0))[0]
+        : null;
+      const cpRatioCandidates = revActiveList.filter(b => (b.cost || 0) > 0 && (b.costRatio || 0) > 0);
+      const bestCpB = cpRatioCandidates.length > 0
+        ? [...cpRatioCandidates].sort((a, b) => (a.costRatio || 999) - (b.costRatio || 999))[0]
+        : null;
+      const over25Count = list.filter(b => (b.costRatio || 0) > 25 || ((b.rev || 0) === 0 && (b.cost || 0) > 0)).length;
+
       const totRev = list.reduce((a, b) => a + (b.rev || 0), 0);
       const totCost = list.reduce((a, b) => a + (b.cost || 0), 0);
       const totLeads = list.reduce((a, b) => a + (b.leads || 0), 0);
       const totSt = list.reduce((a, b) => a + (b.students || 0), 0);
       const unitWord = timeChartGranularity === 'DAY' ? 'ngày' : (timeChartGranularity === 'WEEK' ? 'tuần' : 'tháng');
 
-      stripEl.innerHTML = `
-        <span class="px-2 py-0.5 rounded bg-amber-100/80 text-sa-navy border border-amber-300 font-semibold">
-          🏆 <strong>Đỉnh Doanh thu:</strong> ${bestRevB ? `${bestRevB.tableLabel || bestRevB.label} (${formatVND(bestRevB.rev)} đ • ${formatNumber(bestRevB.students)} HV)` : '--'}
+      const minHtml = minRevB
+        ? `<span onclick="openBucketDrillDownByKey('${String(minRevB.key).replace(/'/g, "\\'")}')"
+            class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-semibold cursor-pointer transition"
+            title="Bấm để xem chi tiết kỳ có doanh thu thấp nhất trong các ${unitWord} có phát sinh">
+            📉 <strong>Đáy thấp nhất:</strong> ${minRevB.label} (${formatCompactChartVal(minRevB.rev, 'money')} • ${formatNumber(minRevB.leads)} data)
+          </span>`
+        : '';
+
+      const cpStatusHtml = `
+        <span ${bestCpB ? `onclick="openBucketDrillDownByKey('${String(bestCpB.key).replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-semibold cursor-pointer transition"` : `class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 font-semibold"`}
+          title="Bấm để xem chi tiết kỳ có hiệu quả % CP/DT tốt nhất">
+          🎯 <strong>% CP/DT tốt nhất:</strong> ${bestCpB ? `${bestCpB.label} (${bestCpB.costRatio}%)` : '--'}
+          • <span class="${over25Count > 0 ? 'text-rose-700 font-bold' : 'text-emerald-700 font-bold'}">Vượt 25%: ${over25Count} ${unitWord}</span>
         </span>
+      `;
+
+      stripEl.innerHTML = `
+        <span ${bestRevB ? `onclick="openBucketDrillDownByKey('${String(bestRevB.key).replace(/'/g, "\\'")}')"` : ''}
+          class="px-2 py-0.5 rounded bg-amber-100/80 hover:bg-amber-200/80 text-sa-navy border border-amber-300 font-semibold cursor-pointer transition"
+          title="Bấm để mở danh sách Học viên & Phiếu thu của kỳ cao nhất">
+          🏆 <strong>Đỉnh cao nhất:</strong> ${bestRevB ? `${bestRevB.label} (${formatVND(bestRevB.rev)} đ • ${formatNumber(bestRevB.students)} HV)` : '--'}
+        </span>
+        ${minHtml}
         <span class="px-2 py-0.5 rounded bg-white text-slate-700 border border-slate-200">
-          📊 <strong>Trung bình/${unitWord} (${list.length} ${unitWord} có phát sinh):</strong>
-          DT <strong class="text-sa-navy">${formatCompactChartVal(totRev / count, 'money')}</strong> •
-          CP <strong class="text-amber-700">${formatCompactChartVal(totCost / count, 'money')}</strong> •
+          📊 <strong>TB/${unitWord} (${list.length} ${unitWord}):</strong>
+          DT <strong class="text-sa-navy">${formatCompactChartVal(totRev / count, 'money') || '0'}</strong> •
+          CP <strong class="text-amber-700">${formatCompactChartVal(totCost / count, 'money') || '0'}</strong> •
           Data <strong class="text-blue-700">${Math.round(totLeads / count)}</strong> •
           HV <strong class="text-emerald-700">${(totSt / count).toFixed(1).replace('.', ',')}</strong>
         </span>
+        ${cpStatusHtml}
       `;
     }
 
@@ -5826,22 +5862,28 @@
       const cur = buckets[idx];
       const prev = buckets[idx - 1];
       if (!cur || !prev) return '';
-      const lines = [];
+      const lines = ['────────────────────────────'];
       if (prev.rev > 0 || cur.rev > 0) {
         const diff = (cur.rev || 0) - (prev.rev || 0);
         const pct = prev.rev > 0 ? ((diff / prev.rev) * 100).toFixed(1) : '100.0';
         const sign = diff >= 0 ? '📈 +' : '📉 ';
         lines.push(`${sign}${pct}% Doanh thu (${diff >= 0 ? '+' : ''}${formatNumber(diff)} đ) so với ${prev.label}`);
       }
-      if (prev.leads > 0 || cur.leads > 0) {
+      if (prev.cost > 0 || cur.cost > 0) {
+        const cDiff = (cur.cost || 0) - (prev.cost || 0);
+        const cPct = prev.cost > 0 ? ((cDiff / prev.cost) * 100).toFixed(1) : '100.0';
+        lines.push(`💰 Chi phí MKT: ${cDiff >= 0 ? '+' : ''}${cPct}% (${cDiff >= 0 ? '+' : ''}${formatNumber(cDiff)} đ) | % CP/DT: ${cur.costRatio || 0}% (trước: ${prev.costRatio || 0}%)`);
+      }
+      if (prev.leads > 0 || cur.leads > 0 || prev.students > 0 || cur.students > 0) {
         const lDiff = (cur.leads || 0) - (prev.leads || 0);
-        lines.push(`👥 Data: ${lDiff >= 0 ? '+' : ''}${lDiff} data | Học viên: ${(cur.students || 0) - (prev.students || 0) >= 0 ? '+' : ''}${(cur.students || 0) - (prev.students || 0)} HV so với ${prev.label}`);
+        const sDiff = (cur.students || 0) - (prev.students || 0);
+        lines.push(`👥 Data: ${lDiff >= 0 ? '+' : ''}${lDiff} data | Học viên: ${sDiff >= 0 ? '+' : ''}${sDiff} HV so với ${prev.label}`);
       }
       lines.push('👆 Bấm chuột vào cột để mở danh sách chi tiết');
       return lines.join('\n');
     }
 
-    function openDateDrillDownModal(isoDate) {
+    function openPeriodDaysSetDrillDownModal(titleLabel, daysList) {
       const modal = document.getElementById('modalDrillDown');
       const titleEl = document.getElementById('drillDownModalTitle');
       const subEl = document.getElementById('drillDownModalSub');
@@ -5852,24 +5894,31 @@
       if (!modal || !thead || !tbody) return;
       if (searchInput) searchInput.value = '';
 
+      const daySet = new Set(daysList || []);
       const dBundle = window.CRM_DASHBOARD_DATA || {};
       const baseInvs = window._lastFilteredInvsNoDate || dBundle.Invoices2026 || [];
       const baseCares = window._lastFilteredCaresNoDate || dBundle.Salecare2026 || [];
-      const dayInvs = baseInvs.filter(i => i.d && i.d.substring(0, 10) === isoDate);
-      const dayCares = baseCares.filter(c => c.d && c.d.substring(0, 10) === isoDate);
-      const dc = (dBundle.DailyCost2026 && dBundle.DailyCost2026[isoDate]) ? dBundle.DailyCost2026[isoDate] : {};
+      const dayInvs = baseInvs.filter(i => i.d && daySet.has(i.d.substring(0, 10)));
+      const dayCares = baseCares.filter(c => c.d && daySet.has(c.d.substring(0, 10)));
+
+      let fbSum = 0, ggSum = 0, tkSum = 0;
+      daySet.forEach(iso => {
+        const dc = (dBundle.DailyCost2026 && dBundle.DailyCost2026[iso]) ? dBundle.DailyCost2026[iso] : {};
+        fbSum += (dc.fb || 0);
+        ggSum += (dc.gg || 0);
+        tkSum += (dc.tk || 0);
+      });
       const dayRev = dayInvs.reduce((a, i) => a + (i.pay || 0), 0);
       const daySt = dayInvs.filter(i => i.ns === 1).length;
-      const parts = isoDate.split('-');
-      const vnDate = parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : isoDate;
 
-      titleEl.textContent = `CHI TIẾT NGÀY ${vnDate} — DT: ${formatVND(dayRev)} Đ | ${daySt} HỌC VIÊN MỚI | ${dayCares.length} DATA`;
-      subEl.innerHTML = `📐 <strong>Tổng hợp ngày ${vnDate}:</strong> <strong>${dayInvs.length}</strong> phiếu thu (${daySt} HV mới) • <strong>${dayCares.length}</strong> Data mới • Chi phí MKT: <strong>${formatVND((dc.fb || 0) + (dc.gg || 0))} đ</strong> (FB: ${formatVND(dc.fb || 0)} | GG: ${formatVND(dc.gg || 0)} | TK: ${formatVND(dc.tk || 0)}).`;
+      titleEl.textContent = `CHI TIẾT ${titleLabel.toUpperCase()} — DT: ${formatVND(dayRev)} Đ | ${daySt} HỌC VIÊN MỚI | ${dayCares.length} DATA`;
+      subEl.innerHTML = `📐 <strong>Tổng hợp ${titleLabel}:</strong> <strong>${dayInvs.length}</strong> phiếu thu (${daySt} HV mới) • <strong>${dayCares.length}</strong> Data mới • Chi phí MKT: <strong>${formatVND(fbSum + ggSum + tkSum)} đ</strong> (FB: ${formatVND(fbSum)} | GG: ${formatVND(ggSum)} | TK: ${formatVND(tkSum)}).`;
       countEl.textContent = `${dayInvs.length} phiếu thu & ${dayCares.length} data`;
 
       thead.innerHTML = `
         <tr>
           <th class="py-2.5 px-2 text-center">#</th>
+          <th class="py-2.5 px-2">Ngày</th>
           <th class="py-2.5 px-2">Phân Loại</th>
           <th class="py-2.5 px-2">Mã Số</th>
           <th class="py-2.5 px-3">Họ Tên Học Viên / Khách Hàng</th>
@@ -5890,6 +5939,7 @@
         rowsHtml += `
           <tr class="bg-yellow-50/40 hover:bg-yellow-100/50 transition">
             <td class="py-2 px-2 text-center text-slate-400">${idx++}</td>
+            <td class="py-2 px-2 font-mono text-xs text-slate-600">${r.d || ''}</td>
             <td class="py-2 px-2">${badge}</td>
             <td class="py-2 px-2 font-mono font-bold text-sa-navy">#${r.st || r.id}</td>
             <td class="py-2 px-3 font-bold text-sa-navy">${r.fn || ''}</td>
@@ -5902,13 +5952,14 @@
         `;
       });
 
-      dayCares.forEach(c => {
+      dayCares.slice(0, 500).forEach(c => {
         const stBadge = c.st > 0
           ? `<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">✅ Đã chốt (#${c.st})</span>`
           : `<span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px]">Đang chăm (${c.tc || 0} lần)</span>`;
         rowsHtml += `
           <tr class="hover:bg-blue-50/40 transition">
             <td class="py-2 px-2 text-center text-slate-400">${idx++}</td>
+            <td class="py-2 px-2 font-mono text-xs text-slate-600">${c.d || ''}</td>
             <td class="py-2 px-2"><span class="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[10px]">📥 Data mới</span></td>
             <td class="py-2 px-2 font-mono text-slate-600">#${c.id}</td>
             <td class="py-2 px-3 font-semibold text-slate-800">${c.fn || ''}</td>
@@ -5921,8 +5972,32 @@
         `;
       });
 
-      tbody.innerHTML = rowsHtml || `<tr><td colspan="9" class="py-6 text-center text-slate-400">Không có bản ghi phát sinh trong ngày ${vnDate}</td></tr>`;
+      tbody.innerHTML = rowsHtml || `<tr><td colspan="10" class="py-6 text-center text-slate-400">Không có bản ghi phát sinh trong ${titleLabel}</td></tr>`;
       modal.classList.remove('hidden');
+    }
+
+    function openDateDrillDownModal(isoDate) {
+      const parts = String(isoDate).split('-');
+      const vnDate = parts.length === 3 ? `Ngày ${parts[2]}/${parts[1]}/${parts[0]}` : isoDate;
+      openPeriodDaysSetDrillDownModal(vnDate, [isoDate]);
+    }
+
+    function openBucketDrillDownByKey(bucketKey) {
+      if (!bucketKey) return;
+      const kStr = String(bucketKey);
+      if (kStr.startsWith('M')) {
+        openMetricDrillDown('SoHocVien', kStr, 'ALL');
+        return;
+      }
+      if (/^\d{4}-\d{2}-\d{2}$/.test(kStr)) {
+        openDateDrillDownModal(kStr);
+        return;
+      }
+      const buckets = window._lastRenderedTimeBuckets || [];
+      const found = buckets.find(b => String(b.key) === kStr);
+      if (found && found.daysList && found.daysList.length > 0) {
+        openPeriodDaysSetDrillDownModal(found.tableLabel || found.label, found.daysList);
+      }
     }
 
     function handleTimeChartBarClick(evt, elements, buckets) {
@@ -5930,11 +6005,7 @@
       const idx = elements[0].index;
       const b = buckets[idx];
       if (!b || !b.key) return;
-      if (String(b.key).startsWith('M')) {
-        openMetricDrillDown('SoHocVien', b.key, 'ALL');
-      } else if (/^\d{4}-\d{2}-\d{2}$/.test(String(b.key))) {
-        openDateDrillDownModal(String(b.key));
-      }
+      openBucketDrillDownByKey(b.key);
     }
 
     function renderManagementCharts(data) {
@@ -6008,6 +6079,7 @@
             responsive: true,
             maintainAspectRatio: false,
             onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
+            onHover: (evt, els) => { if (evt.native && evt.native.target) evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
             interaction: { mode: 'index', intersect: false },
             plugins: {
               legend: { position: 'top' },
@@ -6061,6 +6133,7 @@
             responsive: true,
             maintainAspectRatio: false,
             onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
+            onHover: (evt, els) => { if (evt.native && evt.native.target) evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
             interaction: { mode: 'index', intersect: false },
             plugins: {
               tooltip: {
@@ -6267,6 +6340,7 @@
           responsive: true,
           maintainAspectRatio: false,
           onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
+          onHover: (evt, els) => { if (evt.native && evt.native.target) evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { position: 'top' },
@@ -6330,6 +6404,7 @@
         const cplPaid = paidData > 0 ? Math.round(rawCost / paidData) : 0;
         const cplTotal = totData > 0 ? Math.round(rawCost / totData) : 0;
         return {
+          Key: b.key,
           Label: b.label,
           TableLabel: b.tableLabel,
           CostK: Math.round(rawCost),
@@ -6370,9 +6445,11 @@
         rows.forEach(r => {
           if (r.CostK === 0 && r.TotalData === 0) return;
           const tr = document.createElement('tr');
-          tr.className = 'hover:bg-slate-50 transition';
+          tr.className = 'hover:bg-blue-50/50 transition cursor-pointer';
+          tr.title = 'Bấm để mở danh sách Học viên & Data chi tiết của kỳ này';
+          tr.onclick = () => openBucketDrillDownByKey(r.Key);
           tr.innerHTML = `
-            <td class="py-2 px-3 font-bold text-sa-navy">${r.TableLabel}</td>
+            <td class="py-2 px-3 font-bold text-sa-navy hover:underline">${r.TableLabel}</td>
             <td class="py-2 px-3 text-right font-semibold text-slate-800">${formatNumber(r.CostK)}</td>
             <td class="py-2 px-3 text-right font-bold text-orange-800 bg-orange-50/40">${formatNumber(r.PaidData)}</td>
             <td class="py-2 px-3 text-right font-bold text-orange-700 bg-orange-50/40">${formatNumber(r.CplPaidK)}</td>
@@ -6481,6 +6558,7 @@
           responsive: true,
           maintainAspectRatio: false,
           onClick: (evt, els) => handleTimeChartBarClick(evt, els, buckets),
+          onHover: (evt, els) => { if (evt.native && evt.native.target) evt.native.target.style.cursor = els.length ? 'pointer' : 'default'; },
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: { position: 'top' },
@@ -8041,12 +8119,14 @@
         });
       }
       if (filterState.preset !== 'ALL') {
+        const qmSel = document.getElementById('selQuickMonthFilter');
+        const qmVal = qmSel ? qmSel.value : '';
         const mapPreset = {
           'TODAY': 'Hôm nay', 'YESTERDAY': 'Hôm qua', '3DAYS': '3 ngày qua',
           '7DAYS': '7 ngày qua', '3WEEKS': `3 tuần liền kề (${filterState.startDate} → ${filterState.endDate})`,
           'THIS_MONTH': 'Tháng này', 'LAST_MONTH': 'Tháng trước',
           '3MONTHS': `3 tháng liền kề (${filterState.startDate} → ${filterState.endDate})`,
-          'CUSTOM': `${filterState.startDate || '...'} → ${filterState.endDate || '...'}`
+          'CUSTOM': qmVal ? `Tháng ${String(qmVal).padStart(2, '0')}/${(filterState.startDate || '2026').substring(0, 4)} (Xem từng ngày)` : `${filterState.startDate || '...'} → ${filterState.endDate || '...'}`
         };
         activeTags.push({ label: 'Thời gian: ' + (mapPreset[filterState.preset] || filterState.preset), clear: () => setTimePreset('ALL') });
       }
