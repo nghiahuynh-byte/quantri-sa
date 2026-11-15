@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'sa-crm-cache-v3.27_20261115_070137';
+﻿const CACHE_NAME = 'sa-crm-cache-v3.27_20261115_074315';
 const urlsToCache = [
   './',
   './index.html',
