@@ -1,10 +1,10 @@
 ﻿{
-    "TotalSalecare2026":  11182,
-    "BuildVersion":  "v3.27_20261125_075554",
-    "LastUpdated":  "2026-11-25 07:55:54",
+    "TotalSalecare2026":  11193,
+    "BuildVersion":  "v3.27_20261126_070134",
+    "LastUpdated":  "2026-11-26 07:01:34",
     "UpdatedMonths":  "10/2026, 11/2026",
     "Status":  "SUCCESS",
-    "TotalInvoices2026":  2916,
-    "NewSalecareCount":  1001,
-    "NewInvoicesCount":  251
+    "TotalInvoices2026":  2921,
+    "NewSalecareCount":  1012,
+    "NewInvoicesCount":  256
 }
